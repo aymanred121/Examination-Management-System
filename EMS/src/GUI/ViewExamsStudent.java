@@ -32,6 +32,8 @@ public class ViewExamsStudent extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -54,13 +56,20 @@ public class ViewExamsStudent extends javax.swing.JFrame {
         jSeparator1.setForeground(new java.awt.Color(0, 0, 0));
         jSeparator1.setOrientation(javax.swing.SwingConstants.VERTICAL);
 
+        jLabel3.setText("jLabel3");
+
+        jLabel4.setText("jLabel4");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(75, 75, 75)
-                .addComponent(jLabel1)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel4))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 204, Short.MAX_VALUE)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(185, 185, 185)
@@ -87,7 +96,11 @@ public class ViewExamsStudent extends javax.swing.JFrame {
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(38, 38, 38)
                                 .addComponent(jLabel2)))
-                        .addGap(0, 599, Short.MAX_VALUE)))
+                        .addGap(65, 65, 65)
+                        .addComponent(jLabel3)
+                        .addGap(43, 43, 43)
+                        .addComponent(jLabel4)
+                        .addGap(0, 459, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 
@@ -147,6 +160,8 @@ public class ViewExamsStudent extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JButton logoutButton;

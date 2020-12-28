@@ -4,21 +4,30 @@
  * and open the template in the editor.
  */
 package GUI;
-
+import Entities.Exam;
+import java.awt.Color;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.*;
+import javax.swing.tree.DefaultTreeCellEditor;
 
 /**
  *
  * @author yn653
  */
 public class CreateExam extends javax.swing.JFrame {
+    Exam exam = new Exam();
+    
+    JTextField[] textField = new JTextField[exam.getMaxQuestion()];
 
     /**
      * Creates new form CreateExam
      */
     public CreateExam() {
         initComponents();
+        
+        
     }
 
     /**
@@ -33,6 +42,8 @@ public class CreateExam extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         logoutButton = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
+        questNumberTextField = new javax.swing.JTextField(15);
+        submitButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -46,7 +57,20 @@ public class CreateExam extends javax.swing.JFrame {
         });
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel1.setText("Write your Question here");
+        jLabel1.setText("How many Questions do you need  ?");
+
+        questNumberTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                questNumberTextFieldActionPerformed(evt);
+            }
+        });
+
+        submitButton.setText("Submit");
+        submitButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                submitButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -59,16 +83,23 @@ public class CreateExam extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(62, 62, 62)
                 .addComponent(jLabel1)
-                .addContainerGap(564, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(questNumberTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(submitButton)
+                .addContainerGap(297, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(27, 27, 27)
                 .addComponent(logoutButton)
-                .addGap(53, 53, 53)
-                .addComponent(jLabel1)
-                .addContainerGap(558, Short.MAX_VALUE))
+                .addGap(50, 50, 50)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(questNumberTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(submitButton))
+                .addContainerGap(553, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -94,6 +125,34 @@ public class CreateExam extends javax.swing.JFrame {
             }
         });
     }//GEN-LAST:event_logoutButtonActionPerformed
+
+    private void questNumberTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_questNumberTextFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_questNumberTextFieldActionPerformed
+
+    private void submitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitButtonActionPerformed
+        // TODO add your handling code here:
+             submitButton.addActionListener(new ActionListener() {
+             public void actionPerformed(ActionEvent ev){
+                int numOfQues = Integer.valueOf(questNumberTextField.getText());
+               /* for (int i = 0; i < numOfQues; i++){
+                   textField[i] = new JTextField();
+                    textField[i].setText("dhusjablk");
+                    textField[i].setLayout(new FlowLayout());
+                   jPanel1.add(textField[i]);
+                    
+                }*/
+                JTextField t = new JTextField();
+                t.setText(String.valueOf(numOfQues));
+                t.setLayout(new FlowLayout());
+                add(t);
+                
+                    
+             
+            }
+        });
+        
+    }//GEN-LAST:event_submitButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -134,5 +193,7 @@ public class CreateExam extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JButton logoutButton;
+    private javax.swing.JTextField questNumberTextField;
+    private javax.swing.JButton submitButton;
     // End of variables declaration//GEN-END:variables
 }
