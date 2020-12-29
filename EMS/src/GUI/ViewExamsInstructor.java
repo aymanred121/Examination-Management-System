@@ -19,6 +19,7 @@ public class ViewExamsInstructor extends javax.swing.JFrame {
      */
     public ViewExamsInstructor() {
         initComponents();
+        setVisible(true);
         
     }
 

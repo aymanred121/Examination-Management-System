@@ -33,6 +33,8 @@ public class StudentDashboard extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         logoutButton = new javax.swing.JButton();
         greetingStudent = new javax.swing.JLabel();
+        examSectionLabel = new javax.swing.JLabel();
+        enterButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -48,16 +50,33 @@ public class StudentDashboard extends javax.swing.JFrame {
         greetingStudent.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         greetingStudent.setText("Hello");
 
+        examSectionLabel.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        examSectionLabel.setText("Exams Section");
+
+        enterButton.setText("Enter");
+        enterButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                enterButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+            .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(25, 25, 25)
-                .addComponent(greetingStudent)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 617, Short.MAX_VALUE)
-                .addComponent(logoutButton)
-                .addGap(26, 26, 26))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(examSectionLabel)
+                        .addGap(18, 18, 18)
+                        .addComponent(enterButton)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(greetingStudent)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 617, Short.MAX_VALUE)
+                        .addComponent(logoutButton)
+                        .addGap(26, 26, 26))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -66,7 +85,11 @@ public class StudentDashboard extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(greetingStudent)
                     .addComponent(logoutButton))
-                .addContainerGap(624, Short.MAX_VALUE))
+                .addGap(65, 65, 65)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(examSectionLabel)
+                    .addComponent(enterButton))
+                .addContainerGap(533, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -92,6 +115,12 @@ public class StudentDashboard extends javax.swing.JFrame {
             }
         });
     }//GEN-LAST:event_logoutButtonActionPerformed
+
+    private void enterButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_enterButtonActionPerformed
+        // TODO add your handling code here:
+        new ViewExamsStudent();
+        dispose();
+    }//GEN-LAST:event_enterButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -130,6 +159,8 @@ public class StudentDashboard extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton enterButton;
+    private javax.swing.JLabel examSectionLabel;
     private javax.swing.JLabel greetingStudent;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JButton logoutButton;

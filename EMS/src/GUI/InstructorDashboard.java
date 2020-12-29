@@ -20,6 +20,7 @@ public class InstructorDashboard extends javax.swing.JFrame {
      */
     public InstructorDashboard() {
         initComponents();
+        setVisible(true);
     }
 
     /**
@@ -37,7 +38,7 @@ public class InstructorDashboard extends javax.swing.JFrame {
         examLabel = new javax.swing.JLabel();
         logoutButton = new javax.swing.JButton();
         viewExamButton = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
+        viewExamsLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setSize(new java.awt.Dimension(1200, 1100));
@@ -69,9 +70,14 @@ public class InstructorDashboard extends javax.swing.JFrame {
 
         viewExamButton.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
         viewExamButton.setText("View Exam");
+        viewExamButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                viewExamButtonActionPerformed(evt);
+            }
+        });
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel1.setText("If you want to view all the past exams, please click this Button");
+        viewExamsLabel.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        viewExamsLabel.setText("If you want to view all the past exams, please click this Button");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -87,7 +93,7 @@ public class InstructorDashboard extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel1)
+                        .addComponent(viewExamsLabel)
                         .addGap(18, 18, 18)
                         .addComponent(viewExamButton, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -110,7 +116,7 @@ public class InstructorDashboard extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(viewExamButton)
-                    .addComponent(jLabel1))
+                    .addComponent(viewExamsLabel))
                 .addContainerGap(479, Short.MAX_VALUE))
         );
 
@@ -133,19 +139,24 @@ public class InstructorDashboard extends javax.swing.JFrame {
     
     private void createExamButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createExamButtonActionPerformed
         // TODO add your handling code here:
+        new CreateQuestion();
+        dispose();
         
     }//GEN-LAST:event_createExamButtonActionPerformed
 
     private void logoutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutButtonActionPerformed
         // TODO add your handling code here: 
-             logoutButton.addActionListener(new ActionListener() {
-             public void actionPerformed(ActionEvent ev){
+    
                 new Login();
                 dispose();
-            }
-        });
-        
+
     }//GEN-LAST:event_logoutButtonActionPerformed
+
+    private void viewExamButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewExamButtonActionPerformed
+        // TODO add your handling code here:
+        new ViewExamsInstructor();
+        dispose();
+    }//GEN-LAST:event_viewExamButtonActionPerformed
     
    
     /**
@@ -188,9 +199,9 @@ public class InstructorDashboard extends javax.swing.JFrame {
     private javax.swing.JButton createExamButton;
     private javax.swing.JLabel examLabel;
     private javax.swing.JLabel greetingInstructor;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JButton logoutButton;
     private javax.swing.JButton viewExamButton;
+    private javax.swing.JLabel viewExamsLabel;
     // End of variables declaration//GEN-END:variables
 }

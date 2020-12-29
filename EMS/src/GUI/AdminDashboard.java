@@ -85,12 +85,8 @@ public class AdminDashboard extends javax.swing.JFrame {
 
     private void logoutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutButtonActionPerformed
         // TODO add your handling code here:
-               logoutButton.addActionListener(new ActionListener() {
-             public void actionPerformed(ActionEvent ev){
-                new Login();
-                dispose();
-            }
-        });
+        new Login();
+        dispose();
     }//GEN-LAST:event_logoutButtonActionPerformed
 
     /**
