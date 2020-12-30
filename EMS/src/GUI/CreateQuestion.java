@@ -84,6 +84,11 @@ public class CreateQuestion extends javax.swing.JFrame {
         });
 
         backButton.setText("Back");
+        backButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                backButtonActionPerformed(evt);
+            }
+        });
 
         cancelButton.setText("Cancel");
         cancelButton.addActionListener(new java.awt.event.ActionListener() {
@@ -258,7 +263,7 @@ public class CreateQuestion extends javax.swing.JFrame {
         // TODO add your handling code here:
         int cancelChoice = JOptionPane.showConfirmDialog(new JFrame(), "Are you sure?");
         if(cancelChoice==JOptionPane.YES_OPTION){  
-            new InstructorDashboard();
+            new CreateExam();
             dispose();
         }  
     }//GEN-LAST:event_cancelButtonActionPerformed
@@ -276,11 +281,16 @@ public class CreateQuestion extends javax.swing.JFrame {
         int finishChoice = JOptionPane.showConfirmDialog(new JFrame(), "Are you sure?");
         if(finishChoice == JOptionPane.YES_OPTION){  
             if(questionValidality()){
-                new InstructorDashboard();
+                new CreateExam();
                 dispose();
             }
         }
     }//GEN-LAST:event_finishButtonActionPerformed
+
+    private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
+        // TODO add your handling code here:
+        // When database is ready
+    }//GEN-LAST:event_backButtonActionPerformed
 
     private boolean questionValidality(){
         boolean errorFound = false;
