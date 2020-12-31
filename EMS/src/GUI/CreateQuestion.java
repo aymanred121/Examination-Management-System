@@ -291,7 +291,24 @@ public class CreateQuestion extends javax.swing.JFrame {
         // TODO add your handling code here:
         // When database is ready
     }//GEN-LAST:event_backButtonActionPerformed
-
+    
+    /* Yusuf Nasser 31st Dec 2020 12:14
+    * This method is used to validate that the user input doesn't
+    * consist completely of white space
+    * @param String data The data inputed by the user
+    * @return boolean This returns whether a certain inputed data consisted of only white spaces or not
+    */
+    
+    private boolean isAllWhiteSpaces(String data){
+        int whiteSpaceFreq = 0;
+        for(char c : data.toCharArray())
+        {
+            if (c == ' ')
+                whiteSpaceFreq++;
+        }
+        return whiteSpaceFreq == data.length();
+    }
+    
     private boolean questionValidality(){
         boolean errorFound = false;
         String getQuestion = questionTextArea.getText();
@@ -309,12 +326,27 @@ public class CreateQuestion extends javax.swing.JFrame {
             
             }
         }
+        
         if (getOption1.length() == 0 || getOption2.length() == 0
                 || getOption3.length() == 0 || getOption4.length() == 0){
             JOptionPane.showMessageDialog(null, "You should fill out all text fields", "Error", JOptionPane.ERROR_MESSAGE);
             errorFound = true;
             return false;            
         }
+        
+        /* Yusuf Nasser 31st Dec 2020 12:10 
+        * Bug Hunted by Ayman Hassan
+        * Validating that the user input doesn't consist completely of white space
+        */
+        
+        if (isAllWhiteSpaces(getQuestion) || isAllWhiteSpaces(getOption1) || isAllWhiteSpaces(getOption2)
+                || isAllWhiteSpaces(getOption3) || isAllWhiteSpaces(getOption4))
+        {
+            JOptionPane.showMessageDialog(null, "White Spaces Do NOT count as an answer nor as a question", "Error", JOptionPane.ERROR_MESSAGE);
+            errorFound = true;
+            return false; 
+        }
+        
         if(getCorrectOption.length() == 0){
             JOptionPane.showMessageDialog(null, "You should choose the correct answer", "Error", JOptionPane.ERROR_MESSAGE);
             errorFound = true;
