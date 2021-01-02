@@ -3,7 +3,21 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/pc/Documents/GEN8IANS/Examination-Management-System/EMS/src/GUI/CreateQuestion.java</file>
+            <file>file:/C:/Users/yn653/Examination-Management-System/EMS/src/Entities/Student.java</file>
+            <file>file:/C:/Users/yn653/Examination-Management-System/EMS/src/GUI/InstructorDashboard.java</file>
+            <file>file:/C:/Users/yn653/Examination-Management-System/EMS/src/GUI/CreateQuestion.java</file>
+            <file>file:/C:/Users/yn653/Examination-Management-System/EMS/src/Entities/Admin.java</file>
+            <file>file:/C:/Users/yn653/Examination-Management-System/EMS/src/Entities/Exam.java</file>
+            <file>file:/C:/Users/yn653/Examination-Management-System/EMS/src/GUI/StudentDashboard.java</file>
+            <file>file:/C:/Users/yn653/Examination-Management-System/EMS/src/GUI/ViewExamsInstructor.java</file>
+            <file>file:/C:/Users/yn653/Examination-Management-System/EMS/src/ems/EMS.java</file>
+            <file>file:/C:/Users/yn653/Examination-Management-System/EMS/src/GUI/ViewExamsStudent.java</file>
+            <file>file:/C:/Users/yn653/Examination-Management-System/EMS/src/GUI/AdminDashboard.java</file>
+            <file>file:/C:/Users/yn653/Examination-Management-System/EMS/src/GUI/Login.java</file>
+            <file>file:/C:/Users/yn653/Examination-Management-System/EMS/src/GUI/ExamPaper.java</file>
+            <file>file:/C:/Users/yn653/Examination-Management-System/EMS/src/Entities/Instructor.java</file>
+            <file>file:/C:/Users/yn653/Examination-Management-System/EMS/src/Entities/User.java</file>
+            <file>file:/C:/Users/yn653/Examination-Management-System/EMS/src/GUI/CreateExam.java</file>
         </group>
     </open-files>
 </project-private>
