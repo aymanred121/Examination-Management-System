@@ -8,8 +8,7 @@ Mobile_Number varchar2(15),
 Email varchar2(30),
 Password varchar2(40));
 
-CREATE TABLE class
-(
+CREATE TABLE class (
 id integer(5) primary key,
 courseCode varchar2(20)
-)
+);
