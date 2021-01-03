@@ -25,8 +25,8 @@ constraint topicCompositePK primary key(classId , name));
 
 /*studentRegister table*/
 create table studentRegister(
-classId number(5),
-username varchar2(20),
+classId number(5)/*FK refers to class table*/,
+username varchar2(30)/*FK refers to student table*/,
 constraint studentRegisterPK primary key(classId,username));
 
 /*course table*/
@@ -50,9 +50,57 @@ username varchar2(25) primary key,
 Id NUMBER(6)
 );
 
+/*exam table*/
+create table exam(
+examId number(5) primary key,
+totalMark number(4),
+examDate Date ,
+startTime DATE,
+endTime DATE,
+classId number(5)/*Fk refers to class table*/
+);
 
+/*question table*/
+create table question(
+questionId number(5) primary key,
+/*statment varchar2(5000),*/
+expectedDifficulty number(3),
+topicName varchar2(100),/*FK refers to topic table*/
+examId number(5),/*FK refers to examModel (points to both examid and model number)*/
+modelNumber number(3)/*FK refers to examModel table*/
+);
 
+/*instructorOf table*/
+create table instructorOf(
+classId number(5),/*FK refers to class table*/
+username varchar2(25)/*FK refers to instructor table*/
+);
 
+/*questionChoice table*/
+create table questionchoice(
+questionId number(5)/*FK refers to question table*/,
+choiceNumber varchar2(2)
+/*both form a composite PK*/
+/*choiceStatment varchar2(400)*/);
+
+/*solve table*/
+create table solve (
+questionId number(5)/*FK refer to question table*/,
+username varchar2(25)/*FK refers to student table*/,
+/*both are composite PK*/
+studentChoice varchar2(2));
+
+/*examModel table*/
+create table examModel(
+examId number(5)/*FK refer to exam table*/,
+modelNumber number(3)/*FK refer to question table*/
+/*both are form composite PK*/);
+
+/*assignedModel table*/
+create table assignedModel(
+modelNumber number(3)/*FK refers to model table*/,
+examId number(5)/*FK refers to exam table*/,
+username varchar2(30)/*FK refers to student table*/);
 
 
 
