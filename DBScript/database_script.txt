@@ -1,0 +1,59 @@
+/*userData table */
+CREATE TABLE userData (
+UserName varchar2(20) primary key,
+First_Name varchar2(20),
+Middle_Name varchar2(20),
+Last_Name varchar2(20),
+Birthdate DATE,
+Mobile_Number varchar2(15),
+Email varchar2(30),
+Password varchar2(40));
+
+/*class table*/
+CREATE TABLE class
+(
+id number(5) primary key,
+courseCode varchar2(20)
+);
+
+/*topic table*/
+CREATE TABLE topic(
+classId number(5) NOT NULL,
+name varchar2(20) NOT NULL,
+foreign key (classId) REFERENCES class (id),
+constraint topicCompositePK primary key(classId , name));
+
+/*studentRegister table*/
+create table studentRegister(
+classId number(5),
+username varchar2(20),
+constraint studentRegisterPK primary key(classId,username));
+
+/*course table*/
+create table course(
+courseCode varchar(20) primary key,
+courseName varchar2(20));
+
+/*admin table*/
+create table adminstrator(
+username varchar2(25) primary key
+);
+
+/*instructor table*/
+create table instructor(
+username varchar2(25) primary key
+);
+
+/*student table*/
+create table student(
+username varchar2(25) primary key,
+Id NUMBER(6)
+);
+
+
+
+
+
+
+
+
