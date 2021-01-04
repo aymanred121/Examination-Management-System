@@ -9,7 +9,7 @@ package Entities;
  *
  * @author yn653
  */
-public class Exam {
+public class Exam implements SqlEntity {
     final static private int maxQuestion = 50;
 
     public static int getMaxQuestion() {

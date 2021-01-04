@@ -9,7 +9,7 @@ package Entities;
  *
  * @author bizarre
  */
-public class Student extends User{
+public class Student extends User implements SqlEntity{
     private final int id;
 
     public Student(int id, String username, String password, String mobileNumber, String email, String name, String birthdate, int age) {
