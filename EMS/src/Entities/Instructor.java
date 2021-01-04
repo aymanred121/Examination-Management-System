@@ -14,6 +14,26 @@ public class Instructor extends User implements SqlEntity {
     public Instructor(String username, String password, String mobileNumber, String email, String name, String birthdate, int age) {
         super(username, password, mobileNumber, email, name, birthdate, age);
     }
+
+    @Override
+    public void fillData() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void add() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void update() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void delete() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
     
 }

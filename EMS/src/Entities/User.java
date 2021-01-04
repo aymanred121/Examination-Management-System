@@ -44,6 +44,7 @@ public abstract class User {
      */
     public static Boolean login(String username, String password) {
         // To be implemented
+        return true;
     }
     
     /**
@@ -52,7 +53,9 @@ public abstract class User {
      * @return UserType This returns the type of the user existing in the database with the corresponding username
      */
     public static UserType getUserType(String username) {
+        return null;
         // To be implemented
+        
     }
     
 }

@@ -1,21 +1,23 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package Entities;
+
+import java.util.*;
 
 /**
  *
- * @author yn653
+ * @author Steven, Yusuf Nasser 19:41 4th, Jan, 2021 
  */
-public class Exam implements SqlEntity {
-    final static private int maxQuestion = 50;
+public class Class implements SqlEntity{
 
-    public static int getMaxQuestion() {
-        return maxQuestion;
-    }
-
+    /*
+     * All the attributes of the class
+    */
+    private int id;
+    private String courseCode;
+    private Vector<Student> assignedStudents, assignedInstructor, topics, exams = new Vector<Student>();
+    /*
+     * Implemeting all the functions of the interface   
+    */
     @Override
     public void fillData() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -35,7 +37,15 @@ public class Exam implements SqlEntity {
     public void delete() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
-    
+    /*
+     * Implementing all the functions of the class
+    */
+    private void displayExams(){
+        // To be implemented
+    }
+    private Vector<Exam> getExams(){
+        // To be implemented
+        return null;
+    }
     
 }
