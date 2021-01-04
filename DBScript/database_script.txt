@@ -4,9 +4,9 @@ UserName varchar2(20) primary key,
 First_Name varchar2(20),
 Middle_Name varchar2(20),
 Last_Name varchar2(20),
-Birthdate DATE,
+BirthDate DATE,
 Mobile_Number varchar2(15),
-Email varchar2(30),
+Email varchar2(30) UNIQUE,
 Password varchar2(40));
 
 /*class table*/
@@ -18,35 +18,34 @@ courseCode varchar2(20)
 
 /*topic table*/
 CREATE TABLE topic(
-classId number(5) NOT NULL,
-name varchar2(20) NOT NULL,
-foreign key (classId) REFERENCES class (id),
-constraint topicCompositePK primary key(classId , name));
+classId number(5),
+name varchar2(20));
 
 /*studentRegister table*/
 create table studentRegister(
 classId number(5)/*FK refers to class table*/,
-username varchar2(30)/*FK refers to student table*/,
-constraint studentRegisterPK primary key(classId,username));
+username varchar2(30)/*FK refers to student table*/
+/*both are composite PK*/
+);
 
 /*course table*/
 create table course(
 courseCode varchar(20) primary key,
-courseName varchar2(20));
+courseName varchar2(20) UNIQUE);
 
 /*admin table*/
 create table adminstrator(
-username varchar2(25) primary key
+username varchar2(25)
 );
 
 /*instructor table*/
 create table instructor(
-username varchar2(25) primary key
+username varchar2(25)
 );
 
 /*student table*/
 create table student(
-username varchar2(25) primary key,
+username varchar2(25),
 Id NUMBER(6)
 );
 
@@ -54,7 +53,7 @@ Id NUMBER(6)
 create table exam(
 examId number(5) primary key,
 totalMark number(4),
-examDate Date ,
+examDate Date,
 startTime DATE,
 endTime DATE,
 classId number(5)/*Fk refers to class table*/
@@ -65,7 +64,7 @@ create table question(
 questionId number(5) primary key,
 /*statment varchar2(5000),*/
 expectedDifficulty number(3),
-topicName varchar2(100),/*FK refers to topic table*/
+topicName varchar2(20),/*FK refers to topic table*/
 examId number(5),/*FK refers to examModel (points to both examid and model number)*/
 modelNumber number(3)/*FK refers to examModel table*/
 );
@@ -101,6 +100,55 @@ create table assignedModel(
 modelNumber number(3)/*FK refers to model table*/,
 examId number(5)/*FK refers to exam table*/,
 username varchar2(30)/*FK refers to student table*/);
+
+/*alter to join class tbale with course table*/
+ALTER table class
+ADD FOREIGN KEY (courseCode) REFERENCES course(courseCode);
+
+/*alter to make composite PK*/ 
+ALTER TABLE topic
+add foreign key (classId) REFERENCES class(id)
+add constraint topicCompositePK primary key(classId , name);
+
+/*alter to join studentRegister with class,student(table)*/
+ALTER TABLE studentRegister
+add foreign key (classId) REFERENCES class(id)
+add foreign key (username) REFERENCES student(username)
+add constraint studentRegisterPK primary key(classId,username);
+
+/*alter to join admin table with userData table*/
+alter table adminstrator
+add foreign key (username) REFERENCES userData (username)
+add primary key (username);
+
+/*alter to join instructor table with userData table*/
+alter table instructor 
+add foreign key (username) REFERENCES userData (username)
+add primary key (username);
+
+/*alter to join student table with userData table*/
+alter table student 
+add foreign key (username) REFERENCES userData (username)
+add primary key (username);
+
+/*alter to join exam with class table*/
+alter table exam
+add foreign key (classId) REFERENCES class(id);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
