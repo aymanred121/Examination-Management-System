@@ -7,7 +7,6 @@ package Entities;
 
 import java.sql.*;
 
-
 /**
  *
  * @author bizarre
@@ -27,29 +26,33 @@ public abstract class User {
         this.age = age;
     }
     
-    public static void main(String[] args) {
-        
-        try{  
-            //step1 load the driver class  
-            Class.forName("oracle.jdbc.driver.OracleDriver");  
-  
-            //step2 create  the connection object  
-            Connection con=DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:orcl" ,"hr","hr");  
-  
-            //step3 create the statement object  
-            Statement stmt=con.createStatement();  
-  
-            //step4 execute query  
-            ResultSet rs=stmt.executeQuery("select * from userData");  
-            while(rs.next())  
-            System.out.println(rs.getString("USERNAME")+"  "+rs.getString("FIRST_NAME"));  
-  
-            //step5 close the connection object  
-            stmt.close();
-            con.close();  
-  
-            }
-        catch(Exception e){ System.out.println(e);}  
-  
-     }  
+    /**
+     * Represents the type of user
+     */
+    public enum UserType{
+        STUDENT,
+        ADMIN,
+        INSTRUCTOR
+    }
+    
+    
+    /**
+     * Validates that the username with the corresponding password are in the database
+     * @param username The username of the user trying to login
+     * @param password The password of the user trying to login
+     * @return Boolean This returns whether the username with the corresponding password exist in the database
+     */
+    public static Boolean login(String username, String password) {
+        // To be implemented
+    }
+    
+    /**
+     * Determines the type of the user
+     * @param username The username of the user
+     * @return UserType This returns the type of the user existing in the database with the corresponding username
+     */
+    public static UserType getUserType(String username) {
+        // To be implemented
+    }
+    
 }
