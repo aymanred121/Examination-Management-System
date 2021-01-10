@@ -1,0 +1,178 @@
+/* inserting data into userdata */
+insert into userdata
+values ('aymanhassan','ayman','hassan','ali','9-2-2001','01547896325','ayman@cis.asu.edu.eg','asdkh4wt53wrw3');
+insert into userdata
+values ('mohamedhassan','mohamed','hassan','mahoud','7-march-2001','01147896325','mohamed@cis.asu.edu.eg','asdkh4wt23324553wrw3');;
+insert into userdata
+values ('ahmedhassan','ahmed','hassan','ali','9-march-2002','01047896325','ahmed@cis.asu.edu.eg','asdkhafkderu3o3');
+insert into userdata
+values ('mahmoudhassan','ali','hassan','twfiq','11-april-2000','01147896325','mahmoud@cis.asu.edu.eg','asdkh4832902313');
+insert into userdata
+values ('alihassan','ali','hassan','ayman','9-feb-2001','01146893525','ali@cis.asu.edu.eg','asdkzkchuzxhcz');
+insert into userdata
+values ('mostafaali','mostafa','ali','twfiq','9-feb-2002','01143892325','mostafa@cis.asu.edu.eg','asdkh4wt53wrw3');
+insert into userdata
+values ('goergehassan','goerge','hassan','fady','9-feb-2001','01117896325','goerge@cis.asu.edu.eg','asdkh4wt53wrw3');
+insert into userdata
+values ('ibrahamhassan','ibraham','hassan','ali','9-feb-1999','01097896325','ibraham@cis.asu.edu.eg','asdkh4wt53wrw3');
+insert into userdata
+values ('ziadhassan','ziad','hassan','abd-elaziz','27-feb-2001','01227896325','ziad@cis.asu.edu.eg','asdkh4wt53wrw3');
+insert into userdata
+values ('omarhassan','omar','hassan','twfiq','15-feb-2001','01227896375','omar@cis.asu.edu.eg','asdkh4wt53wrw3');
+insert into userdata
+values ('admin','omar','ali','twfiq','15-feb-2001','01227896375','omar@admin.com','asdkh4wt53wrw3');
+
+/* inserting data into student(username);*/
+insert into student(username);
+values ('aymanhassan');
+insert into student(username);
+values ('mohamedhassan');
+insert into student(username);
+values ('ahmedhassan');
+insert into student(username);
+values ('mahmoudali');
+insert into student(username);
+values ('alihassan');
+insert into student(username);
+values ('mostafahassan');
+insert into student(username);
+values ('goergehassan');
+
+/* inserting data into instructors*/
+insert into instructor
+values ('ibrahamhassan');
+insert into instructor
+values ('ziadhassan');
+insert into instructor
+values ('omarhassan');
+
+/* inserting into admin*/
+insert into adminstrator
+values ('admin');
+
+/* inserting data into course*/
+insert into course
+values ('cs101','introduction to computer science');
+insert into course
+values ('MTH70','Calculas 1');
+insert into course
+values ('Prob12','probability and statistics');
+insert into course
+values ('slec','human rights');
+insert into course
+values ('CS50','oop');
+insert into course
+values ('cs100','DataBase Mangement System');
+insert into course
+values ('MTH50','physics');
+
+/*inserting data into class */
+insert into class
+values (1,'cs101');
+insert into class
+values (2,'MTH70');
+insert into class
+values (3,'prob12');
+insert into class
+values (4,'slec');
+insert into class
+values (5,'cs50');
+insert into class
+values (6,'cs100');
+insert into class
+values (7,'mth50');
+
+/*insert into exam */
+insert into exam
+values (1,CURRENT_DATE,CURRENT_DATE,CURRENT_DATE,1);
+insert into exam
+values (2,CURRENT_DATE,CURRENT_DATE+8,CURRENT_DATE,2);
+insert into exam
+values (3,CURRENT_DATE,CURRENT_DATE+8,CURRENT_DATE,3);
+insert into exam
+values (4,CURRENT_DATE,CURRENT_DATE+8,CURRENT_DATE,4);
+insert into exam
+values (5,CURRENT_DATE,CURRENT_DATE+8,CURRENT_DATE,5);
+insert into exam
+values (6,CURRENT_DATE,CURRENT_DATE+8,CURRENT_DATE,6);
+insert into exam
+values (7,CURRENT_DATE,CURRENT_DATE+8,CURRENT_DATE,7);
+
+/*insert into topic*/
+insert into topic
+values (1,'cs');
+insert into topic
+values (2,'math');
+insert into topic
+values (3,'prob');
+insert into topic
+values (4,'eng');
+insert into topic
+values (5,'ai');
+insert into topic
+values (6,'relations');
+insert into topic
+values (7,'speed in one direction');
+
+/*inserting data into exammodel*/
+insert into exammodel
+values (1,1);
+insert into exammodel
+values (2,2);
+insert into exammodel
+values (3,3);
+insert into exammodel
+values (4,4);
+insert into exammodel
+values (5,5);
+insert into exammodel
+values (6,6);
+insert into exammodel
+values (7,7);
+/*insert into question*/
+insert into  question
+values (1,5,'cs',1,1);
+insert into  question
+values (2,5,'cs',2,2);
+insert into  question
+values (1,7,'mth',3,3);
+
+/*inserting data instructorof*/
+insert into instructorof
+values (1,'ibrahamhassan');
+insert into instructorof
+values (2,'ziadhassan');
+insert into instructorof
+values ('3,omarhassan');
+
+/*inserting into questioncohice*/
+insert into questionchoice
+values (1,'a');
+insert into questionchoice
+values (2,'b');
+insert into questionchoice
+values (3,'c');
+insert into questionchoice
+values (4,'a');
+
+/*inserting into solve*/
+  insert into solve
+  values (1,'aymanhassan','a');
+    insert into solve
+  values (2,'aymanhassan','a');
+    insert into solve
+  values (3,'aymanhassan','a');
+ /*inserting into assignedModel*/
+ insert into assignedmodel
+values (1,1,'aymanhassan');
+insert into assignedmodel
+values (2,2,'ziadhassan');
+insert into assignedmodel
+values (1,1,'omarhassan');
+/*inserting into studentregister*/
+insert into studentregister
+values (1,'aymanhassan');
+insert into studentregister
+values (1,'ziadhassan');
+insert into studentregister
+values (1,'omarhassan');
