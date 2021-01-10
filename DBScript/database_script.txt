@@ -31,7 +31,7 @@ username varchar2(30)/*FK refers to student table*/
 /*course table*/
 create table course(
 courseCode varchar(20) primary key,
-courseName varchar2(20) UNIQUE);
+courseName varchar2(50) UNIQUE);
 
 /*admin table*/
 create table adminstrator(
@@ -52,7 +52,6 @@ Id NUMBER(6)
 /*exam table*/
 create table exam(
 examId number(5) primary key,
-totalMark number(4),
 examDate Date,
 startTime DATE,
 endTime DATE,
@@ -92,14 +91,15 @@ studentChoice varchar2(2));
 /*examModel table*/
 create table examModel(
 examId number(5)/*FK refer to exam table*/,
-modelNumber number(3)/*FK refer to question table*/
+modelNumber number(3)
 /*both are form composite PK*/);
 
 /*assignedModel table*/
 create table assignedModel(
 modelNumber number(3)/*FK refers to model table*/,
 examId number(5)/*FK refers to exam table*/,
-username varchar2(30)/*FK refers to student table*/);
+username varchar2(30)/*FK refers to student table*/
+/*all together are fk*/);
 
 /*alter to join class tbale with course table*/
 ALTER table class
@@ -135,16 +135,41 @@ add primary key (username);
 alter table exam
 add foreign key (classId) REFERENCES class(id);
 
+/*alter to join question table with topic and model table*/
+alter table question 
+add foreign key (topicName) REFERENCES topic(name)
+add foreign key (examId) REFERENCES topic(examId)
+add foreign key (topicName) REFERENCES examModelodel(modelNumber);
+
+/*alter to join instructorOf table with class and instructor table*/
+alter table instructorOf
+add foreign key (classId) REFERENCES class(id)
+add foreign key (username) REFERENCES instructor(username)
+add constraint instructorOfPK primary key(classId,username);
 
 
+/*alter to join questionChoice table with question table*/
+alter table questionChoice
+add foreign key (questionId) REFERENCES question(questionId)
+add constraint questionChoicePK primary key(questionId,choiceNumber);
 
+/*alter to join solve table withstudent and question table*/
+alter table solve
+add foreign key (questionId) REFERENCES question(questionId)
+add foreign key (username) REFERENCES student(username)
+add constraint solvePK primary key(questionId,username);
 
+/*alter to join examModel table with exam table*/
+alter table examModel
+add foreign key (examId) REFERENCES exam(examId)
+add constraint examModelPK primary key(examId,modelNumber);
 
-
-
-
-
-
+/*alter to join assignedModel table with student , exam and question tables*/
+alter table assignedModel
+add foreign key (modelNumber) REFERENCES examModel(modelNumber)
+add foreign key (examId) REFERENCES exam(examId)
+add foreign key (username) REFERENCES student(username)
+add constraint assignedModelPK primary key(modelNumber,examId,username);
 
 
 
