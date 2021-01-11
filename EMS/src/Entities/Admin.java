@@ -11,28 +11,29 @@ package Entities;
  */
 public class Admin extends User implements SqlEntity {
 
-    public Admin(String username, String password, String mobileNumber, String email, String name, String birthdate, int age) {
-        super(username, password, mobileNumber, email, name, birthdate, age);
+    public Admin(String username, String mobileNumber, String email, String firstName, String middleName, 
+            String lastName, String birthdate) {
+        super(username, mobileNumber, email, firstName, middleName, lastName, birthdate);
     }
 
     @Override
     public void fillData() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
     public void add() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
     public void update() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
     public void delete() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("Not supported yet.");
     }
     /*
      * Admin methods is written over here
@@ -43,7 +44,7 @@ public class Admin extends User implements SqlEntity {
      * @
     */
     public void addStudent(int id){
-        // To be implemented
+        throw new UnsupportedOperationException("Not supported yet.");
     }
     /**
      * @Note TBC that its access modifier is private
@@ -52,6 +53,6 @@ public class Admin extends User implements SqlEntity {
      * @param course this parameter to know which course the student is added in
      */
     private void registerCourse(int id, Course course){
-        // To be implemented
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }

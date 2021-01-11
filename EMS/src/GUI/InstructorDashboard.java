@@ -7,6 +7,8 @@ package GUI;
 import java.awt.event.ActionEvent;
 import javax.swing.*;
 import java.awt.event.ActionListener;
+import Entities.Instructor;
+import java.util.Scanner;
 
 
 /**
@@ -18,8 +20,17 @@ public class InstructorDashboard extends javax.swing.JFrame {
     /**
      * Creates new form InstructorDashboard
      */
-    public InstructorDashboard() {
+    
+    Instructor instructor; 
+    
+    /**
+     * This constructor initializes the Instructor object in the dashboard and calls all the necessary functions
+     * @param instructorUsername
+     */
+    public InstructorDashboard(String instructorUsername) {
+        instructor = new Instructor(instructorUsername);
         initComponents();
+        greetInstructor();
         setVisible(true);
     }
 
@@ -134,8 +145,12 @@ public class InstructorDashboard extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    
-    
+    /**
+     * It modifies the greetingInstructor Text Field to show the name of the instructor
+     */
+    private void greetInstructor() {
+        greetingInstructor.setText(greetingInstructor.getText() + ' ' + instructor.getFirstName());
+    }
     
     private void createExamButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createExamButtonActionPerformed
         // TODO add your handling code here:
@@ -189,7 +204,9 @@ public class InstructorDashboard extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new InstructorDashboard().setVisible(true);
+                Scanner input = new Scanner(System.in);
+                String username = input.next();
+                new InstructorDashboard(username).setVisible(true);
             }
         });
       

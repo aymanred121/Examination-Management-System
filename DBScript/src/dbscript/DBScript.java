@@ -26,7 +26,7 @@ public class DBScript {
      */
     public static void main(String[] args) {
 
-        String path = "statements.txt";
+        String path = "Data.txt";
 
         try (Stream<String> lines = Files.lines(Paths.get(path))) {
 

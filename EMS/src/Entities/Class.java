@@ -12,9 +12,18 @@ public class Class implements SqlEntity{
     /*
      * All the attributes of the class
     */
-    private int id;
+    final private int id;
     private String courseCode;
     private Vector<Student> assignedStudents, assignedInstructor, topics, exams = new Vector<Student>();
+
+    public Class(int id) {
+        this.id = id;
+    }
+
+    public int getId() {
+        return id;
+    }
+    
     /*
      * Implemeting all the functions of the interface   
     */
