@@ -18,6 +18,7 @@ public class Login extends javax.swing.JFrame {
      */
     public Login() {
         initComponents();
+        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         setVisible(true); // important 
     }
 
@@ -126,10 +127,23 @@ public class Login extends javax.swing.JFrame {
         
         if(User.isValidUser(username, passwordTextField.getText())) {
            
-           if(User.getUserType(username) == User.UserType.INSTRUCTOR) {
-               new InstructorDashboard(username);
+           User.UserType userType = User.getUserType(username);
+           setVisible(false);
+            
+           switch(userType) {
+               
+               case INSTRUCTOR:
+                   new InstructorDashboard(username);
+                   break;
+//               case STUDENT:
+//                   new StudentDashboard(username);
+//                   break;
+//               case ADMIN:
+//                   new AdminDashboard(username);
+//                   break;
+               
            }
-           
+
        }
         
     }//GEN-LAST:event_loginButtonActionPerformed
@@ -173,7 +187,7 @@ public class Login extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                
+               
                 new Login().setVisible(true);
             }
         });

@@ -34,7 +34,6 @@ public abstract class User implements SqlEntity{
      */
     public User(String username) {
         this.username = username;
-        fillData();
     }
     
     /**
@@ -51,14 +50,13 @@ public abstract class User implements SqlEntity{
      */
     @Override
     public void fillData() {
-        String SQLstatement = "select first_name, middle_name, last_name, birthdate, mobile_number, email"
-                + " from userdata where username = \'" + username + '\'';
+        Connection myConnection = SqlConnection.getConnection();
         try{
-            java.lang.Class.forName("oracle.jdbc.driver.OracleDriver");
-            Connection myConnection = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521/orcl","hr","hr");
-            Statement myStatement = myConnection.createStatement();
-            myStatement.executeQuery(SQLstatement);
-            ResultSet myResultSet = myStatement.executeQuery(SQLstatement);
+            PreparedStatement myStatement = myConnection.prepareStatement("select first_name, "
+                    + "middle_name, last_name, birthdate, mobile_number, email"
+                + " from userdata where username = ?");
+            myStatement.setString(1, username);
+            ResultSet myResultSet = myStatement.executeQuery();
             while(myResultSet.next()) {
                 firstName = myResultSet.getString(1);
                 middleName = myResultSet.getString(2);
@@ -93,12 +91,46 @@ public abstract class User implements SqlEntity{
     }
     
     /**
+     * Checks whether the user is in the correct table in the database
+     * @author Ziad Khobeiz and Abdel-Aziz Mostafa
+     * @param username The username of the user
+     * @param tableName The corresponding table of the UserType needed to check
+     * @return Boolean It determines whether the username is found in the table in the database
+     */
+    private static boolean isCorrectType(String username, String tableName) {
+        boolean isExisting = false;
+        Connection myConnection = SqlConnection.getConnection();
+        try{
+            PreparedStatement SQLstatement;
+            SQLstatement = myConnection.prepareStatement("select count(*) from " + tableName + " where username = ?");
+            SQLstatement.setString(1, username);
+            ResultSet myResultSet = SQLstatement.executeQuery();
+            if(myResultSet.next() && myResultSet.getString(1).equals("1")) {
+                isExisting = true;
+            }
+            myConnection.close();
+        } catch(Exception e) {
+            System.out.println(e);
+        }
+        return isExisting;
+    }
+    
+    /**
      * Determines the type of the user
+     * @author Ziad Khobeiz and Abdel-Aziz Mostafa
      * @param username The username of the user
      * @return UserType This returns the type of the user existing in the database with the corresponding username
      */
     public static UserType getUserType(String username) {
-        throw new UnsupportedOperationException("Not supported yet.");        
+        
+        if(isCorrectType(username, "STUDENT")) {
+            return UserType.STUDENT;
+        } else if(isCorrectType(username, "INSTRUCTOR")) {
+            return UserType.INSTRUCTOR;
+        } else {
+            return UserType.ADMIN;
+        }
+        
     }
 
     public String getFirstName() {
@@ -106,6 +138,7 @@ public abstract class User implements SqlEntity{
     }
     
     /**
+     * @author Ziad Khobeiz and Abdel-Aziz Mostafa
      * Validates that the username with the corresponding password are in the database
      * @param username The username of the user trying to login
      * @param password The password of the user trying to login
@@ -113,15 +146,14 @@ public abstract class User implements SqlEntity{
      */
     public static boolean isValidUser(String username, String password) {
         boolean isValid = false;
+        Connection myConnection = SqlConnection.getConnection();
         try{
-            java.lang.Class.forName("oracle.jdbc.driver.OracleDriver");
-            Connection myConnection = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521/orcl","hr","hr");
             PreparedStatement SQLstatement;
             SQLstatement = myConnection.prepareStatement("select count(*) from userdata where username = ? and password = ?");
             SQLstatement.setString(1, username);
             SQLstatement.setString(2, password);
             ResultSet myResultSet = SQLstatement.executeQuery();
-            if(myResultSet.next()) {
+            if(myResultSet.next() && myResultSet.getString(1).equals("1")) {
                 isValid = true;
             }
             myConnection.close();

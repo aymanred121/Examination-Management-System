@@ -15,6 +15,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -41,6 +42,7 @@ public class Instructor extends User {
      */
     public Instructor(String username) {
         super(username);
+        super.fillData();
     }
 
     /**
@@ -50,12 +52,11 @@ public class Instructor extends User {
     public void fillData() {
         isFilled = true;
         classes = new Vector<Class>();
-        String SQLstatement = "SELECT CLASSID FROM INSTRUCTOROF WHERE USERNAME = \'" + super.getUsername() + '\'';
+        Connection myConnection = SqlConnection.getConnection();
         try {
-            java.lang.Class.forName("oracle.jdbc.driver.OracleDriver");
-            Connection myConnection = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521/orcl", "hr", "hr");
-            Statement myStatement = myConnection.createStatement();
-            ResultSet myResultSet = myStatement.executeQuery(SQLstatement);
+            PreparedStatement myStatement = myConnection.prepareStatement("SELECT CLASSID FROM INSTRUCTOROF WHERE USERNAME = ?");
+            myStatement.setString(1, super.getUsername());
+            ResultSet myResultSet = myStatement.executeQuery();
             while (myResultSet.next()) {
                 classes.add(new Class(myResultSet.getInt(1)));
             }
@@ -63,7 +64,6 @@ public class Instructor extends User {
         } catch (Exception e) {
             System.out.println(e);
         }
-        super.fillData();
     }
 
     @Override
@@ -82,9 +82,9 @@ public class Instructor extends User {
     }
 
     /**
-     * Youssef Nader , Ayman Hassan writing and Yusuf Nasser meeting via Zoom
-     * at 9:53 AM 11-1-2021
-     * this method query the database to retrieve courses' info for an instructor 
+     * this method query the database to retrieve courses' info for an instructor
+     * @author Youssef Nader , Ayman Hassan writing and Yusuf Nasser meeting via Zoom
+     * at 9:53 AM 11-1-2021 
      * @param instructorName: is a string that holds the instructor's Name
      * @return coursesResultSet: is a ResultSet which holds the courses info
      * retrieved from table 
@@ -108,19 +108,19 @@ public class Instructor extends User {
         return coursesResultSet;
     }
 
-   /**
-    * testing
     public static void main(String[] args) {
         Instructor i = new Instructor("ibrahamhassan", "null", "a", "a", "a", "a", "a");
         ResultSet re = i.queryCourses("ibrahamhassan");
         try {
             while (re.next()) {
+                System.out.println(re.getRowId(1));
                 System.out.println(re.getRowId(2));
             }
+            
         } catch (Exception e) {
             System.out.println(e);
         }
 
-    }*/
+    }
 
 }
