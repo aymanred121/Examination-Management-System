@@ -42,7 +42,6 @@ public class Instructor extends User {
      */
     public Instructor(String username) {
         super(username);
-        super.fillData();
     }
 
     /**
@@ -51,6 +50,7 @@ public class Instructor extends User {
     @Override
     public void fillData() {
         isFilled = true;
+        super.fillData();
         classes = new Vector<Class>();
         Connection myConnection = SqlConnection.getConnection();
         try {
@@ -106,6 +106,11 @@ public class Instructor extends User {
             System.out.println(e);
         }
         return coursesResultSet;
+    }
+
+    public Vector<Class> getClasses() {
+        if(!isFilled) fillData();
+        return classes;
     }
 
     public static void main(String[] args) {
