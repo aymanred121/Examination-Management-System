@@ -34,6 +34,7 @@ public abstract class User implements SqlEntity{
      */
     public User(String username) {
         this.username = username;
+        fillData();
     }
     
     /**
@@ -151,7 +152,7 @@ public abstract class User implements SqlEntity{
             PreparedStatement SQLstatement;
             SQLstatement = myConnection.prepareStatement("select count(*) from userdata where username = ? and password = ?");
             SQLstatement.setString(1, username);
-            SQLstatement.setString(2, password);
+            SQLstatement.setString(2, password);  SQLstatement.setString(1, username);
             ResultSet myResultSet = SQLstatement.executeQuery();
             if(myResultSet.next() && myResultSet.getString(1).equals("1")) {
                 isValid = true;

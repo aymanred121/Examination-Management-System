@@ -31,6 +31,7 @@ public class InstructorDashboard extends javax.swing.JFrame {
         instructor = new Instructor(instructorUsername);
         initComponents();
         greetInstructor();
+        showGUI();
         setVisible(true);
     }
 
@@ -43,137 +44,91 @@ public class InstructorDashboard extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        panel = new javax.swing.JPanel();
         greetingInstructor = new javax.swing.JLabel();
-        createExamButton = new javax.swing.JButton();
-        examLabel = new javax.swing.JLabel();
-        logoutButton = new javax.swing.JButton();
-        viewExamButton = new javax.swing.JButton();
-        viewExamsLabel = new javax.swing.JLabel();
+        LogoutButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setSize(new java.awt.Dimension(1200, 1100));
 
-        jPanel1.setBackground(new java.awt.Color(134, 171, 161));
+        panel.setBackground(new java.awt.Color(134, 171, 161));
 
         greetingInstructor.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         greetingInstructor.setText("Hello");
 
-        createExamButton.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
-        createExamButton.setText("Create Exam");
-        createExamButton.addActionListener(new java.awt.event.ActionListener() {
+        LogoutButton.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
+        LogoutButton.setText("Logout");
+        LogoutButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                createExamButtonActionPerformed(evt);
+                LogoutButtonActionPerformed(evt);
             }
         });
 
-        examLabel.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        examLabel.setText("If you want to create an exam, please click this Button");
-
-        logoutButton.setFont(new java.awt.Font("Tahoma", 1, 14));
-        logoutButton.setText("Logout");
-        logoutButton.setActionCommand("");
-        logoutButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                logoutButtonActionPerformed(evt);
-            }
-        });
-
-        viewExamButton.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
-        viewExamButton.setText("View Exam");
-        viewExamButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                viewExamButtonActionPerformed(evt);
-            }
-        });
-
-        viewExamsLabel.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        viewExamsLabel.setText("If you want to view all the past exams, please click this Button");
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        javax.swing.GroupLayout panelLayout = new javax.swing.GroupLayout(panel);
+        panel.setLayout(panelLayout);
+        panelLayout.setHorizontalGroup(
+            panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelLayout.createSequentialGroup()
                 .addGap(25, 25, 25)
                 .addComponent(greetingInstructor)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(logoutButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 594, Short.MAX_VALUE)
+                .addComponent(LogoutButton)
                 .addGap(26, 26, 26))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(viewExamsLabel)
-                        .addGap(18, 18, 18)
-                        .addComponent(viewExamButton, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(examLabel)
-                        .addGap(18, 18, 18)
-                        .addComponent(createExamButton)))
-                .addContainerGap(161, Short.MAX_VALUE))
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        panelLayout.setVerticalGroup(
+            panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelLayout.createSequentialGroup()
                 .addGap(27, 27, 27)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(greetingInstructor)
-                    .addComponent(logoutButton))
-                .addGap(75, 75, 75)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(examLabel)
-                    .addComponent(createExamButton))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(viewExamButton)
-                    .addComponent(viewExamsLabel))
-                .addContainerGap(479, Short.MAX_VALUE))
+                .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(LogoutButton)
+                    .addComponent(greetingInstructor))
+                .addContainerGap(635, Short.MAX_VALUE))
         );
+
+        jScrollPane1.setViewportView(panel);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 800, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 680, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    /**
+    private void LogoutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LogoutButtonActionPerformed
+        new Login();
+        dispose();
+    }//GEN-LAST:event_LogoutButtonActionPerformed
+
+     /**
      * It modifies the greetingInstructor Text Field to show the name of the instructor
      */
     private void greetInstructor() {
         greetingInstructor.setText(greetingInstructor.getText() + ' ' + instructor.getFirstName());
     }
-    
-    private void createExamButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createExamButtonActionPerformed
-        // TODO add your handling code here:
-        new CreateQuestion();
-        dispose();
-        
-    }//GEN-LAST:event_createExamButtonActionPerformed
+      private JLabel[] createLabels(){
+        JLabel[] labels=new JLabel[10];
+        for (int i=0;i<10;i++){
+            labels[i]=new JLabel("message" + i);
+        }
+        return labels;
+    }
 
-    private void logoutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutButtonActionPerformed
-        // TODO add your handling code here: 
+    private void showGUI(){
+        JLabel[] labels=createLabels();
+        for (int i=0;i<10;i++){
+            labels[i].setFont(new java.awt.Font("Tahoma", 1, 24));
+            panel.add(labels[i]);
+        }
+    }
     
-                new Login();
-                dispose();
-
-    }//GEN-LAST:event_logoutButtonActionPerformed
-
-    private void viewExamButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewExamButtonActionPerformed
-        // TODO add your handling code here:
-        new ViewExamsInstructor();
-        dispose();
-    }//GEN-LAST:event_viewExamButtonActionPerformed
-    
-   
     /**
      * @param args the command line arguments
      */
@@ -213,12 +168,9 @@ public class InstructorDashboard extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton createExamButton;
-    private javax.swing.JLabel examLabel;
+    private javax.swing.JButton LogoutButton;
     private javax.swing.JLabel greetingInstructor;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JButton logoutButton;
-    private javax.swing.JButton viewExamButton;
-    private javax.swing.JLabel viewExamsLabel;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JPanel panel;
     // End of variables declaration//GEN-END:variables
 }

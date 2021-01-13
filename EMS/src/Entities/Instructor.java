@@ -50,7 +50,6 @@ public class Instructor extends User {
     @Override
     public void fillData() {
         isFilled = true;
-        super.fillData();
         classes = new Vector<Class>();
         Connection myConnection = SqlConnection.getConnection();
         try {
