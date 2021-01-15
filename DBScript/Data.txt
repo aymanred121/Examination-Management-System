@@ -142,8 +142,11 @@ insert into instructorof
 values (1,'ibrahamhassan');
 insert into instructorof
 values (2,'ziadhassan');
-insert into instructorof
-values ('3,omarhassan');
+insert into INSTRUCTOROF
+values (6,'ibrahamhassan');
+insert into INSTRUCTOROF
+values (4,'ibrahamhassan');
+
 
 /*inserting into questioncohice*/
 insert into questionchoice

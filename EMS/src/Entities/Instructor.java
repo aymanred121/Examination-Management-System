@@ -26,7 +26,7 @@ import java.util.stream.Stream;
  *
  * @author bizarre
  */
-public class Instructor extends User {
+public class Instructor extends User implements SqlEntity{
 
     Vector<Class> classes;
 
@@ -100,7 +100,7 @@ public class Instructor extends User {
             Connection myConnection = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521/orcl", "hr", "hr");
             Statement myStatement = myConnection.createStatement();
             coursesResultSet = myStatement.executeQuery(SQLstatement);
-            //myConnection.close();
+            myConnection.close();
         } catch (Exception e) {
             System.out.println(e);
         }

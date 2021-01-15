@@ -29,13 +29,14 @@ public class Exam implements SqlEntity {
     final static private int MAX_QUESTION = 50;
     
     final private int id;
-    final private Course course;
-    final private double totalMarks;
-    final String instructorName;
+    private Course course;
+    private double totalMarks;
+    private String instructorName;
     private LocalTime startTime, endTime;
     private LocalDate date;
     private Duration duration;
-    boolean validationStatus;
+    private boolean validationStatus;
+    private boolean isFilled;
     
     /*
      * This constructor initializes all the final attributes of the class
@@ -61,6 +62,10 @@ public class Exam implements SqlEntity {
      * On the matter of removing the course object, we won't remove it until further
      * discussions and arguments provided.
     */
+    
+    public Exam(int id) {
+        this.id = id;
+    }
     
     public static int getMaxQuestion() {
         return MAX_QUESTION;
@@ -114,34 +119,58 @@ public class Exam implements SqlEntity {
     }
 
     public Course getCourse() {
+        if(!isFilled) {
+            fillData();
+        }
         return course;
     }
 
     public double getTotalMarks() {
+        if(!isFilled) {
+            fillData();
+        }
         return totalMarks;
     }
 
     public String getInstructorName() {
+        if(!isFilled) {
+            fillData();
+        }
         return instructorName;
     }
 
     public LocalTime getStartTime() {
+        if(!isFilled) {
+            fillData();
+        }
         return startTime;
     }
 
     public LocalTime getEndTime() {
+        if(!isFilled) {
+            fillData();
+        }
         return endTime;
     }
 
     public LocalDate getDate() {
+        if(!isFilled) {
+            fillData();
+        }
         return date;
     }
 
     public Duration getDuration() {
+        if(!isFilled) {
+            fillData();
+        }
         return duration;
     }
 
-    public boolean isValidationStatus() {
+    public boolean isValid() {
+        if(!isFilled) {
+            fillData();
+        }
         return validationStatus;
     }
     

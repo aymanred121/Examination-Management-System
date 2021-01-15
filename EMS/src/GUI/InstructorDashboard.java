@@ -4,12 +4,15 @@
  * and open the template in the editor.
  */
 package GUI;
+
+import Entities.Course;
+import Entities.Class;
 import java.awt.event.ActionEvent;
 import javax.swing.*;
 import java.awt.event.ActionListener;
 import Entities.Instructor;
 import java.util.Scanner;
-
+import java.util.Vector;
 
 /**
  *
@@ -20,18 +23,19 @@ public class InstructorDashboard extends javax.swing.JFrame {
     /**
      * Creates new form InstructorDashboard
      */
-    
-    Instructor instructor; 
-    
+    Instructor instructor;
+
     /**
-     * This constructor initializes the Instructor object in the dashboard and calls all the necessary functions
+     * This constructor initializes the Instructor object in the dashboard and
+     * calls all the necessary functions
+     *
      * @param instructorUsername
      */
     public InstructorDashboard(String instructorUsername) {
         instructor = new Instructor(instructorUsername);
         initComponents();
         greetInstructor();
-        showGUI();
+        showCourses();
         setVisible(true);
     }
 
@@ -46,6 +50,7 @@ public class InstructorDashboard extends javax.swing.JFrame {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         panel = new javax.swing.JPanel();
+        topBar = new javax.swing.JPanel();
         greetingInstructor = new javax.swing.JLabel();
         LogoutButton = new javax.swing.JButton();
 
@@ -53,6 +58,22 @@ public class InstructorDashboard extends javax.swing.JFrame {
         setSize(new java.awt.Dimension(1200, 1100));
 
         panel.setBackground(new java.awt.Color(134, 171, 161));
+        panel.setPreferredSize(new java.awt.Dimension(798, 850));
+
+        javax.swing.GroupLayout panelLayout = new javax.swing.GroupLayout(panel);
+        panel.setLayout(panelLayout);
+        panelLayout.setHorizontalGroup(
+            panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 798, Short.MAX_VALUE)
+        );
+        panelLayout.setVerticalGroup(
+            panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 850, Short.MAX_VALUE)
+        );
+
+        jScrollPane1.setViewportView(panel);
+
+        topBar.setBackground(new java.awt.Color(134, 171, 161));
 
         greetingInstructor.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         greetingInstructor.setText("Hello");
@@ -65,38 +86,40 @@ public class InstructorDashboard extends javax.swing.JFrame {
             }
         });
 
-        javax.swing.GroupLayout panelLayout = new javax.swing.GroupLayout(panel);
-        panel.setLayout(panelLayout);
-        panelLayout.setHorizontalGroup(
-            panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelLayout.createSequentialGroup()
+        javax.swing.GroupLayout topBarLayout = new javax.swing.GroupLayout(topBar);
+        topBar.setLayout(topBarLayout);
+        topBarLayout.setHorizontalGroup(
+            topBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, topBarLayout.createSequentialGroup()
                 .addGap(25, 25, 25)
                 .addComponent(greetingInstructor)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 594, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(LogoutButton)
-                .addGap(26, 26, 26))
+                .addGap(105, 105, 105))
         );
-        panelLayout.setVerticalGroup(
-            panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelLayout.createSequentialGroup()
-                .addGap(27, 27, 27)
-                .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(LogoutButton)
-                    .addComponent(greetingInstructor))
-                .addContainerGap(635, Short.MAX_VALUE))
+        topBarLayout.setVerticalGroup(
+            topBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(topBarLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(topBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(greetingInstructor)
+                    .addComponent(LogoutButton))
+                .addContainerGap(38, Short.MAX_VALUE))
         );
-
-        jScrollPane1.setViewportView(panel);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 800, Short.MAX_VALUE)
+            .addComponent(jScrollPane1)
+            .addComponent(topBar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 680, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(topBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 823, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
@@ -107,29 +130,64 @@ public class InstructorDashboard extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_LogoutButtonActionPerformed
 
-     /**
-     * It modifies the greetingInstructor Text Field to show the name of the instructor
+    /**
+     * It modifies the greetingInstructor Text Field to show the name of the
+     * instructor
      */
     private void greetInstructor() {
         greetingInstructor.setText(greetingInstructor.getText() + ' ' + instructor.getFirstName());
     }
-      private JLabel[] createLabels(){
-        JLabel[] labels=new JLabel[10];
-        for (int i=0;i<10;i++){
-            labels[i]=new JLabel("message" + i);
+
+    /**
+     * It displays the names of all the courses in the panel
+     */
+    private void showCourses() {
+
+        Vector<JLabel> courseName = new Vector<JLabel>();
+        Vector< JButton> topicsButtons = new Vector<JButton>(), examsButtons = new Vector<JButton>();
+        Vector<Entities.Class> classes = instructor.getClasses();
+        for (Entities.Class myClass : classes) {
+            courseName.add(new JLabel());
+            examsButtons.add(new JButton());
+            topicsButtons.add(new JButton());
+            //to reterive the names of the courses that the running instructor has
+            courseName.lastElement().setText(myClass.getCourse().getName());
         }
-        return labels;
+        // it defines the spaces between the courses name   
+        int delta = 0, currentClassIndex = 0;
+        for (JLabel label : courseName) {
+            label.setFont(new java.awt.Font("Tahoma", 1, 17));
+            label.setBounds(40, 40 + delta, 300, 80);
+            examsButtons.elementAt(currentClassIndex).setBounds(380, 65 + delta, 150, 30);
+            examsButtons.elementAt(currentClassIndex).setText("Show Exams");
+            examsButtons.elementAt(currentClassIndex).setFont(new java.awt.Font("Tahoma", 1, 12));
+            topicsButtons.elementAt(currentClassIndex).setBounds(560, 65 + delta, 150, 30);
+            topicsButtons.elementAt(currentClassIndex).setText("Show Topics");
+            topicsButtons.elementAt(currentClassIndex).setFont(new java.awt.Font("Tahoma", 1, 12));
+            topicsButtons.elementAt(currentClassIndex).addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    new Login();
+                    dispose();
+                }
+            });
+            examsButtons.elementAt(currentClassIndex).addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    new Login();
+                    dispose();
+                }
+            });
+            panel.add(label);
+            panel.add(examsButtons.elementAt(currentClassIndex));
+            panel.add(topicsButtons.elementAt(currentClassIndex));
+            delta += 50;
+            currentClassIndex += 1;
+        }
+
     }
 
-    private void showGUI(){
-        JLabel[] labels=createLabels();
-        for (int i=0;i<10;i++){
-            labels[i].setFont(new java.awt.Font("Tahoma", 1, 24));
-            panel.add(labels[i]);
-        }
-    }
-    
     /**
+     * testing the instructor dashboard
+     *
      * @param args the command line arguments
      */
     public static void main(String args[]) {
@@ -164,7 +222,7 @@ public class InstructorDashboard extends javax.swing.JFrame {
                 new InstructorDashboard(username).setVisible(true);
             }
         });
-      
+
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -172,5 +230,6 @@ public class InstructorDashboard extends javax.swing.JFrame {
     private javax.swing.JLabel greetingInstructor;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPanel panel;
+    private javax.swing.JPanel topBar;
     // End of variables declaration//GEN-END:variables
 }

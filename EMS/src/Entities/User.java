@@ -9,14 +9,13 @@ import java.sql.*;
 
 /**
  *
- * @author bizarre
+ * @author Steven Sameh and AbdelAziz Mostafa
  */
-public abstract class User implements SqlEntity{
+public abstract class User{
     
     private final String username;
     private String mobileNumber, email, firstName, middleName, lastName, birthdate;
-    protected boolean isFilled;
-    
+    protected boolean isFilled,isUserFilled;
     public User(String username, String mobileNumber, String email, String firstName, String middleName, 
             String lastName, String birthdate) {
         this.username = username;
@@ -34,7 +33,6 @@ public abstract class User implements SqlEntity{
      */
     public User(String username) {
         this.username = username;
-        fillData();
     }
     
     /**
@@ -49,8 +47,8 @@ public abstract class User implements SqlEntity{
     /**
      * It retrieves all the data of the user from the database
      */
-    @Override
-    public void fillData() {
+    public void fillUserData() {
+        isUserFilled = true;
         Connection myConnection = SqlConnection.getConnection();
         try{
             PreparedStatement myStatement = myConnection.prepareStatement("select first_name, "
@@ -72,22 +70,25 @@ public abstract class User implements SqlEntity{
         }
     }
     
-    @Override
-    public void add() {
+    public void addUser() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    @Override
-    public void update() {
+    public void updateUser() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    @Override
-    public void delete() {
+    public void deleteUser() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
-
+    /**
+     * it returns the UserName of the current user  
+     * @return String defining the username of the user 
+     */
     public String getUsername() {
+        if(!isUserFilled){
+            this.fillUserData();
+        }
         return username;
     }
     
@@ -133,8 +134,15 @@ public abstract class User implements SqlEntity{
         }
         
     }
-
+    /**
+     * it returns the FirstName of the User
+     * @return String defining the FirstName of the user 
+     */
     public String getFirstName() {
+        // it fills the data of the user only not all the data of the object    
+        if(!isUserFilled){
+           this.fillUserData();
+        }
         return firstName;
     }
     
