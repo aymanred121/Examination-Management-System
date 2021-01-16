@@ -110,12 +110,12 @@ public class Class implements SqlEntity{
     /*
      * Implementing all the functions of the class
     */
-    private void displayExams(){
-        // To be implemented
-    }
-    private Vector<Exam> getExams(){
-        // To be implemented
-        return null;
+    public Vector<Exam> getExams(){
+      if (!isFilled)
+      {
+          fillData();
+      }
+        return exams;
     }
 
     public Course getCourse() {

@@ -7,7 +7,10 @@ package GUI;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
+import Entities.Instructor; 
+import Entities.Class; 
+import Entities.Exam;
+import java.util.Vector;
 /**
  *
  * @author yn653
@@ -17,10 +20,14 @@ public class ViewExamsInstructor extends javax.swing.JFrame {
     /**
      * Creates new form ViewExams
      */
-    public ViewExamsInstructor() {
+    Instructor instructor;  
+    Class instructorClass;
+    public ViewExamsInstructor(Instructor instructor , Class instructorClass ) {
+        this.instructor = instructor; 
+        this.instructorClass = instructorClass;
         initComponents();
+        ShowExams();
         setVisible(true);
-        
     }
 
     /**
@@ -98,7 +105,13 @@ public class ViewExamsInstructor extends javax.swing.JFrame {
             }
         });
     }//GEN-LAST:event_logoutButtonActionPerformed
-
+    /**
+     * It displays all the exams of the current class ordered according to the following order (Running -> Upcoming -> Previous) 
+     */
+    private void ShowExams()
+    {
+        Vector<Exam> exams = instructorClass.getExams();
+    }
     /**
      * @param args the command line arguments
      */
@@ -130,7 +143,7 @@ public class ViewExamsInstructor extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ViewExamsInstructor().setVisible(true);
+           //     new ViewExamsInstructor().setVisible(true);
             }
         });
     }

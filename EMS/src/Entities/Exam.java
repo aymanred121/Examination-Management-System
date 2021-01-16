@@ -5,7 +5,11 @@
  */
 package Entities;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.time.*;
+import javax.xml.transform.Result;
 import javax.xml.transform.Source;
 
 /**
@@ -73,7 +77,20 @@ public class Exam implements SqlEntity {
 
     @Override
     public void fillData() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+     /* to be completed  
+        Connection myConnection = SqlConnection.getConnection();
+        try {
+            PreparedStatement myStatement = myConnection.prepareStatement("select EXAMDATE, STARTTIME, ENDTIME where EXAMID = ?");
+            myStatement.setInt(1, id);
+            ResultSet myResultSet = myStatement.executeQuery();
+            if (myResultSet.next()) {
+                
+            }
+            myConnection.close();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        */
     }
 
     @Override
