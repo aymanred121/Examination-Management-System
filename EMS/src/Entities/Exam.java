@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.time.*;
+import java.util.Date;
 import javax.xml.transform.Result;
 import javax.xml.transform.Source;
 
@@ -33,23 +34,24 @@ public class Exam implements SqlEntity {
     final static private int MAX_QUESTION = 50;
     
     final private int id;
-    private Course course;
-    private double totalMarks;
+    private Class examClass;
     private String instructorName;
+    private String name;
     private LocalTime startTime, endTime;
     private LocalDate date;
     private Duration duration;
     private boolean validationStatus;
     private boolean isFilled;
+    private boolean isPublished;
+    
     
     /*
      * This constructor initializes all the final attributes of the class
     */
 
-    public Exam(int id, Course course, double totalMarks, String instructorName) {
+    public Exam(int id, Class examclass, String instructorName) {
         this.id = id;
-        this.course = course;
-        this.totalMarks = totalMarks;
+        this.examClass = examclass;
         this.instructorName = instructorName;
         this.endTime = startTime.plus(duration);
     }
@@ -74,23 +76,36 @@ public class Exam implements SqlEntity {
     public static int getMaxQuestion() {
         return MAX_QUESTION;
     }
-
+    /**
+     * Ayman Hassan, Ziad Khobeiz
+     * finished fillData function
+     * retrieve all the Exam data from the Database
+     * 
+     */
     @Override
     public void fillData() {
-     /* to be completed  
+        isFilled=true;
         Connection myConnection = SqlConnection.getConnection();
         try {
-            PreparedStatement myStatement = myConnection.prepareStatement("select EXAMDATE, STARTTIME, ENDTIME where EXAMID = ?");
+            PreparedStatement myStatement = myConnection.prepareStatement("select STARTTIME, ENDTIME, NAME, CLASSID, isPublished FROM EXAM where EXAMID = ?");
             myStatement.setInt(1, id);
             ResultSet myResultSet = myStatement.executeQuery();
             if (myResultSet.next()) {
                 
-            }
+                date=(myResultSet.getTimestamp(1).toLocalDateTime().toLocalDate());
+                startTime=(myResultSet.getTimestamp(1).toLocalDateTime().toLocalTime());
+                endTime=(myResultSet.getTimestamp(2).toLocalDateTime().toLocalTime());
+                name=myResultSet.getString(3);
+                examClass=new Class(myResultSet.getInt(4));
+                isPublished=myResultSet.getString(5).equals("Y");
+                duration=Duration.between(startTime,endTime);
+                System.out.println(duration);
+           }
             myConnection.close();
         } catch (Exception e) {
             System.out.println(e);
         }
-        */
+        
     }
 
     @Override
@@ -135,19 +150,15 @@ public class Exam implements SqlEntity {
         return id;
     }
 
-    public Course getCourse() {
+    public Class getExamClass() {
+        
         if(!isFilled) {
             fillData();
         }
-        return course;
+        return examClass;
     }
 
-    public double getTotalMarks() {
-        if(!isFilled) {
-            fillData();
-        }
-        return totalMarks;
-    }
+   
 
     public String getInstructorName() {
         if(!isFilled) {

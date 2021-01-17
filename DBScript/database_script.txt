@@ -171,7 +171,24 @@ add foreign key (examId) REFERENCES exam(examId)
 add foreign key (username) REFERENCES student(username)
 add constraint assignedModelPK primary key(modelNumber,examId,username);
 
+/*add name into exam table*/
+alter table exam
+add (name varchar2(20));
 
+/*add choiceStatement into questionChoice table*/
+alter table questionchoice
+add (choiceStatement  varchar2(1000));
+
+/*add statement into question table*/
+alter table question
+add (statement  varchar2(1000));
+
+/*add isPublished into exam */
+alter table exam
+add (ispublished char(1))
+
+/*dropping examdata from exam since start/end time contains the examdata */
+alter table "HR"."EXAM" drop column "EXAMDATE" cascade constraints
 
 
 

@@ -8,7 +8,8 @@ public class EMS {
 
    
     public static void main(String[] args) {
-       
+       // Exam e=new Exam(1);
+        //e.getExamClass();
        /* SwingUtilities.invokeLater(new Runnable() {
         public void run() {
             Login gui = new Login();
