@@ -81,7 +81,7 @@ public class Class implements SqlEntity{
                 topics.add(new Topic(id, myResultSet.getString(1)));
             }
             // Retrieving the exams of the class
-            PreparedStatement examsStatement = myConnection.prepareStatement("SELECT EXAMID FROM EXAM WHERE CLASSID = ?");
+            PreparedStatement examsStatement = myConnection.prepareStatement("SELECT EXAMID FROM EXAM WHERE CLASSID = ? ORDER BY STARTTIME");
             examsStatement.setInt(1, id);
             myResultSet = examsStatement.executeQuery();
             while (myResultSet.next()) {

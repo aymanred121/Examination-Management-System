@@ -40,7 +40,6 @@ public class Exam implements SqlEntity {
     private LocalTime startTime, endTime;
     private LocalDate date;
     private Duration duration;
-    private boolean validationStatus;
     private boolean isFilled;
     private boolean isPublished;
     
@@ -91,15 +90,13 @@ public class Exam implements SqlEntity {
             myStatement.setInt(1, id);
             ResultSet myResultSet = myStatement.executeQuery();
             if (myResultSet.next()) {
-                
-                date=(myResultSet.getTimestamp(1).toLocalDateTime().toLocalDate());
-                startTime=(myResultSet.getTimestamp(1).toLocalDateTime().toLocalTime());
-                endTime=(myResultSet.getTimestamp(2).toLocalDateTime().toLocalTime());
-                name=myResultSet.getString(3);
-                examClass=new Class(myResultSet.getInt(4));
-                isPublished=myResultSet.getString(5).equals("Y");
-                duration=Duration.between(startTime,endTime);
-                System.out.println(duration);
+                date = myResultSet.getTimestamp(1).toLocalDateTime().toLocalDate();
+                startTime = myResultSet.getTimestamp(1).toLocalDateTime().toLocalTime();
+                endTime = myResultSet.getTimestamp(2).toLocalDateTime().toLocalTime();
+                name = myResultSet.getString(3);
+                examClass = new Class(myResultSet.getInt(4));
+                isPublished = myResultSet.getString(5).equals("Y");
+                duration = Duration.between(startTime,endTime);
            }
             myConnection.close();
         } catch (Exception e) {
@@ -138,9 +135,6 @@ public class Exam implements SqlEntity {
         this.duration = duration;
     }
 
-    public void setValidationStatus(boolean validationStatus) {
-        this.validationStatus = validationStatus;
-    }
     
     /*
      * All the getter functions of the Exam class
@@ -195,13 +189,25 @@ public class Exam implements SqlEntity {
         return duration;
     }
 
-    public boolean isValid() {
+    public boolean isRunning() {
         if(!isFilled) {
             fillData();
         }
-        return validationStatus;
+        return startTime.compareTo(java.time.LocalTime.now()) <= 0 && endTime.compareTo(java.time.LocalTime.now()) > 0;
     }
     
-    
+    public boolean isFinished() {
+        if(!isFilled) {
+            fillData();
+        }
+        return endTime.compareTo(java.time.LocalTime.now()) <= 0;
+    }
+
+    public String getName() {
+        if(!isFilled) {
+            fillData();
+        }
+        return name;
+    }
     
 }

@@ -10,7 +10,11 @@ import java.awt.event.ActionListener;
 import Entities.Instructor; 
 import Entities.Class; 
 import Entities.Exam;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Vector;
+import javax.swing.JButton;
+import javax.swing.JLabel;
 /**
  *
  * @author yn653
@@ -42,15 +46,15 @@ public class ViewExamsInstructor extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         currentExamsLabel = new javax.swing.JLabel();
         logoutButton = new javax.swing.JButton();
+        panel = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(800, 680));
         setSize(new java.awt.Dimension(800, 680));
 
         jPanel1.setBackground(new java.awt.Color(134, 171, 161));
 
         currentExamsLabel.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-        currentExamsLabel.setText("All The Current Exams");
+        currentExamsLabel.setText("Exams");
 
         logoutButton.setText("Logout");
         logoutButton.addActionListener(new java.awt.event.ActionListener() {
@@ -59,27 +63,39 @@ public class ViewExamsInstructor extends javax.swing.JFrame {
             }
         });
 
+        javax.swing.GroupLayout panelLayout = new javax.swing.GroupLayout(panel);
+        panel.setLayout(panelLayout);
+        panelLayout.setHorizontalGroup(
+            panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        panelLayout.setVerticalGroup(
+            panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 438, Short.MAX_VALUE)
+        );
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(252, 252, 252)
-                .addComponent(currentExamsLabel)
-                .addContainerGap(284, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(365, Short.MAX_VALUE)
+                .addComponent(currentExamsLabel)
+                .addGap(265, 265, 265)
                 .addComponent(logoutButton)
                 .addGap(26, 26, 26))
+            .addComponent(panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(27, 27, 27)
-                .addComponent(logoutButton)
                 .addGap(18, 18, 18)
-                .addComponent(currentExamsLabel)
-                .addContainerGap(581, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(logoutButton)
+                    .addComponent(currentExamsLabel))
+                .addGap(18, 18, 18)
+                .addComponent(panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(172, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -110,7 +126,64 @@ public class ViewExamsInstructor extends javax.swing.JFrame {
      */
     private void ShowExams()
     {
+        Vector<JLabel> examName = new Vector<JLabel>();
+        Vector<JButton> modelsButtons = new Vector<JButton>(), reportButtons = new Vector<JButton>();
         Vector<Exam> exams = instructorClass.getExams();
+        Vector<Exam> runningExams = new Vector<Exam>();
+        Vector<Exam> upcomingExams = new Vector<Exam>();
+        Vector<Exam> finishedExams = new Vector<Exam>();
+
+        for (Entities.Exam exam : exams) {
+            
+            
+            if(exam.isRunning()) {
+                runningExams.add(exam);
+            } else if(exam.isFinished()) {
+                finishedExams.add(exam);
+            } else {
+                upcomingExams.add(exam);
+            }
+              
+        }
+        
+        Collections.reverse(finishedExams);
+        
+        int delta = 0;
+        
+        for (Exam exam : runningExams) {
+            
+            examName.add(new JLabel());
+            modelsButtons.add(new JButton());
+            reportButtons.add(new JButton());
+            examName.lastElement().setText(exam.getName());
+            examName.lastElement().setBounds(40, 40 + delta, 300, 80);
+            examName.lastElement().setFont(new java.awt.Font("Tahoma", 1, 17));
+            modelsButtons.lastElement().setText("Show Models");
+            modelsButtons.lastElement().setFont(new java.awt.Font("Tahoma", 1, 17));
+            modelsButtons.lastElement().setBounds(380, 65 + delta, 150, 30);
+            modelsButtons.lastElement().addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    // new Login();
+                    dispose();
+                }
+            });
+            reportButtons.lastElement().setText("Show Report");
+            reportButtons.lastElement().setFont(new java.awt.Font("Tahoma", 1, 17));
+            reportButtons.lastElement().setBounds(560, 65 + delta, 150, 30);
+            reportButtons.lastElement().addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    // new Login();
+                    dispose();
+                }
+            });
+            panel.add(examName.lastElement());
+            panel.add(reportButtons.lastElement());
+            panel.add(modelsButtons.lastElement());
+            delta += 50;
+            
+        }
+            
+        
     }
     /**
      * @param args the command line arguments
@@ -143,7 +216,8 @@ public class ViewExamsInstructor extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-           //     new ViewExamsInstructor().setVisible(true);
+                // For testing
+                new ViewExamsInstructor(new Instructor("ibrahamhassan"), new Entities.Class(1)).setVisible(true);
             }
         });
     }
@@ -152,5 +226,6 @@ public class ViewExamsInstructor extends javax.swing.JFrame {
     private javax.swing.JLabel currentExamsLabel;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JButton logoutButton;
+    private javax.swing.JPanel panel;
     // End of variables declaration//GEN-END:variables
 }
