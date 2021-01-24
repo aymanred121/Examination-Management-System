@@ -57,7 +57,7 @@ public class Instructor extends User implements SqlEntity{
             myStatement.setString(1, super.getUsername());
             ResultSet myResultSet = myStatement.executeQuery();
             while (myResultSet.next()) {
-                classes.add(new Class(myResultSet.getInt(1)));
+                classes.add(new Class(myResultSet.getInt(1),false));
             }
             myConnection.close();
         } catch (Exception e) {

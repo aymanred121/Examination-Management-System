@@ -8,6 +8,7 @@ package Entities;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.Vector;
 
 /**
  *
@@ -16,7 +17,7 @@ import java.sql.ResultSet;
 public class Student extends User implements SqlEntity{
     
     private int id;
-
+    Vector<Class> myClasses;
     public Student(int id, String username, String mobileNumber, String email, String firstName, String middleName, 
             String lastName, String birthdate) {
         super(username, mobileNumber, email, firstName, middleName, lastName, birthdate);
@@ -38,8 +39,18 @@ public class Student extends User implements SqlEntity{
             if(myResultSet.next()) {
                id = myResultSet.getInt(1);
             } 
-            myConnection.close();
         } catch(Exception e) {
+            System.out.println(e);
+        }
+        myClasses = new Vector<Class>();
+        try {
+            PreparedStatement myStatement = myConnection.prepareStatement("SELECT CLASSID FROM STUDENTREGISTER WHERE USERNAME = ?");
+            myStatement.setString(1, super.getUsername());
+            ResultSet myResultSet = myStatement.executeQuery();
+            while (myResultSet.next()) {
+                myClasses.add(new Class(myResultSet.getInt(1),true));
+            }
+        } catch (Exception e) {
             System.out.println(e);
         }
     }
@@ -64,6 +75,21 @@ public class Student extends User implements SqlEntity{
             fillData();
         }
         return id;
+    }
+    /** 
+     * Abdel-Aziz Mostafa writing, Yusuf Nasser and Yusuf Nader on Zoom 24th Jan 2021, 17:18
+     * started working in a new branch "student session"
+    */
+    /**
+     * this method returns the classes of the current student
+     * @return Vector<Class> myClasses - the classes of the current student
+     */
+    public Vector<Class> getMyClasses() {
+       if (!isFilled)
+       {
+           fillData();
+       }
+        return myClasses;
     }
     
     
