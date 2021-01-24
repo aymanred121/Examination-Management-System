@@ -217,7 +217,7 @@ public class ViewExamsInstructor extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 // For testing
-                new ViewExamsInstructor(new Instructor("ibrahamhassan"), new Entities.Class(1)).setVisible(true);
+                new ViewExamsInstructor(new Instructor("ibrahamhassan"), new Entities.Class(1,false)).setVisible(true);
             }
         });
     }

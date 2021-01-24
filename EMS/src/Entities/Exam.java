@@ -94,7 +94,7 @@ public class Exam implements SqlEntity {
                 startTime = myResultSet.getTimestamp(1).toLocalDateTime().toLocalTime();
                 endTime = myResultSet.getTimestamp(2).toLocalDateTime().toLocalTime();
                 name = myResultSet.getString(3);
-                examClass = new Class(myResultSet.getInt(4));
+                examClass = new Class(myResultSet.getInt(4),false);
                 isPublished = myResultSet.getString(5).equals("Y");
                 duration = Duration.between(startTime,endTime);
            }
