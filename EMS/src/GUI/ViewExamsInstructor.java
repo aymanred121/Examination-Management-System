@@ -10,6 +10,7 @@ import java.awt.event.ActionListener;
 import Entities.Instructor; 
 import Entities.Class; 
 import Entities.Exam;
+import java.awt.Font;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Vector;
@@ -30,7 +31,7 @@ public class ViewExamsInstructor extends javax.swing.JFrame {
         this.instructor = instructor; 
         this.instructorClass = instructorClass;
         initComponents();
-        ShowExams();
+        showExams();
         setVisible(true);
     }
 
@@ -43,15 +44,16 @@ public class ViewExamsInstructor extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
+        topBar = new javax.swing.JPanel();
         currentExamsLabel = new javax.swing.JLabel();
         logoutButton = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
         panel = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setSize(new java.awt.Dimension(800, 680));
 
-        jPanel1.setBackground(new java.awt.Color(134, 171, 161));
+        topBar.setBackground(new java.awt.Color(134, 171, 161));
 
         currentExamsLabel.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         currentExamsLabel.setText("Exams");
@@ -63,50 +65,53 @@ public class ViewExamsInstructor extends javax.swing.JFrame {
             }
         });
 
+        panel.setBackground(new java.awt.Color(134, 171, 161));
+
         javax.swing.GroupLayout panelLayout = new javax.swing.GroupLayout(panel);
         panel.setLayout(panelLayout);
         panelLayout.setHorizontalGroup(
             panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 798, Short.MAX_VALUE)
         );
         panelLayout.setVerticalGroup(
             panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 438, Short.MAX_VALUE)
+            .addGap(0, 608, Short.MAX_VALUE)
         );
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(365, Short.MAX_VALUE)
+        jScrollPane1.setViewportView(panel);
+
+        javax.swing.GroupLayout topBarLayout = new javax.swing.GroupLayout(topBar);
+        topBar.setLayout(topBarLayout);
+        topBarLayout.setHorizontalGroup(
+            topBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, topBarLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(currentExamsLabel)
                 .addGap(265, 265, 265)
                 .addComponent(logoutButton)
                 .addGap(26, 26, 26))
-            .addComponent(panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        topBarLayout.setVerticalGroup(
+            topBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(topBarLayout.createSequentialGroup()
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(topBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(logoutButton)
                     .addComponent(currentExamsLabel))
                 .addGap(18, 18, 18)
-                .addComponent(panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(172, Short.MAX_VALUE))
+                .addComponent(jScrollPane1))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(topBar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(topBar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -121,13 +126,79 @@ public class ViewExamsInstructor extends javax.swing.JFrame {
             }
         });
     }//GEN-LAST:event_logoutButtonActionPerformed
+    
+    /**
+     * It displays the exams of a certain type (e.g. Running exams).
+     * @param exams the java.util.Vector containing all the considered exams
+     * @param status The status of the exam
+     * @param delta The starting y-coordinate for drawing to keep distances between the exams 
+     * @return int This returns the new delta (current y-coordinate to draw)
+     */
+    private int showExams(Vector<Exam> exams, String status, int delta) {
+       
+        java.awt.Font titleFont = new java.awt.Font("Tahoma", Font.BOLD, 20);
+        java.awt.Font myFont = new java.awt.Font("Tahoma", Font.BOLD, 17);
+        
+        JLabel ExamsLabel = new JLabel(status + " exams:");
+        ExamsLabel.setBounds(20, delta, 300, 80);
+        ExamsLabel.setFont(titleFont);
+        panel.add(ExamsLabel);
+        
+        for (Exam exam : exams) {
+            
+            JLabel examName = new JLabel();
+            JButton modelsButtons = new JButton();
+            examName.setText(exam.getName());
+            examName.setBounds(40, 40 + delta, 300, 80);
+            examName.setFont(myFont);
+            modelsButtons.setText("Show Models");
+            modelsButtons.setFont(myFont);
+            modelsButtons.setBounds(380 + 87, 65 + delta, 150, 30);
+            modelsButtons.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    // new Login();
+                    dispose();
+                }
+            });
+            panel.add(examName);
+            panel.add(modelsButtons);
+            if(status.equals("Finished")) {
+                modelsButtons.setBounds(380, 65 + delta, 150, 30);
+                JButton reportButtons = new JButton();
+                reportButtons.setText("Show Report");
+                reportButtons.setFont(myFont);
+                reportButtons.setBounds(560, 65 + delta, 150, 30);
+                reportButtons.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        // new Login();
+                        dispose();
+                    }
+                });
+                panel.add(reportButtons);
+            }
+            delta += 50;
+            
+        }
+        
+        if(exams.size() == 0) {
+            
+            JLabel noExams = new JLabel("No " + status.toLowerCase() + " exams.");
+            noExams.setBounds(40, 40 + delta, 300, 80);
+            noExams.setFont(myFont);
+            panel.add(noExams);
+            delta += 50;
+            
+        }
+        
+        return delta;
+        
+    }
+    
     /**
      * It displays all the exams of the current class ordered according to the following order (Running -> Upcoming -> Previous) 
      */
-    private void ShowExams()
+    private void showExams()
     {
-        Vector<JLabel> examName = new Vector<JLabel>();
-        Vector<JButton> modelsButtons = new Vector<JButton>(), reportButtons = new Vector<JButton>();
         Vector<Exam> exams = instructorClass.getExams();
         Vector<Exam> runningExams = new Vector<Exam>();
         Vector<Exam> upcomingExams = new Vector<Exam>();
@@ -150,39 +221,13 @@ public class ViewExamsInstructor extends javax.swing.JFrame {
         
         int delta = 0;
         
-        for (Exam exam : runningExams) {
-            
-            examName.add(new JLabel());
-            modelsButtons.add(new JButton());
-            reportButtons.add(new JButton());
-            examName.lastElement().setText(exam.getName());
-            examName.lastElement().setBounds(40, 40 + delta, 300, 80);
-            examName.lastElement().setFont(new java.awt.Font("Tahoma", 1, 17));
-            modelsButtons.lastElement().setText("Show Models");
-            modelsButtons.lastElement().setFont(new java.awt.Font("Tahoma", 1, 17));
-            modelsButtons.lastElement().setBounds(380, 65 + delta, 150, 30);
-            modelsButtons.lastElement().addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    // new Login();
-                    dispose();
-                }
-            });
-            reportButtons.lastElement().setText("Show Report");
-            reportButtons.lastElement().setFont(new java.awt.Font("Tahoma", 1, 17));
-            reportButtons.lastElement().setBounds(560, 65 + delta, 150, 30);
-            reportButtons.lastElement().addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    // new Login();
-                    dispose();
-                }
-            });
-            panel.add(examName.lastElement());
-            panel.add(reportButtons.lastElement());
-            panel.add(modelsButtons.lastElement());
-            delta += 50;
-            
-        }
-            
+        delta = showExams(runningExams, "Running", delta);
+        delta += 50;
+        
+        delta = showExams(upcomingExams, "Upcoming", delta);
+        delta += 50;
+        
+        delta = showExams(finishedExams, "Finished", delta);
         
     }
     /**
@@ -224,8 +269,10 @@ public class ViewExamsInstructor extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel currentExamsLabel;
-    private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton logoutButton;
     private javax.swing.JPanel panel;
+    private javax.swing.JPanel topBar;
     // End of variables declaration//GEN-END:variables
+
 }
