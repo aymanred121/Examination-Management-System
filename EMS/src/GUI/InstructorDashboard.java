@@ -24,7 +24,7 @@ public class InstructorDashboard extends javax.swing.JFrame {
      * Creates new form InstructorDashboard
      */
     Instructor instructor;
-
+        
     /**
      * This constructor initializes the Instructor object in the dashboard and
      * calls all the necessary functions
@@ -170,9 +170,10 @@ public class InstructorDashboard extends javax.swing.JFrame {
                     dispose();
                 }
             });
+            Class myClass = classes.elementAt(currentClassIndex);
             examsButtons.elementAt(currentClassIndex).addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
-                    new Login();
+                    new ViewExamsInstructor(instructor, myClass);
                     dispose();
                 }
             });
@@ -217,9 +218,7 @@ public class InstructorDashboard extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                Scanner input = new Scanner(System.in);
-                String username = input.next();
-                new InstructorDashboard(username).setVisible(true);
+                new InstructorDashboard("ibrahamhassan").setVisible(true);
             }
         });
 
