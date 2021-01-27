@@ -185,10 +185,10 @@ add (statement  varchar2(1000));
 
 /*add isPublished into exam */
 alter table exam
-add (ispublished char(1))
+add (ispublished char(1));
 
 /*dropping examdata from exam since start/end time contains the examdata */
-alter table "HR"."EXAM" drop column "EXAMDATE" cascade constraints
+alter table "HR"."EXAM" drop column "EXAMDATE" cascade constraints;
 
 
 

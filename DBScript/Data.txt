@@ -1,14 +1,14 @@
 /* inserting data into userdata */
 insert into userdata
-values ('aymanhassan','ayman','hassan','ali','9-2-2001','01547896325','ayman@cis.asu.edu.eg','asdkh4wt53wrw3');
+values ('aymanhassan','ayman','hassan','ali','9-feb-2001','01547896325','ayman@cis.asu.edu.eg','asdkh4wt53wrw3');
 insert into userdata
-values ('mohamedhassan','mohamed','hassan','mahoud','7-march-2001','01147896325','mohamed@cis.asu.edu.eg','asdkh4wt23324553wrw3');;
+values ('mohamedyaser','mohamed','yaser','mahoud','7-march-2001','01147896325','mohamed@cis.asu.edu.eg','asdkh4wt23324553wrw3');;
 insert into userdata
-values ('ahmedhassan','ahmed','hassan','ali','9-march-2002','01047896325','ahmed@cis.asu.edu.eg','asdkhafkderu3o3');
+values ('ahmedmohamed','ahmed','mohamed','ali','9-march-2002','01047896325','ahmed@cis.asu.edu.eg','asdkhafkderu3o3');
 insert into userdata
-values ('mahmoudhassan','ali','hassan','twfiq','11-april-2000','01147896325','mahmoud@cis.asu.edu.eg','asdkh4832902313');
+values ('alimohamed','ali','mohamed','twfiq','11-april-2000','01147896325','mahmoud@cis.asu.edu.eg','asdkh4832902313');
 insert into userdata
-values ('alihassan','ali','hassan','ayman','9-feb-2001','01146893525','ali@cis.asu.edu.eg','asdkzkchuzxhcz');
+values ('aliyaser','ali','yaser','ayman','9-feb-2001','01146893525','ali@cis.asu.edu.eg','asdkzkchuzxhcz');
 insert into userdata
 values ('mostafaali','mostafa','ali','twfiq','9-feb-2002','01143892325','mostafa@cis.asu.edu.eg','asdkh4wt53wrw3');
 insert into userdata
@@ -16,33 +16,29 @@ values ('goergehassan','goerge','hassan','fady','9-feb-2001','01117896325','goer
 insert into userdata
 values ('ibrahamhassan','ibraham','hassan','ali','9-feb-1999','01097896325','ibraham@cis.asu.edu.eg','asdkh4wt53wrw3');
 insert into userdata
-values ('ziadhassan','ziad','hassan','abd-elaziz','27-feb-2001','01227896325','ziad@cis.asu.edu.eg','asdkh4wt53wrw3');
+values ('ziadkhobiz','ziad','khobiz','abd-elaziz','27-feb-2001','01227896325','ziad@cis.asu.edu.eg','asdkh4wt53wrw3');
 insert into userdata
 values ('omarhassan','omar','hassan','twfiq','15-feb-2001','01227896375','omar@cis.asu.edu.eg','asdkh4wt53wrw3');
 insert into userdata
 values ('admin','omar','ali','twfiq','15-feb-2001','01227896375','omar@admin.com','asdkh4wt53wrw3');
 
-/* inserting data into student(username);*/
-insert into student(username);
-values ('aymanhassan');
-insert into student(username);
-values ('mohamedhassan');
-insert into student(username);
-values ('ahmedhassan');
-insert into student(username);
-values ('mahmoudali');
-insert into student(username);
-values ('alihassan');
-insert into student(username);
-values ('mostafahassan');
-insert into student(username);
-values ('goergehassan');
+/* inserting data into student*/
+insert into student
+values ('aymanhassan',1);
+insert into student
+values ('mohamedyaser',2);
+insert into student
+values ('ahmedmohamed',3);
+insert into student
+values ('aliyaser',4);
+insert into student
+values ('goergehassan',5);
 
 /* inserting data into instructors*/
 insert into instructor
 values ('ibrahamhassan');
 insert into instructor
-values ('ziadhassan');
+values ('ziadkhobiz');
 insert into instructor
 values ('omarhassan');
 
@@ -72,31 +68,31 @@ values (1,'cs101');
 insert into class
 values (2,'MTH70');
 insert into class
-values (3,'prob12');
+values (3,'Prob12');
 insert into class
 values (4,'slec');
 insert into class
-values (5,'cs50');
+values (5,'CS50');
 insert into class
 values (6,'cs100');
 insert into class
-values (7,'mth50');
+values (7,'MTH50');
 
 /*insert into exam */
 insert into exam
-values (1,CURRENT_DATE,CURRENT_DATE,CURRENT_DATE,1);
+values (1,CURRENT_DATE,CURRENT_DATE,1,'Midterm','Y');
 insert into exam
-values (2,CURRENT_DATE,CURRENT_DATE+8,CURRENT_DATE,2);
+values (2,CURRENT_DATE,CURRENT_DATE+8,2,'Final','N');
 insert into exam
-values (3,CURRENT_DATE,CURRENT_DATE+8,CURRENT_DATE,3);
+values (3,CURRENT_DATE,CURRENT_DATE+8,3,'Quiz1','Y');
 insert into exam
-values (4,CURRENT_DATE,CURRENT_DATE+8,CURRENT_DATE,4);
+values (4,CURRENT_DATE,CURRENT_DATE+8,4,'Quiz2','N');
 insert into exam
-values (5,CURRENT_DATE,CURRENT_DATE+8,CURRENT_DATE,5);
+values (5,CURRENT_DATE,CURRENT_DATE+8,5,'Final','Y');
 insert into exam
-values (6,CURRENT_DATE,CURRENT_DATE+8,CURRENT_DATE,6);
+values (6,CURRENT_DATE,CURRENT_DATE+8,6,'Quiz3','N');
 insert into exam
-values (7,CURRENT_DATE,CURRENT_DATE+8,CURRENT_DATE,7);
+values (7,CURRENT_DATE,CURRENT_DATE+8,7,'Midterm','Y');
 
 /*insert into topic*/
 insert into topic
@@ -112,7 +108,7 @@ values (5,'ai');
 insert into topic
 values (6,'relations');
 insert into topic
-values (7,'speed in one direction');
+values (7,'speed');
 
 /*inserting data into exammodel*/
 insert into exammodel
@@ -131,17 +127,17 @@ insert into exammodel
 values (7,7);
 /*insert into question*/
 insert into  question
-values (1,5,'cs',1,1);
+values (1,5,'cs',1,1,'What is CS');
 insert into  question
-values (2,5,'cs',2,2);
+values (2,5,'cs',2,2,'What is os');
 insert into  question
-values (1,7,'mth',3,3);
+values (3,7,'mth',3,3,'What is oop');
 
 /*inserting data instructorof*/
 insert into instructorof
 values (1,'ibrahamhassan');
 insert into instructorof
-values (2,'ziadhassan');
+values (2,'ziadkhobiz');
 insert into INSTRUCTOROF
 values (6,'ibrahamhassan');
 insert into INSTRUCTOROF
@@ -150,13 +146,11 @@ values (4,'ibrahamhassan');
 
 /*inserting into questioncohice*/
 insert into questionchoice
-values (1,'a');
+values (1,'a','os ');
 insert into questionchoice
-values (2,'b');
+values (2,'b','cs');
 insert into questionchoice
-values (3,'c');
-insert into questionchoice
-values (4,'a');
+values (3,'c','oop');
 
 /*inserting into solve*/
   insert into solve
@@ -169,13 +163,19 @@ values (4,'a');
  insert into assignedmodel
 values (1,1,'aymanhassan');
 insert into assignedmodel
-values (2,2,'ziadhassan');
+values (2,2,'ziadkhobiz');
 insert into assignedmodel
 values (1,1,'omarhassan');
 /*inserting into studentregister*/
 insert into studentregister
 values (1,'aymanhassan');
 insert into studentregister
-values (1,'ziadhassan');
+values (2,'mohamedyaser');
 insert into studentregister
-values (1,'omarhassan');
+values (4,'ahmedmohamed');
+insert into studentregister
+values (6,'aliyaser');
+insert into studentregister
+values (1,'goergehassan');
+insert into studentregister
+values (4,'goergehassan');
