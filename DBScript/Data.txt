@@ -2,7 +2,7 @@
 insert into userdata
 values ('aymanhassan','ayman','hassan','ali','9-feb-2001','01547896325','ayman@cis.asu.edu.eg','asdkh4wt53wrw3');
 insert into userdata
-values ('mohamedyaser','mohamed','yaser','mahoud','7-march-2001','01147896325','mohamed@cis.asu.edu.eg','asdkh4wt23324553wrw3');;
+values ('mohamedyaser','mohamed','yaser','mahoud','7-march-2001','01147896325','mohamed@cis.asu.edu.eg','asdkh4wt23324553wrw3');
 insert into userdata
 values ('ahmedmohamed','ahmed','mohamed','ali','9-march-2002','01047896325','ahmed@cis.asu.edu.eg','asdkhafkderu3o3');
 insert into userdata
@@ -131,7 +131,7 @@ values (1,5,'cs',1,1,'What is CS');
 insert into  question
 values (2,5,'cs',2,2,'What is os');
 insert into  question
-values (3,7,'mth',3,3,'What is oop');
+values (3,7,'math',3,3,'What is oop');
 
 /*inserting data instructorof*/
 insert into instructorof
@@ -163,9 +163,9 @@ values (3,'c','oop');
  insert into assignedmodel
 values (1,1,'aymanhassan');
 insert into assignedmodel
-values (2,2,'ziadkhobiz');
+values (2,2,'mohamedyaser');
 insert into assignedmodel
-values (1,1,'omarhassan');
+values (1,1,'ahmedmohamed');
 /*inserting into studentregister*/
 insert into studentregister
 values (1,'aymanhassan');
