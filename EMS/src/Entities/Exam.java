@@ -37,8 +37,7 @@ public class Exam implements SqlEntity {
     private Class examClass;
     private String instructorName;
     private String name;
-    private LocalTime startTime, endTime;
-    private LocalDate date;
+    private LocalDateTime startTime, endTime;
     private Duration duration;
     private boolean isFilled;
     private boolean isPublished;
@@ -72,6 +71,28 @@ public class Exam implements SqlEntity {
         this.id = id;
     }
     
+    /**
+     * All the possible statuses for the exam
+     */
+    public enum Status{
+        /**
+         * Exam is published and currently running
+         */
+        RUNNING,
+        /**
+         * Exam is published and has not started yet
+         */
+        UPCOMING,
+        /**
+         * Exam is published and has finished
+         */
+        FINISHED,
+        /**
+         * Exam is unpublished
+         */
+        UNPUBLISHED
+    }
+    
     public static int getMaxQuestion() {
         return MAX_QUESTION;
     }
@@ -90,9 +111,8 @@ public class Exam implements SqlEntity {
             myStatement.setInt(1, id);
             ResultSet myResultSet = myStatement.executeQuery();
             if (myResultSet.next()) {
-                date = myResultSet.getTimestamp(1).toLocalDateTime().toLocalDate();
-                startTime = myResultSet.getTimestamp(1).toLocalDateTime().toLocalTime();
-                endTime = myResultSet.getTimestamp(2).toLocalDateTime().toLocalTime();
+                startTime = myResultSet.getTimestamp(1).toLocalDateTime();
+                endTime = myResultSet.getTimestamp(2).toLocalDateTime();
                 name = myResultSet.getString(3);
                 examClass = new Class(myResultSet.getInt(4),false);
                 isPublished = myResultSet.getString(5).equals("Y");
@@ -120,25 +140,19 @@ public class Exam implements SqlEntity {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     /*
-     * All the setters functions of the class: startTime, date, duration, validationStatus
+     * All the setters functions of the class: startTime and duration
      * @Note endTime will be derived from duration and startTime
     */
-    public void setStartTime(LocalTime startTime) {
+    public void setStartTime(LocalDateTime startTime) {
         this.startTime = startTime;
-    }
-
-    public void setDate(LocalDate date) {
-        this.date = date;
     }
 
     public void setDuration(Duration duration) {
         this.duration = duration;
     }
 
-    
     /*
      * All the getter functions of the Exam class
-     * @Note endTime getter function is derived from duration and startTime
     */
     public int getId() {
         return id;
@@ -161,25 +175,18 @@ public class Exam implements SqlEntity {
         return instructorName;
     }
 
-    public LocalTime getStartTime() {
+    public LocalDateTime getStartTime() {
         if(!isFilled) {
             fillData();
         }
         return startTime;
     }
 
-    public LocalTime getEndTime() {
+    public LocalDateTime getEndTime() {
         if(!isFilled) {
             fillData();
         }
         return endTime;
-    }
-
-    public LocalDate getDate() {
-        if(!isFilled) {
-            fillData();
-        }
-        return date;
     }
 
     public Duration getDuration() {
@@ -189,18 +196,24 @@ public class Exam implements SqlEntity {
         return duration;
     }
 
-    public boolean isRunning() {
+    /**
+     * It determines whether the exam is currently running, upcoming, finished or unpublished
+     * @return Status The current status of the exam
+     */
+    public Status getStatus() {
         if(!isFilled) {
             fillData();
         }
-        return startTime.compareTo(java.time.LocalTime.now()) <= 0 && endTime.compareTo(java.time.LocalTime.now()) > 0;
-    }
-    
-    public boolean isFinished() {
-        if(!isFilled) {
-            fillData();
+        if(!isPublished) {
+            return Status.UNPUBLISHED;
         }
-        return endTime.compareTo(java.time.LocalTime.now()) <= 0;
+        if(startTime.compareTo(java.time.LocalDateTime.now()) > 0) {
+            return Status.UPCOMING;
+        }
+        if(endTime.compareTo(java.time.LocalDateTime.now()) < 0) {
+            return Status.FINISHED;
+        }
+        return Status.RUNNING;
     }
 
     public String getName() {

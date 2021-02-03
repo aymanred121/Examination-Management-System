@@ -28,12 +28,15 @@ public class Student extends User implements SqlEntity{
         super(username);
     }
 
+    /**
+     * It retrieves the data of the student from the database
+     */
     @Override
     public void fillData() {
         isFilled = true;
         Connection myConnection = SqlConnection.getConnection();
         try{
-            PreparedStatement myStatement = myConnection.prepareStatement("select id where username = ?");
+            PreparedStatement myStatement = myConnection.prepareStatement("select id from student where username = ?");
             myStatement.setString(1, getUsername());
             ResultSet myResultSet = myStatement.executeQuery();
             if(myResultSet.next()) {
@@ -84,7 +87,7 @@ public class Student extends User implements SqlEntity{
      * this method returns the classes of the current student
      * @return Vector<Class> myClasses - the classes of the current student
      */
-    public Vector<Class> getMyClasses() {
+    public Vector<Class> getClasses() {
        if (!isFilled)
        {
            fillData();

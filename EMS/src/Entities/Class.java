@@ -44,7 +44,7 @@ public class Class implements SqlEntity {
     @Override
     public void fillData() {
         isFilled = true;
-
+         
         students = new Vector<Student>();
         instructors = new Vector<Instructor>();
         topics = new Vector<Topic>();
@@ -54,13 +54,6 @@ public class Class implements SqlEntity {
         PreparedStatement codeStatement;
         if (!isStudentSession) {
             try {
-                // Retrieving the course code of the class
-                codeStatement = myConnection.prepareStatement("SELECT COURSECODE FROM CLASS WHERE ID = ?");
-                codeStatement.setInt(1, id);
-                myResultSet = codeStatement.executeQuery();
-                while (myResultSet.next()) {
-                    course = new Course(myResultSet.getString(1));
-                }
                 // Retrieving the instructors assigned to the class
                 PreparedStatement instructorsStatement = myConnection.prepareStatement("SELECT USERNAME FROM INSTRUCTOROF WHERE CLASSID = ?");
                 instructorsStatement.setInt(1, id);
@@ -87,6 +80,13 @@ public class Class implements SqlEntity {
             }
         }
         try {
+            // Retrieving the course code of the class
+            codeStatement = myConnection.prepareStatement("SELECT COURSECODE FROM CLASS WHERE ID = ?");
+            codeStatement.setInt(1, id);
+            myResultSet = codeStatement.executeQuery();
+            while (myResultSet.next()) {
+                course = new Course(myResultSet.getString(1));
+            }
             // Retrieving the exams of the class
             PreparedStatement examsStatement = myConnection.prepareStatement("SELECT EXAMID FROM EXAM WHERE CLASSID = ? ORDER BY STARTTIME");
             examsStatement.setInt(1, id);
