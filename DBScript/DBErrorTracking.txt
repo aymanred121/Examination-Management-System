@@ -1,0 +1,99 @@
+/*ERROR 01 AT 29 JAN 2021 22:16, Yusuf Nasser writing and Ayman Hassan at zoom*/
+/*
+Error starting at line 1 in command:
+ALTER TABLE studentRegister
+add foreign key (classId) REFERENCES class(id)
+add foreign key (username) REFERENCES student(username)
+add constraint studentRegisterPK primary key(classId,username)
+Error report:
+SQL Error: ORA-02270: no matching unique or primary key for this column-list
+02270. 00000 -  "no matching unique or primary key for this column-list"
+*Cause:    A REFERENCES clause in a CREATE/ALTER TABLE statement
+           gives a column-list for which there is no matching unique or primary
+           key constraint in the referenced table.
+*Action:   Find the correct column names using the ALL_CONS_COLUMNS
+           catalog view
+*/
+/*ERROR 02 SOLVED at 29 JAN 2021 22:30*/
+/*
+ * Temporarily
+ * By modifying the username at student table to unique
+ * alter table student
+ * modify (username varchar2(20) unique);
+
+ * modified it in the student table itself for the long run. 
+*/
+
+/*ERROR AT 29 JAN 2021 22:37, Yusuf Nasser writing and Ayman Hassan at Zoom*/
+/*
+Error starting at line 2 in command:
+alter table student 
+add foreign key (username) REFERENCES userData (username)
+add primary key (username)
+Error report:
+SQL Error: ORA-02261: such unique or primary key already exists in the table
+02261. 00000 -  "such unique or primary key already exists in the table"
+*Cause:    Self-evident.
+*Action:   Remove the extra key.
+*/
+/*ERROR SOLVED at 29 JAN 2021 22:51*/
+/*
+ * Turned out that the mistaken order of executing the commands was
+ * the reason behind ERORRs 01 and 02
+
+ * SOLVED by correcting the order and getting alter student table command
+ * before alter studentRegister table command. 
+*/
+
+/*ERROR AT 29 JAN 2021 22:55, Yusuf Nasser writing and Ayman Hassan & Youssef Nader at Zoom*/
+/*
+Error starting at line 1 in command:
+alter table question 
+add foreign key (topicName) REFERENCES topic(name)
+add foreign key (examId) REFERENCES topic(examId)
+add foreign key (topicName) REFERENCES examModelodel(modelNumber)
+Error report:
+SQL Error: ORA-02270: no matching unique or primary key for this column-list
+02270. 00000 -  "no matching unique or primary key for this column-list"
+*Cause:    A REFERENCES clause in a CREATE/ALTER TABLE statement
+           gives a column-list for which there is no matching unique or primary
+           key constraint in the referenced table.
+*Action:   Find the correct column names using the ALL_CONS_COLUMNS
+           catalog view
+*/
+/*ERROR SOLVED at 03 FEB 2021 23:37 :*/
+/*
+ * fixed a typo examModelodel --> examModel
+ * Solved by editing the schema and adding classId to question table
+ * and Editing the command to:
+ 	add foreign key (questionId) REFERENCES question(questionId)
+	add constraint questionChoicePK primary key(questionId,choiceNumber);
+*/
+
+/*ERROR AT 03 FEB 2021 23:42, Yusuf Nasser writing and Ayman Hassan & Youssef Nader at Zoom*/
+/*
+Error starting at line 2 in command:
+alter table assignedModel
+add foreign key (modelNumber) REFERENCES examModel(modelNumber)
+add foreign key (examId) REFERENCES exam(examId)
+add foreign key (username) REFERENCES student(username)
+add constraint assignedModelPK primary key(modelNumber,examId,username)
+
+Error report:
+SQL Error: ORA-02270: no matching unique or primary key for this column-list
+02270. 00000 -  "no matching unique or primary key for this column-list"
+*Cause:    A REFERENCES clause in a CREATE/ALTER TABLE statement
+           gives a column-list for which there is no matching unique or primary
+           key constraint in the referenced table.
+*Action:   Find the correct column names using the ALL_CONS_COLUMNS
+           catalog view
+*/
+
+/*ERROR SOLVED at 03 FEB 2021 23:51 :*/
+/*
+ * problem was in adding the foreign key partially while it is a composite key
+ * Solved by editing the command line to:
+ * add foreign key (modelNumber,examid) REFERENCES examModel(modelNumber,examId)
+ * add foreign key (username) REFERENCES student(username)
+ * add constraint assignedModelPK primary key(modelNumber,examId,username);
+*/

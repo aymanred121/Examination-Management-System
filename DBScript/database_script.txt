@@ -1,3 +1,20 @@
+/*Dropping all the pre-existing tables preparing for the DB update*/
+drop table adminstrator cascade constraints;
+drop table assignedmodel cascade constraints;
+drop table class cascade constraints;
+drop table course cascade constraints;
+drop table exam cascade constraints;
+drop table exammodel cascade constraints;
+drop table instructor cascade constraints;
+drop table instructorof cascade constraints;
+drop table question cascade constraints;
+drop table questionchoice cascade constraints;
+drop table solve cascade constraints;
+drop table student cascade constraints;
+drop table studentregister cascade constraints;
+drop table topic cascade constraints;
+drop table userdata cascade constraints;
+
 /*userData table */
 CREATE TABLE userData (
 UserName varchar2(20) primary key,
@@ -19,7 +36,13 @@ courseCode varchar2(20)
 /*topic table*/
 CREATE TABLE topic(
 classId number(5),
-name varchar2(20) unique);
+name varchar2(20));
+
+/*student table*/
+create table student(
+username varchar2(25),
+Id NUMBER(6)
+);
 
 /*studentRegister table*/
 create table studentRegister(
@@ -43,16 +66,9 @@ create table instructor(
 username varchar2(25)
 );
 
-/*student table*/
-create table student(
-username varchar2(25),
-Id NUMBER(6)
-);
-
 /*exam table*/
 create table exam(
 examId number(5) primary key,
-examDate Date,
 startTime DATE,
 endTime DATE,
 classId number(5)/*Fk refers to class table*/
@@ -65,7 +81,8 @@ questionId number(5) primary key,
 expectedDifficulty number(3),
 topicName varchar2(20),/*FK refers to topic table*/
 examId number(5),/*FK refers to examModel (points to both examid and model number)*/
-modelNumber number(3)/*FK refers to examModel table*/
+modelNumber number(3),/*FK refers to examModel table*/
+classId number(5)/*Fk refers to class table*/
 );
 
 /*instructorOf table*/
@@ -101,7 +118,7 @@ examId number(5)/*FK refers to exam table*/,
 username varchar2(30)/*FK refers to student table*/
 /*all together are fk*/);
 
-/*alter to join class tbale with course table*/
+/*alter to join class table with course table*/
 ALTER table class
 ADD FOREIGN KEY (courseCode) REFERENCES course(courseCode);
 
@@ -110,6 +127,15 @@ ALTER TABLE topic
 add foreign key (classId) REFERENCES class(id)
 add constraint topicCompositePK primary key(classId , name);
 
+/*alter to join admin table with userData table*/
+alter table adminstrator
+add foreign key (username) REFERENCES userData (username)
+add primary key (username);
+
+/*alter to join instructor table with userData table*/
+alter table instructor 
+add foreign key (username) REFERENCES userData (username)
+add primary key (username);
 
 /*alter to join student table with userData table*/
 alter table student 
@@ -122,17 +148,6 @@ add foreign key (classId) REFERENCES class(id)
 add foreign key (username) REFERENCES student(username)
 add constraint studentRegisterPK primary key(classId,username);
 
-/*alter to join admin table with userData table*/
-alter table adminstrator
-add foreign key (username) REFERENCES userData (username)
-add primary key (username);
-
-/*alter to join instructor table with userData table*/
-alter table instructor 
-add foreign key (username) REFERENCES userData (username)
-add primary key (username);
-
-
 /*alter to join exam with class table*/
 alter table exam
 add foreign key (classId) REFERENCES class(id);
@@ -143,17 +158,15 @@ add foreign key (examId) REFERENCES exam(examId)
 add constraint examModelPK primary key(examId,modelNumber);
 
 /*alter to join question table with topic and model table*/
-alter table question 
-add foreign key (topicName) REFERENCES topic(name)
+alter table question
+add foreign key (topicName,classid) REFERENCES topic(name,classid)
 add foreign key (modelNumber,examid) REFERENCES examModel(modelNumber,examid);
-
 
 /*alter to join instructorOf table with class and instructor table*/
 alter table instructorOf
 add foreign key (classId) REFERENCES class(id)
 add foreign key (username) REFERENCES instructor(username)
 add constraint instructorOfPK primary key(classId,username);
-
 
 /*alter to join questionChoice table with question table*/
 alter table questionChoice
@@ -165,14 +178,6 @@ alter table solve
 add foreign key (questionId) REFERENCES question(questionId)
 add foreign key (username) REFERENCES student(username)
 add constraint solvePK primary key(questionId,username);
-
-
-
-/*alter to join assignedModel table with student , exam and question tables*/
-alter table assignedModel
-add foreign key (modelNumber,examid) REFERENCES examModel(modelNumber,examId)
-add foreign key (username) REFERENCES student(username)
-add constraint assignedModelPK primary key(modelNumber,examId,username);
 
 /*add name into exam table*/
 alter table exam
@@ -190,11 +195,12 @@ add (statement  varchar2(1000));
 alter table exam
 add (ispublished char(1));
 
-/*dropping examdata from exam since start/end time contains the examdata */
-alter table "HR"."EXAM" drop column "EXAMDATE" cascade constraints;
+/*alter to join assignedModel table with student , exam and question tables*/
+alter table assignedModel
+add foreign key (modelNumber,examid) REFERENCES examModel(modelNumber,examId)
+add foreign key (username) REFERENCES student(username)
+add constraint assignedModelPK primary key(modelNumber,examId,username);
 
-
-
-
-
-
+/*
+ * TESTED and PASSED By Yusuf Nasser, Ayman Hassan and Youssef Nader at 23:54 3rd FEB 2021
+*/

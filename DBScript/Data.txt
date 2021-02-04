@@ -1,6 +1,6 @@
 /* inserting data into userdata */
 insert into userdata
-values ('aymanhassan','ayman','hassan','ali','9-feb-2001','01547896325','ayman@cis.asu.edu.eg','asdkh4wt53wrw3');
+values ('aymanhassan','ayman','hassan','ali','9-feb-2001','01547896325','ayman@cis.asu.edu.eg','$1screWedtheDBt@sk');
 insert into userdata
 values ('mohamedyaser','mohamed','yaser','mahoud','7-march-2001','01147896325','mohamed@cis.asu.edu.eg','asdkh4wt23324553wrw3');
 insert into userdata
@@ -8,15 +8,23 @@ values ('ahmedmohamed','ahmed','mohamed','ali','9-march-2002','01047896325','ahm
 insert into userdata
 values ('alimohamed','ali','mohamed','twfiq','11-april-2000','01147896325','mahmoud@cis.asu.edu.eg','asdkh4832902313');
 insert into userdata
+values ('yusufnasser','yusuf','nasser','saber','19-october-1999','01204962457','yusuf@cis.asu.edu.eg','55555NEVERs@yNe7e1');
+insert into userdata
+values ('youssefnader','youssef','nader','michel','12-july-2000','01223769677','youssef@cis.asu.edu.eg','$1screWedtheDBt@sk');
+insert into userdata
+values ('stevensameh','steven','sameh','soliman','11-april-2000','01147896325','steven@cis.asu.edu.eg','$1Ne7erSpe@kAtM33tings');
+insert into userdata
 values ('aliyaser','ali','yaser','ayman','9-feb-2001','01146893525','ali@cis.asu.edu.eg','asdkzkchuzxhcz');
 insert into userdata
 values ('mostafaali','mostafa','ali','twfiq','9-feb-2002','01143892325','mostafa@cis.asu.edu.eg','asdkh4wt53wrw3');
 insert into userdata
-values ('goergehassan','goerge','hassan','fady','9-feb-2001','01117896325','goerge@cis.asu.edu.eg','asdkh4wt53wrw3');
+values ('georgesamy','george','samy','fady','9-feb-2001','01117896325','george@cis.asu.edu.eg','asdkh4wt53wrw3');
 insert into userdata
 values ('ibrahamhassan','ibraham','hassan','ali','9-feb-1999','01097896325','ibraham@cis.asu.edu.eg','asdkh4wt53wrw3');
 insert into userdata
-values ('ziadkhobiz','ziad','khobiz','abd-elaziz','27-feb-2001','01227896325','ziad@cis.asu.edu.eg','asdkh4wt53wrw3');
+values ('ziadkhobeiz','ziad','hussein','khobeiz','27-feb-2001','01227896325','ziad@cis.asu.edu.eg','$Accu@rcyGr@ndMast3r');
+insert into userdata
+values ('abdelazizmostafa','abdelaziz','mostafa','abdelaziz','8-june-2001','01227896325','abdelaziz@cis.asu.edu.eg','$there1sAl7aysT0m0r0w');
 insert into userdata
 values ('omarhassan','omar','hassan','twfiq','15-feb-2001','01227896375','omar@cis.asu.edu.eg','asdkh4wt53wrw3');
 insert into userdata
@@ -32,13 +40,21 @@ values ('ahmedmohamed',3);
 insert into student
 values ('aliyaser',4);
 insert into student
-values ('goergehassan',5);
+values ('georgesamy',5);
+insert into student
+values ('yusufnasser',6);
+insert into student
+values ('youssefnader',7);
+insert into student
+values ('stevensameh',8);
+insert into student
+values ('abdelazizmostafa',9);
 
 /* inserting data into instructors*/
 insert into instructor
 values ('ibrahamhassan');
 insert into instructor
-values ('ziadkhobiz');
+values ('ziadkhobeiz');
 insert into instructor
 values ('omarhassan');
 
@@ -52,9 +68,9 @@ values ('cs101','introduction to computer science');
 insert into course
 values ('MTH70','Calculas 1');
 insert into course
-values ('Prob12','probability and statistics');
+values ('BSC110','probability and statistics');
 insert into course
-values ('slec','human rights');
+values ('SLEC122','human rights');
 insert into course
 values ('CS50','oop');
 insert into course
@@ -64,43 +80,68 @@ values ('MTH50','physics');
 
 /*inserting data into class */
 insert into class
-values (1,'cs101');
+values (1,'CS101');
 insert into class
 values (2,'MTH70');
 insert into class
-values (3,'Prob12');
+values (3,'BSC110');
 insert into class
-values (4,'slec');
+values (4,'SLEC122');
 insert into class
 values (5,'CS50');
 insert into class
-values (6,'cs100');
+values (6,'CS100');
 insert into class
 values (7,'MTH50');
+insert into class
+values (8,'');
+insert into class
+values (9,'');
+insert into class
+values (10,'');
+insert into class
+values (11,'');
+insert into class
+values (12,'');
+insert into class
+values (13,'');
+insert into class
+values (14,'');
 
 /*insert into exam */
 insert into exam
-values (1,CURRENT_DATE,CURRENT_DATE,1,'Midterm','Y');
+values (1,CURRENT_DATE,CURRENT_DATE+0.1,1,'Midterm','Y');
 insert into exam
-values (2,CURRENT_DATE,CURRENT_DATE+8,2,'Final','N');
+values (2,CURRENT_DATE+3,CURRENT_DATE+3.1,2,'Final','N');
 insert into exam
-values (3,CURRENT_DATE,CURRENT_DATE+8,3,'Quiz1','Y');
+values (3,CURRENT_DATE+4,CURRENT_DATE+5.1,3,'Quiz1','N');
 insert into exam
-values (4,CURRENT_DATE,CURRENT_DATE+8,4,'Quiz2','N');
+values (4,CURRENT_DATE+6,CURRENT_DATE+7.1,4,'Quiz2','N');
 insert into exam
-values (5,CURRENT_DATE,CURRENT_DATE+8,5,'Final','Y');
+values (5,CURRENT_DATE+9,CURRENT_DATE+9.1,5,'Final','N');
 insert into exam
-values (6,CURRENT_DATE,CURRENT_DATE+8,6,'Quiz3','N');
+values (6,CURRENT_DATE+10,CURRENT_DATE+11.1,6,'Quiz3','N');
 insert into exam
-values (7,CURRENT_DATE,CURRENT_DATE+8,7,'Midterm','Y');
+values (7,CURRENT_DATE+14,CURRENT_DATE+14.1,7,'Midterm','N');
+insert into exam
+values (8,CURRENT_DATE,CURRENT_DATE+0.1,2,'Midterm','Y');
+insert into exam
+values (9,CURRENT_DATE,CURRENT_DATE+0.1,3,'Midterm','Y');
+insert into exam
+values (10,CURRENT_DATE,CURRENT_DATE+0.1,4,'Midterm','Y');
+insert into exam
+values (11,CURRENT_DATE,CURRENT_DATE+0.1,5,'Midterm','Y');
+insert into exam
+values (12,CURRENT_DATE,CURRENT_DATE+0.1,6,'Midterm','Y');
+
 
 /*insert into topic*/
 insert into topic
-values (1,'cs');
+values (1,'programming');
 insert into topic
-values (2,'math');
+values (2,'derivatives');
 insert into topic
-values (3,'prob');
+values (3,'combinations');
 insert into topic
 values (4,'eng');
 insert into topic
@@ -114,30 +155,59 @@ values (7,'speed');
 insert into exammodel
 values (1,1);
 insert into exammodel
+values (1,2);
+insert into exammodel
+values (1,3);
+insert into exammodel
+values (2,1);
+insert into exammodel
 values (2,2);
+insert into exammodel
+values (2,3);
+insert into exammodel
+values (3,1);
+insert into exammodel
+values (3,2);
 insert into exammodel
 values (3,3);
 insert into exammodel
-values (4,4);
+values (4,1);
 insert into exammodel
-values (5,5);
+values (4,2);
 insert into exammodel
-values (6,6);
+values (4,3);
 insert into exammodel
-values (7,7);
+values (5,1);
+insert into exammodel
+values (5,2);
+insert into exammodel
+values (5,3);
+insert into exammodel
+values (6,1);
+insert into exammodel
+values (6,2);
+insert into exammodel
+values (6,3);
+insert into exammodel
+values (7,1);
+insert into exammodel
+values (7,2);
+insert into exammodel
+values (7,3);
+
 /*insert into question*/
 insert into  question
-values (1,5,'cs',1,1,'What is CS');
+values (1,5,'programming',1,1,1,'What is CS');
 insert into  question
-values (2,5,'cs',2,2,'What is os');
+values (2,5,'combinations',2,2,3,'What is os');
 insert into  question
-values (3,7,'math',3,3,'What is oop');
+values (3,7,'derivatives',3,3,2,'What is oop');
 
 /*inserting data instructorof*/
 insert into instructorof
 values (1,'ibrahamhassan');
 insert into instructorof
-values (2,'ziadkhobiz');
+values (2,'ziadkhobeiz');
 insert into INSTRUCTOROF
 values (6,'ibrahamhassan');
 insert into INSTRUCTOROF
@@ -153,19 +223,21 @@ insert into questionchoice
 values (3,'c','oop');
 
 /*inserting into solve*/
-  insert into solve
-  values (1,'aymanhassan','a');
-    insert into solve
-  values (2,'aymanhassan','a');
-    insert into solve
-  values (3,'aymanhassan','a');
- /*inserting into assignedModel*/
- insert into assignedmodel
+insert into solve
+values (1,'aymanhassan','a');
+insert into solve
+values (2,'aymanhassan','a');
+insert into solve
+values (3,'aymanhassan','a');
+
+/*inserting into assignedModel*/
+insert into assignedmodel
 values (1,1,'aymanhassan');
 insert into assignedmodel
 values (2,2,'mohamedyaser');
 insert into assignedmodel
 values (1,1,'ahmedmohamed');
+
 /*inserting into studentregister*/
 insert into studentregister
 values (1,'aymanhassan');
@@ -176,6 +248,6 @@ values (4,'ahmedmohamed');
 insert into studentregister
 values (6,'aliyaser');
 insert into studentregister
-values (1,'goergehassan');
+values (1,'georgesamy');
 insert into studentregister
-values (4,'goergehassan');
+values (4,'georgesamy');
