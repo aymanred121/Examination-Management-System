@@ -6,6 +6,7 @@
 package GUI;
 
 import Entities.Exam;
+import Entities.Instructor;
 import Entities.User;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -24,6 +25,7 @@ public class ViewExams extends Page {
     User user;
     Entities.Class userClass;
     User.UserType userType;
+    java.awt.Font myFont = new java.awt.Font("Tahoma", Font.BOLD, 17);
 
     /**
      * It constructs a new ViewExams page for a certain user in a specific class
@@ -61,7 +63,6 @@ public class ViewExams extends Page {
         String examName = examStatus.name().toLowerCase();
         examName = examName.substring(0, 1).toUpperCase() + examName.substring(1);
         java.awt.Font titleFont = new java.awt.Font("Tahoma", Font.BOLD, 20);
-        java.awt.Font myFont = new java.awt.Font("Tahoma", Font.BOLD, 17);
         JLabel ExamsLabel = new JLabel(examName + " exams:");
         ExamsLabel.setBounds(20, delta, 300, 80);
         ExamsLabel.setFont(titleFont);
@@ -175,9 +176,25 @@ public class ViewExams extends Page {
         delta = showExams(upcomingExams, Exam.Status.UPCOMING, delta);
         if (userType == User.UserType.INSTRUCTOR) {
             delta = showExams(finishedExams, Exam.Status.FINISHED, delta);
-            showExams(unpublishedExams, Exam.Status.UNPUBLISHED, delta);
+            delta = showExams(unpublishedExams, Exam.Status.UNPUBLISHED, delta);
+            showAddExamButton(delta);
         }
 
     }
-
+    /**
+     * It displays addNewExam Button 
+     * @param delta The starting y-coordinate for drawing to keep distances
+     */
+     private void showAddExamButton(int delta){
+        JButton addNewExam = new JButton("Add New Exam");
+        addNewExam.setBounds(600, 20, 180, 30);
+        addNewExam.setFont(myFont);
+        addNewExam.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                new AddExam((Instructor) user, userClass).setVisible(true);
+                dispose();
+            }
+        });
+        getPanel().add(addNewExam);
+    }
 }
