@@ -14,21 +14,21 @@ values ('youssefnader','youssef','nader','michel','12-july-2000','01223769677','
 insert into userdata
 values ('stevensameh','steven','sameh','soliman','11-april-2000','01147896325','steven@cis.asu.edu.eg','$1Ne7erSpe@kAtM33tings');
 insert into userdata
-values ('aliyaser','ali','yaser','ayman','9-feb-2001','01146893525','ali@cis.asu.edu.eg','asdkzkchuzxhcz');
+values ('aliyaser','ali','yaser','ayman','15-jan-1985','01146893525','ali@cis.asu.edu.eg','asdkzkchuzxhcz');
 insert into userdata
-values ('mostafaali','mostafa','ali','twfiq','9-feb-2002','01143892325','mostafa@cis.asu.edu.eg','asdkh4wt53wrw3');
+values ('mostafaali','mostafa','ali','twfiq','26-nov-2002','01143892325','mostafa@cis.asu.edu.eg','asdkh4wt53wrw3');
 insert into userdata
-values ('georgesamy','george','samy','fady','9-feb-2001','01117896325','george@cis.asu.edu.eg','asdkh4wt53wrw3');
+values ('georgesamy','george','samy','fady','21-feb-2001','01117896325','george@cis.asu.edu.eg','asdkh4wt53wrw3');
 insert into userdata
-values ('ibrahamhassan','ibraham','hassan','ali','9-feb-1999','01097896325','ibraham@cis.asu.edu.eg','asdkh4wt53wrw3');
+values ('ibrahimhassan','ibrahim','hassan','ali','9-sept-1989','01097896325','ibrahim@cis.asu.edu.eg','asdkh4wt53wrw3');
 insert into userdata
-values ('ziadkhobeiz','ziad','hussein','khobeiz','27-feb-2001','01227896325','ziad@cis.asu.edu.eg','$Accu@rcyGr@ndMast3r');
+values ('ziadkhobeiz','ziad','hussein','khobeiz','27-aug-2001','01227896325','ziad@cis.asu.edu.eg','$Accu@rcyGr@ndMast3r');
 insert into userdata
 values ('abdelazizmostafa','abdelaziz','mostafa','abdelaziz','8-june-2001','01227896325','abdelaziz@cis.asu.edu.eg','$there1sAl7aysT0m0r0w');
 insert into userdata
-values ('omarhassan','omar','hassan','twfiq','15-feb-2001','01227896375','omar@cis.asu.edu.eg','asdkh4wt53wrw3');
+values ('omarhassan','omar','hassan','twfiq','15-july-1983','01227896375','omar@cis.asu.edu.eg','asdkh4wt53wrw3');
 insert into userdata
-values ('admin','omar','ali','twfiq','15-feb-2001','01227896375','omar@admin.com','asdkh4wt53wrw3');
+values ('admin','omar','ali','twfiq','15-dec-2001','01227896375','omar@admin.com','asdkh4wt53wrw3');
 
 /* inserting data into student*/
 insert into student
@@ -38,7 +38,7 @@ values ('mohamedyaser',2);
 insert into student
 values ('ahmedmohamed',3);
 insert into student
-values ('aliyaser',4);
+values ('ziadkhobeiz',4);
 insert into student
 values ('georgesamy',5);
 insert into student
@@ -52,9 +52,9 @@ values ('abdelazizmostafa',9);
 
 /* inserting data into instructors*/
 insert into instructor
-values ('ibrahamhassan');
+values ('ibrahimhassan');
 insert into instructor
-values ('ziadkhobeiz');
+values ('aliyaser');
 insert into instructor
 values ('omarhassan');
 
@@ -64,92 +64,157 @@ values ('admin');
 
 /* inserting data into course*/
 insert into course
-values ('cs101','introduction to computer science');
+values ('CS150','Structured Programming');
 insert into course
-values ('MTH70','Calculas 1');
+values ('BSC121','Physics 1');
 insert into course
-values ('BSC110','probability and statistics');
+values ('BSC123','Probability and Statistics');
 insert into course
-values ('SLEC122','human rights');
+values ('HUM113','Report Writing');
 insert into course
-values ('CS50','oop');
+values ('CIS250','Object Oriented Programming');
 insert into course
-values ('cs100','DataBase Mangement System');
+values ('BSC221','Discrete Mathematics');
 insert into course
-values ('MTH50','physics');
+values ('CIS260','Logic Design');
+insert into course
+values ('CIS280','Database Management System');
+insert into course
+values ('CIS240','Statistical Analysis');
+
 
 /*inserting data into class */
 insert into class
-values (1,'CS101');
+values (1,'CS150'); /*Structured Programming*/
 insert into class
-values (2,'MTH70');
+values (2,'BSC121'); /*Physics 1*/
 insert into class
-values (3,'BSC110');
+values (3,'BSC123'); /*Probability and Statistics*/
 insert into class
-values (4,'SLEC122');
+values (4,'HUM113'); /*Report Writing*/
 insert into class
-values (5,'CS50');
+values (5,'CIS250'); /*Object Oriented Programming*/
 insert into class
-values (6,'CS100');
+values (6,'BSC221'); /*Discrete Mathematics*/
 insert into class
-values (7,'MTH50');
+values (7,'CIS260'); /*Logic Design*/
 insert into class
-values (8,'');
+values (8,'CIS280'); /*Database Management System*/
 insert into class
-values (9,'');
-insert into class
-values (10,'');
-insert into class
-values (11,'');
-insert into class
-values (12,'');
-insert into class
-values (13,'');
-insert into class
-values (14,'');
+values (9,'CIS240'); /*Statistical Analysis*/
 
 /*insert into exam */
 insert into exam
-values (1,CURRENT_DATE,CURRENT_DATE+0.1,1,'Midterm','Y');
+values (1,CURRENT_DATE,CURRENT_DATE+0.03,1,'Quiz1','Y');
 insert into exam
-values (2,CURRENT_DATE+3,CURRENT_DATE+3.1,2,'Final','N');
+values (2,CURRENT_DATE+14,CURRENT_DATE+14.05,1,'Midterm','N');
 insert into exam
-values (3,CURRENT_DATE+4,CURRENT_DATE+5.1,3,'Quiz1','N');
+values (3,CURRENT_DATE+28,CURRENT_DATE+28.03,1,'Quiz2','N');
 insert into exam
-values (4,CURRENT_DATE+6,CURRENT_DATE+7.1,4,'Quiz2','N');
+values (4,CURRENT_DATE+42,CURRENT_DATE+42.1,1,'Final','N');
 insert into exam
-values (5,CURRENT_DATE+9,CURRENT_DATE+9.1,5,'Final','N');
+values (5,CURRENT_DATE+1,CURRENT_DATE+1.03,1,'Quiz1','Y');
 insert into exam
-values (6,CURRENT_DATE+10,CURRENT_DATE+11.1,6,'Quiz3','N');
+values (6,CURRENT_DATE+15,CURRENT_DATE+15.05,1,'Midterm','N');
 insert into exam
-values (7,CURRENT_DATE+14,CURRENT_DATE+14.1,7,'Midterm','N');
+values (7,CURRENT_DATE+29,CURRENT_DATE+29.03,1,'Quiz2','N');
 insert into exam
-values (8,CURRENT_DATE,CURRENT_DATE+0.1,2,'Midterm','Y');
+values (8,CURRENT_DATE+45,CURRENT_DATE+45.1,1,'Final','N');
 insert into exam
-values (9,CURRENT_DATE,CURRENT_DATE+0.1,3,'Midterm','Y');
+values (9,CURRENT_DATE+2,CURRENT_DATE+2.03,1,'Quiz1','Y');
 insert into exam
-values (10,CURRENT_DATE,CURRENT_DATE+0.1,4,'Midterm','Y');
+values (10,CURRENT_DATE+16,CURRENT_DATE+16.05,1,'Midterm','N');
 insert into exam
-values (11,CURRENT_DATE,CURRENT_DATE+0.1,5,'Midterm','Y');
+values (11,CURRENT_DATE+30,CURRENT_DATE+30.03,1,'Quiz2','N');
 insert into exam
-values (12,CURRENT_DATE,CURRENT_DATE+0.1,6,'Midterm','Y');
+values (12,CURRENT_DATE+48,CURRENT_DATE+48.1,1,'Final','N');
+insert into exam
+values (13,CURRENT_DATE+3,CURRENT_DATE+3.03,1,'Quiz1','Y');
+insert into exam
+values (14,CURRENT_DATE+17,CURRENT_DATE+17.05,1,'Midterm','N');
+insert into exam
+values (15,CURRENT_DATE+31,CURRENT_DATE+31.03,1,'Quiz2','N');
+insert into exam
+values (16,CURRENT_DATE+51,CURRENT_DATE+51.1,1,'Final','N');
+insert into exam
+values (17,CURRENT_DATE+4,CURRENT_DATE+4.03,1,'Quiz1','Y');
+insert into exam
+values (18,CURRENT_DATE+18,CURRENT_DATE+18.05,1,'Midterm','N');
+insert into exam
+values (19,CURRENT_DATE+32,CURRENT_DATE+32.03,1,'Quiz2','N');
+insert into exam
+values (20,CURRENT_DATE+54,CURRENT_DATE+54.1,1,'Final','N');
+insert into exam
+values (21,CURRENT_DATE+5,CURRENT_DATE+5.03,1,'Quiz1','Y');
+insert into exam
+values (22,CURRENT_DATE+19,CURRENT_DATE+19.05,1,'Midterm','N');
+insert into exam
+values (23,CURRENT_DATE+33,CURRENT_DATE+33.03,1,'Quiz2','N');
+insert into exam
+values (24,CURRENT_DATE+57,CURRENT_DATE+57.1,1,'Final','N');
+insert into exam
+values (25,CURRENT_DATE+6,CURRENT_DATE+6.03,1,'Quiz1','Y');
+insert into exam
+values (26,CURRENT_DATE+20,CURRENT_DATE+20.05,1,'Midterm','N');
+insert into exam
+values (27,CURRENT_DATE+34,CURRENT_DATE+34.03,1,'Quiz2','N');
+insert into exam
+values (28,CURRENT_DATE+60,CURRENT_DATE+60.1,1,'Final','N');
+insert into exam
+values (29,CURRENT_DATE+7,CURRENT_DATE+7.03,1,'Quiz1','Y');
+insert into exam
+values (30,CURRENT_DATE+21,CURRENT_DATE+21.05,1,'Midterm','N');
+insert into exam
+values (31,CURRENT_DATE+35,CURRENT_DATE+35.03,1,'Quiz2','N');
+insert into exam
+values (32,CURRENT_DATE+63,CURRENT_DATE+63.1,1,'Final','N');
+insert into exam
+values (33,CURRENT_DATE+8,CURRENT_DATE+8.03,1,'Quiz1','Y');
+insert into exam
+values (34,CURRENT_DATE+22,CURRENT_DATE+22.05,1,'Midterm','N');
+insert into exam
+values (35,CURRENT_DATE+36,CURRENT_DATE+36.03,1,'Quiz2','N');
+insert into exam
+values (36,CURRENT_DATE+66,CURRENT_DATE+66.1,1,'Final','N');
 
 
 /*insert into topic*/
 insert into topic
-values (1,'programming');
+values (1,'Arrays');
 insert into topic
-values (2,'derivatives');
+values (1,'Pointers');
 insert into topic
-values (3,'combinations');
+values (2,'Motion');
 insert into topic
-values (4,'eng');
+values (2,'Momentum');
 insert into topic
-values (5,'ai');
+values (3,'Combinatorics');
 insert into topic
-values (6,'relations');
+values (3,'Random Variable');
 insert into topic
-values (7,'speed');
+values (4,'Soft Skills');
+insert into topic
+values (4,'C.V.');
+insert into topic
+values (5,'Inheritance');
+insert into topic
+values (5,'Interfaces');
+insert into topic
+values (6,'Proofs');
+insert into topic
+values (6,'Number Theory');
+insert into topic
+values (7,'Logic Gates');
+insert into topic
+values (7,'Combinational Logic');
+insert into topic
+values (8,'Relational Database Design');
+insert into topic
+values (8,'Enhanced Entity-Relationship Modeling');
+insert into topic
+values (9,'Standard Deviation');
+insert into topic
+values (9,'The Normal Distribution');
 
 /*inserting data into exammodel*/
 insert into exammodel
@@ -157,45 +222,132 @@ values (1,1);
 insert into exammodel
 values (1,2);
 insert into exammodel
-values (1,3);
-insert into exammodel
 values (2,1);
 insert into exammodel
 values (2,2);
-insert into exammodel
-values (2,3);
 insert into exammodel
 values (3,1);
 insert into exammodel
 values (3,2);
 insert into exammodel
-values (3,3);
-insert into exammodel
 values (4,1);
 insert into exammodel
 values (4,2);
-insert into exammodel
-values (4,3);
 insert into exammodel
 values (5,1);
 insert into exammodel
 values (5,2);
 insert into exammodel
-values (5,3);
-insert into exammodel
 values (6,1);
 insert into exammodel
 values (6,2);
-insert into exammodel
-values (6,3);
 insert into exammodel
 values (7,1);
 insert into exammodel
 values (7,2);
 insert into exammodel
-values (7,3);
+values (8,1);
+insert into exammodel
+values (8,2);
+insert into exammodel
+values (9,1);
+insert into exammodel
+values (9,2);
+insert into exammodel
+values (10,1);
+insert into exammodel
+values (10,2);
+insert into exammodel
+values (11,1);
+insert into exammodel
+values (11,2);
+insert into exammodel
+values (12,1);
+insert into exammodel
+values (12,2);
+insert into exammodel
+values (13,1);
+insert into exammodel
+values (13,2);
+insert into exammodel
+values (14,1);
+insert into exammodel
+values (14,2);
+insert into exammodel
+values (15,1);
+insert into exammodel
+values (15,2);
+insert into exammodel
+values (16,1);
+insert into exammodel
+values (16,2);
+insert into exammodel
+values (17,1);
+insert into exammodel
+values (17,2);
+insert into exammodel
+values (18,1);
+insert into exammodel
+values (18,2);
+insert into exammodel
+values (19,1);
+insert into exammodel
+values (19,2);
+insert into exammodel
+values (20,1);
+insert into exammodel
+values (20,2);
+insert into exammodel
+values (21,1);
+insert into exammodel
+values (21,2);
+insert into exammodel
+values (22,1);
+insert into exammodel
+values (22,2);
+insert into exammodel
+values (23,1);
+insert into exammodel
+values (23,2);
+insert into exammodel
+values (24,1);
+insert into exammodel
+values (24,2);
+insert into exammodel
+values (25,1);
+insert into exammodel
+values (25,2);
+insert into exammodel
+values (26,1);
+insert into exammodel
+values (26,2);
+insert into exammodel
+values (27,1);
+insert into exammodel
+values (27,2);
+insert into exammodel
+values (28,1);
+insert into exammodel
+values (28,2);
+insert into exammodel
+values (29,1);
+insert into exammodel
+values (29,2);
+insert into exammodel
+values (30,1);
+insert into exammodel
+values (30,2);
+insert into exammodel
+values (31,1);
+insert into exammodel
+values (31,2);
+insert into exammodel
+values (32,1);
+insert into exammodel
+values (32,2);
 
 /*insert into question*/
+/*qId, expectedDiff, topicName, examId, modelNumber, classId, statement */
 insert into  question
 values (1,5,'programming',1,1,1,'What is CS');
 insert into  question
@@ -204,14 +356,25 @@ insert into  question
 values (3,7,'derivatives',3,3,2,'What is oop');
 
 /*inserting data instructorof*/
+/*classId, username*/
 insert into instructorof
-values (1,'ibrahamhassan');
+values (2,'ibrahimhassan');
+insert into INSTRUCTOROF
+values (3,'ibrahimhassan');
+insert into INSTRUCTOROF
+values (7,'ibrahimhassan');
 insert into instructorof
-values (2,'ziadkhobeiz');
-insert into INSTRUCTOROF
-values (6,'ibrahamhassan');
-insert into INSTRUCTOROF
-values (4,'ibrahamhassan');
+values (4,'aliyaser');
+insert into instructorof
+values (6,'aliyaser');
+insert into instructorof
+values (9,'aliyaser');
+insert into instructorof
+values (1,'omarhassan');
+insert into instructorof
+values (3,'omarhassan');
+insert into instructorof
+values (8,'omarhassan');
 
 
 /*inserting into questioncohice*/
@@ -222,21 +385,31 @@ values (2,'b','cs');
 insert into questionchoice
 values (3,'c','oop');
 
+/*
+ * We Plan on doing some test exam and also test models
+ * after we finish the basic database.
+*/
+
 /*inserting into solve*/
+/*
+ * NO EXAMS done yet, so NO STUDENT Solutions!
 insert into solve
 values (1,'aymanhassan','a');
 insert into solve
 values (2,'aymanhassan','a');
 insert into solve
 values (3,'aymanhassan','a');
+*/
 
 /*inserting into assignedModel*/
+/*
+ * NO EXAMS done yet, so NO MODELS assigned!
 insert into assignedmodel
 values (1,1,'aymanhassan');
 insert into assignedmodel
 values (2,2,'mohamedyaser');
 insert into assignedmodel
-values (1,1,'ahmedmohamed');
+values (1,1,'ahmedmohamed');*/
 
 /*inserting into studentregister*/
 insert into studentregister
@@ -246,8 +419,13 @@ values (2,'mohamedyaser');
 insert into studentregister
 values (4,'ahmedmohamed');
 insert into studentregister
-values (6,'aliyaser');
+values (6,'ziadkhobeiz');
 insert into studentregister
 values (1,'georgesamy');
 insert into studentregister
 values (4,'georgesamy');
+
+/*
+ * Enhancement done by Yusuf Nasser and Youssef Nader at Feb 5th 2021
+ * From 16:39 to 20:11
+*/
