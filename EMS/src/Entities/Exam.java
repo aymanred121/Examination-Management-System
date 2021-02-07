@@ -33,7 +33,7 @@ public class Exam implements SqlEntity {
     
     final static private int MAX_QUESTION = 50;
     
-    final private int id;
+    private int id;
     private Class examClass;
     private String instructorName;
     private String name;
@@ -47,11 +47,9 @@ public class Exam implements SqlEntity {
      * This constructor initializes all the final attributes of the class
     */
 
-    public Exam(int id, Class examclass, String instructorName) {
-        this.id = id;
-        this.examClass = examclass;
-        this.instructorName = instructorName;
-        this.endTime = startTime.plus(duration);
+    public Exam(Entities.Class examClass) {
+        this.generateID();
+        this.examClass = examClass;
     }
     
     /** Note left by Ziad Khobeiz and Abdel-Aziz Mostafa on https://www.notion.so/Meeting-Notes-ddad1da729614ee9b04ef04fd54faef4
@@ -70,7 +68,6 @@ public class Exam implements SqlEntity {
     public Exam(int id) {
         this.id = id;
     }
-    
     /**
      * All the possible statuses for the exam
      */
@@ -92,7 +89,20 @@ public class Exam implements SqlEntity {
          */
         UNPUBLISHED
     }
-    
+    private void generateID()
+    {
+        Connection myConnection = SqlConnection.getConnection();
+        try {
+            PreparedStatement myStatement = myConnection.prepareStatement("select EXAM_SEQ.NEXTVAL from dual");
+            ResultSet myResultSet = myStatement.executeQuery();
+            if (myResultSet.next()) {
+                id = myResultSet.getInt(1);
+           }
+            myConnection.close();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
     public static int getMaxQuestion() {
         return MAX_QUESTION;
     }
@@ -127,7 +137,20 @@ public class Exam implements SqlEntity {
 
     @Override
     public void add() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+         Connection myConnection = SqlConnection.getConnection();
+        try {
+            PreparedStatement myStatement = myConnection.prepareStatement("insert into exam values (?,?,?,?,?,?)");
+            myStatement.setInt(1, id);
+            myStatement.setDate(2, java.sql.Date.valueOf(startTime.toLocalDate()));
+            myStatement.setDate(3, java.sql.Date.valueOf(endTime.toLocalDate()));
+            myStatement.setInt(4, examClass.getId());
+            myStatement.setString(5, name);
+            myStatement.setString(6,"Y");
+            myStatement.executeQuery();
+           
+        } catch (Exception e) {
+            System.out.println(e);
+        } 
     }
 
     @Override
@@ -150,7 +173,17 @@ public class Exam implements SqlEntity {
     public void setDuration(Duration duration) {
         this.duration = duration;
     }
+    public void setName(String name) {
+        this.name = name;
+    }
 
+    public void setEndTime(LocalDateTime endTime) {
+        this.endTime = endTime;
+    }
+
+    public void setIsPublished(boolean isPublished) {
+        this.isPublished = isPublished;
+    }
     /*
      * All the getter functions of the Exam class
     */
@@ -195,7 +228,7 @@ public class Exam implements SqlEntity {
         }
         return duration;
     }
-
+    
     /**
      * It determines whether the exam is currently running, upcoming, finished or unpublished
      * @return Status The current status of the exam
@@ -222,5 +255,15 @@ public class Exam implements SqlEntity {
         }
         return name;
     }
+
     
+    public static void main(String[] args) {
+        Exam test = new Exam(new Entities.Class  (5,false));
+        System.out.println(test.getId());
+        test.setName("Testing2");
+        test.setStartTime(LocalDateTime.now());
+        test.setEndTime(LocalDateTime.now());
+        test.setIsPublished(true);
+        test.add();
+    }
 }

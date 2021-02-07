@@ -27,6 +27,7 @@ public abstract class Page extends javax.swing.JFrame {
      */
     public Page() {
         initComponents();
+        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
     
     /**
