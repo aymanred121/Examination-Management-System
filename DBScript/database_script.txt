@@ -1,4 +1,4 @@
-/*DROPping all the pre-existing TABLEs preparing for the DB update*/
+/*DROPPING all the pre-existing TABLEs preparing for the DB update*/
 DROP TABLE adminstrator cascade CONSTRAINTs;
 DROP TABLE assignedmodel cascade CONSTRAINTs;
 DROP TABLE class cascade CONSTRAINTs;
@@ -8,7 +8,8 @@ DROP TABLE exammodel cascade CONSTRAINTs;
 DROP TABLE instructor cascade CONSTRAINTs;
 DROP TABLE instructorof cascade CONSTRAINTs;
 DROP TABLE question cascade CONSTRAINTs;
-DROP TABLE questionchoice cascade CONSTRAINTs;
+DROP TABLE questionChoice cascade CONSTRAINTs;
+DROP TABLE correctChoice cascade CONSTRAINTs;
 DROP TABLE solve cascade CONSTRAINTs;
 DROP TABLE student cascade CONSTRAINTs;
 DROP TABLE studentregister cascade CONSTRAINTs;
@@ -17,53 +18,53 @@ DROP TABLE userdata cascade CONSTRAINTs;
 
 /*userData TABLE */
 CREATE TABLE userData (
-UserName VARCHAR2(20) PRIMARY KEY,
-firstName VARCHAR2(20),
-middleName VARCHAR2(20),
-lastName VARCHAR2(20),
+UserName VARCHAR2(50) PRIMARY KEY,
+firstName VARCHAR2(50),
+middleName VARCHAR2(50),
+lastName VARCHAR2(50),
 birthdate DATE,
-mobileNumber VARCHAR2(15),
-email VARCHAR2(30) UNIQUE,
-Password VARCHAR2(40));
+mobileNumber VARCHAR2(50),
+email VARCHAR2(50) UNIQUE,
+Password VARCHAR2(50));
 
 /*class TABLE*/
 CREATE TABLE class
 (
 id NUMBER(5) PRIMARY KEY,
-courseCode VARCHAR2(20)
+courseCode VARCHAR2(50)
 );
 
 /*topic TABLE*/
 CREATE TABLE topic(
 classId NUMBER(5),
-name VARCHAR2(20));
+name VARCHAR2(50));
 
 /*student TABLE*/
 CREATE TABLE student(
-username VARCHAR2(25),
+username VARCHAR2(50),
 Id NUMBER(6)
 );
 
 /*studentRegister TABLE*/
 CREATE TABLE studentRegister(
 classId NUMBER(5)/*FK refers to class TABLE*/,
-username VARCHAR2(30)/*FK refers to student TABLE*/
+username VARCHAR2(50)/*FK refers to student TABLE*/
 /*both are composite PK*/
 );
 
 /*course TABLE*/
 CREATE TABLE course(
-courseCode VARCHAR(20) PRIMARY KEY,
+courseCode VARCHAR(50) PRIMARY KEY,
 courseName VARCHAR2(50) UNIQUE);
 
 /*admin TABLE*/
 CREATE TABLE adminstrator(
-username VARCHAR2(25)
+username VARCHAR2(50)
 );
 
 /*instructor TABLE*/
 CREATE TABLE instructor(
-username VARCHAR2(25)
+username VARCHAR2(50)
 );
 
 /*exam TABLE*/
@@ -79,7 +80,7 @@ CREATE TABLE question(
 questionId NUMBER(5) PRIMARY KEY,
 /*statment VARCHAR2(5000),*/
 expectedDifficulty NUMBER(3),
-topicName VARCHAR2(20),/*FK refers to topic TABLE*/
+topicName VARCHAR2(50),/*FK refers to topic TABLE*/
 examId NUMBER(5),/*FK refers to examModel (points to both examid and model number)*/
 modelNumber NUMBER(3),/*FK refers to examModel TABLE*/
 classId NUMBER(5)/*Fk refers to class TABLE*/
@@ -88,20 +89,25 @@ classId NUMBER(5)/*Fk refers to class TABLE*/
 /*instructorOf TABLE*/
 CREATE TABLE instructorOf(
 classId NUMBER(5),/*FK refers to class TABLE*/
-username VARCHAR2(25)/*FK refers to instructor TABLE*/
+username VARCHAR2(50)/*FK refers to instructor TABLE*/
 );
 
 /*questionChoice TABLE*/
-CREATE TABLE questionchoice(
+CREATE TABLE questionChoice(
 questionId NUMBER(5)/*FK refers to question TABLE*/,
 choiceNumber VARCHAR2(2)
 /*both form a composite PK*/
 /*choiceStatment VARCHAR2(400)*/);
 
+/*correctChoice TABLE*/
+CREATE TABLE correctChoice(
+questionId NUMBER(5),
+correctChoiceNumber VARCHAR2(2));
+
 /*solve TABLE*/
 CREATE TABLE solve (
 questionId NUMBER(5)/*FK refer to question TABLE*/,
-username VARCHAR2(25)/*FK refers to student TABLE*/,
+username VARCHAR2(50)/*FK refers to student TABLE*/,
 /*both are composite PK*/
 studentChoice VARCHAR2(2));
 
@@ -115,7 +121,7 @@ modelNumber NUMBER(3)
 CREATE TABLE assignedModel(
 modelNumber NUMBER(3)/*FK refers to model TABLE*/,
 examId NUMBER(5)/*FK refers to exam TABLE*/,
-username VARCHAR2(30)/*FK refers to student TABLE*/
+username VARCHAR2(50)/*FK refers to student TABLE*/
 /*all together are fk*/);
 
 /*ALTER to join class TABLE with course TABLE*/
@@ -173,6 +179,12 @@ ALTER TABLE questionChoice
 ADD FOREIGN KEY (questionId) REFERENCES question(questionId)
 ADD CONSTRAINT questionChoicePK PRIMARY KEY(questionId,choiceNumber);
 
+
+/*ALTER to join correctChoice TABLE with question TABLE*/
+ALTER TABLE correctChoice 
+ADD FOREIGN KEY (questionId) REFERENCES question (questionId)
+ADD PRIMARY KEY (questionId);
+
 /*ALTER to join solve TABLE withstudent and question TABLE*/
 ALTER TABLE solve
 ADD FOREIGN KEY (questionId) REFERENCES question(questionId)
@@ -181,10 +193,10 @@ ADD CONSTRAINT solvePK PRIMARY KEY(questionId,username);
 
 /*ADD name into exam TABLE*/
 ALTER TABLE exam
-ADD (name VARCHAR2(20));
+ADD (name VARCHAR2(50));
 
 /*ADD choiceStatement into questionChoice TABLE*/
-ALTER TABLE questionchoice
+ALTER TABLE questionChoice
 ADD (choiceStatement  VARCHAR2(1000));
 
 /*ADD statement into question TABLE*/
@@ -207,4 +219,7 @@ ADD CONSTRAINT assignedModelPK PRIMARY KEY(modelNumber,examId,username);
 /*
  * Enhancement done by Yusuf Nasser and Youssef Nader at Feb 5th 2021
  * From 15:14 to 16:17
+*/
+/*
+ * PASSED the final round of testing at Feb 9th 2021 01:48 by Yusuf Nasser and Youssef Nasser.
 */

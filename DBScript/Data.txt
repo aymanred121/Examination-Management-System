@@ -1,4 +1,9 @@
+/* Setting an escape character */
+SET ESCAPE '\'
+
 /* inserting data into userdata */
+
+/*STUDENTS*/
 insert into userdata
 values ('aymanhassan','ayman','hassan','ali','9-feb-2001','01547896325','ayman@cis.asu.edu.eg','$1screWedtheDBt@sk');
 insert into userdata
@@ -14,19 +19,23 @@ values ('youssefnader','youssef','nader','michel','12-july-2000','01223769677','
 insert into userdata
 values ('stevensameh','steven','sameh','soliman','11-april-2000','01147896325','steven@cis.asu.edu.eg','$1Ne7erSpe@kAtM33tings');
 insert into userdata
-values ('aliyaser','ali','yaser','ayman','15-jan-1985','01146893525','ali@cis.asu.edu.eg','asdkzkchuzxhcz');
-insert into userdata
 values ('mostafaali','mostafa','ali','twfiq','26-nov-2002','01143892325','mostafa@cis.asu.edu.eg','asdkh4wt53wrw3');
 insert into userdata
 values ('georgesamy','george','samy','fady','21-feb-2001','01117896325','george@cis.asu.edu.eg','asdkh4wt53wrw3');
 insert into userdata
-values ('ibrahimhassan','ibrahim','hassan','ali','9-sept-1989','01097896325','ibrahim@cis.asu.edu.eg','asdkh4wt53wrw3');
-insert into userdata
 values ('ziadkhobeiz','ziad','hussein','khobeiz','27-aug-2001','01227896325','ziad@cis.asu.edu.eg','$Accu@rcyGr@ndMast3r');
 insert into userdata
 values ('abdelazizmostafa','abdelaziz','mostafa','abdelaziz','8-june-2001','01227896325','abdelaziz@cis.asu.edu.eg','$there1sAl7aysT0m0r0w');
+
+/*INSTRUCTORS*/
+insert into userdata
+values ('ibrahimhassan','ibrahim','hassan','ali','9-september-1989','01097896325','ibrahim@cis.asu.edu.eg','asdkh4wt53wrw3');
 insert into userdata
 values ('omarhassan','omar','hassan','twfiq','15-july-1983','01227896375','omar@cis.asu.edu.eg','asdkh4wt53wrw3');
+insert into userdata
+values ('aliyaser','ali','yaser','ayman','15-jan-1985','01146893525','ali@cis.asu.edu.eg','asdkzkchuzxhcz');
+
+/*ADMINS*/
 insert into userdata
 values ('admin','omar','ali','twfiq','15-dec-2001','01227896375','omar@admin.com','asdkh4wt53wrw3');
 
@@ -49,6 +58,11 @@ insert into student
 values ('stevensameh',8);
 insert into student
 values ('abdelazizmostafa',9);
+insert into student
+values ('mostafaali',10);
+insert into student
+values ('alimohamed',11);
+
 
 /* inserting data into instructors*/
 insert into instructor
@@ -64,23 +78,23 @@ values ('admin');
 
 /* inserting data into course*/
 insert into course
-values ('CS150','Structured Programming');
+values ('CS150','Structured Programming');/*done*/
 insert into course
-values ('BSC121','Physics 1');
+values ('BSC121','Physics 1');/*done*/
 insert into course
-values ('BSC123','Probability and Statistics');
+values ('BSC123','Probability and Statistics');/*done*/
 insert into course
 values ('HUM113','Report Writing');
 insert into course
-values ('CIS250','Object Oriented Programming');
+values ('CIS250','Object Oriented Programming');/*done*/
 insert into course
-values ('BSC221','Discrete Mathematics');
+values ('BSC221','Discrete Mathematics');/*done*/
 insert into course
-values ('CIS260','Logic Design');
+values ('CIS260','Logic Design');/*done*/
 insert into course
-values ('CIS280','Database Management System');
+values ('CIS280','Database Management System');/*done*/
 insert into course
-values ('CIS240','Statistical Analysis');
+values ('CIS240','Statistical Analysis');/*done*/
 
 
 /*inserting data into class */
@@ -179,42 +193,43 @@ values (36,CURRENT_DATE+66,CURRENT_DATE+66.1,1,'Final','N');
 
 
 /*insert into topic*/
+/*classId, topicName*/
 insert into topic
-values (1,'Arrays');
+values (1,'Arrays');/*done*/
 insert into topic
-values (1,'Pointers');
+values (1,'Pointers');/*done*/
 insert into topic
-values (2,'Motion');
+values (2,'Motion');/*done*/
 insert into topic
-values (2,'Momentum');
+values (2,'Momentum');/*done*/
 insert into topic
-values (3,'Combinatorics');
+values (3,'Combinatorics');/*done*/
 insert into topic
-values (3,'Random Variable');
+values (3,'Random Variable');/*done*/
 insert into topic
 values (4,'Soft Skills');
 insert into topic
 values (4,'C.V.');
 insert into topic
-values (5,'Inheritance');
+values (5,'Inheritance');/*done*/
 insert into topic
-values (5,'Interfaces');
+values (5,'Interfaces');/*done*/
 insert into topic
-values (6,'Proofs');
+values (6,'Proofs');/*done*/
 insert into topic
-values (6,'Number Theory');
+values (6,'Number Theory');/*done*/
 insert into topic
-values (7,'Logic Gates');
+values (7,'Logic Gates');/*done*/
 insert into topic
-values (7,'Combinational Logic');
+values (7,'Combinational Logic');/*done*/
 insert into topic
-values (8,'Relational Database Design');
+values (8,'Relational Database Design');/*done*/
 insert into topic
-values (8,'Enhanced Entity-Relationship Modeling');
+values (8,'Enhanced Entity-Relationship Modeling');/*done*/
 insert into topic
-values (9,'Standard Deviation');
+values (9,'Standard Deviation');/*done*/
 insert into topic
-values (9,'The Normal Distribution');
+values (9,'The Normal Distribution');/*done*/
 
 /*inserting data into exammodel*/
 insert into exammodel
@@ -346,15 +361,6 @@ values (32,1);
 insert into exammodel
 values (32,2);
 
-/*insert into question*/
-/*qId, expectedDiff, topicName, examId, modelNumber, classId, statement */
-insert into  question
-values (1,5,'programming',1,1,1,'What is CS');
-insert into  question
-values (2,5,'combinations',2,2,3,'What is os');
-insert into  question
-values (3,7,'derivatives',3,3,2,'What is oop');
-
 /*inserting data instructorof*/
 /*classId, username*/
 insert into instructorof
@@ -377,13 +383,1058 @@ insert into instructorof
 values (8,'omarhassan');
 
 
+/*insert into question*/
+/*qId, expectedDiff, topicName, examId, modelNumber, classId, statement */
+/* --,    1 : 10   ,  ------  ,       ,            ,        ,  -------  */
+insert into  question (questionId, expectedDifficulty, topicName, statement)
+values (1,3,'Logic Gates', 'How to find the Simplest SOP expression');
+insert into  question (questionId, expectedDifficulty, topicName, statement)
+values (2,4,'Logic Gates','It should be kept in mind that don’t care terms should be used along with the terms that are present in _________');
+insert into  question (questionId, expectedDifficulty, topicName, statement)
+values (3,2,'Logic Gates','There are many situations in logic design in which simplification of logic expression is possible in terms of XOR and _________ operations.');
+insert into  question (questionId, expectedDifficulty, topicName, statement)
+values (4,5,'Logic Gates','These logic gates are widely used in ______ design, and therefore are available in IC form.');
+insert into  question (questionId, expectedDifficulty, topicName, statement)
+values (5,3,'Logic Gates','In case of XOR/XNOR simplification, you have to look for the following _______');
+insert into  question (questionId, expectedDifficulty, topicName, statement)
+values (6,2,'Combinational Logic','It is a simple combinational digital circuit built from logic gates');
+insert into  question (questionId, expectedDifficulty, topicName, statement)
+values (7,4,'Combinational Logic','It is the converse of decoding and contains 2n (or fewer) input lines and n output line');
+insert into  question (questionId, expectedDifficulty, topicName, statement)
+values (8,3,'Combinational Logic','It directs data from input to a selected output line');
+insert into  question (questionId, expectedDifficulty, topicName, statement)
+values (9,4,'Combinational Logic','It is a very useful combinational circuit used in communication systems');
+insert into  question (questionId, expectedDifficulty, topicName, statement)
+values (10,1,'Combinational Logic',' This converter deals with converting binary code to gray code');
+insert into  question (questionId, expectedDifficulty, topicName, statement)
+values (11,1,'Relational Database Design','DBMS Stand for');
+insert into  question (questionId, expectedDifficulty, topicName, statement)
+values (12,7,'Relational Database Design','The view of total database content is');
+insert into  question (questionId, expectedDifficulty, topicName, statement)
+values (13,1,'Relational Database Design','DML is provided for');
+insert into  question (questionId, expectedDifficulty, topicName, statement)
+values (14,2,'Relational Database Design','In case of entity integrity, the primary key may be');
+insert into  question (questionId, expectedDifficulty, topicName, statement)
+values (15,2,'Relational Database Design','An entity set that does not have sufficient attributes to form a primary key is a');
+insert into  question (questionId, expectedDifficulty, topicName, statement)
+values (16,3,'Enhanced Entity-Relationship Modeling','In an E-R diagram attributes are represented by');
+insert into  question (questionId, expectedDifficulty, topicName, statement)
+values (17,4,'Enhanced Entity-Relationship Modeling','The DBMS language component which can be embedded in a program is');
+insert into  question (questionId, expectedDifficulty, topicName, statement)
+values (18,2,'Enhanced Entity-Relationship Modeling','Conceptual design');
+insert into  question (questionId, expectedDifficulty, topicName, statement)
+values (19,1,'Enhanced Entity-Relationship Modeling','Count function in SQL returns the number of');
+insert into  question (questionId, expectedDifficulty, topicName, statement)
+values (20,2,'Enhanced Entity-Relationship Modeling','The statement in SQL which allows to change the definition of a table is');
+insert into  question (questionId, expectedDifficulty, topicName, statement)
+values (21,2,'Arrays','The address of a variable temp of type float is');
+insert into  question (questionId, expectedDifficulty, topicName, statement)
+values (22,4,'Arrays','What is the output of the following code char symbol[3]={‘a’,‘b’,‘c’}; for (int index=0; index<3; index++) cout << symbol [index];');
+insert into  question (questionId, expectedDifficulty, topicName, statement)
+values (23,3,'Arrays','In C++, dynamic memory allocation is accomplished with the operator ____');
+insert into  question (questionId, expectedDifficulty, topicName, statement)
+values (24,1,'Arrays','The break statement causes an exit');
+insert into  question (questionId, expectedDifficulty, topicName, statement)
+values (25,2,'Arrays','You can read input that consists of multiple lines of text using');
+insert into  question (questionId, expectedDifficulty, topicName, statement)
+values (26,3,'Pointers','Which statement gets affected when i++ is changed to ++i');
+insert into  question (questionId, expectedDifficulty, topicName, statement)
+values (27,4,'Pointers','If the variable count exceeds 100, a single statement that prints “Too many” is');
+insert into  question (questionId, expectedDifficulty, topicName, statement)
+values (28,5,'Pointers','To perform stream I/O with disk files in C++, you should');
+insert into  question (questionId, expectedDifficulty, topicName, statement)
+values (29,6,'Pointers','Identify the operator that is NOT used with pointers');
+insert into  question (questionId, expectedDifficulty, topicName, statement)
+values (30,7,'Pointers','Consider the following statements char *ptr; ptr = “hello”; cout << *ptr; What will be printed?');
+insert into  question (questionId, expectedDifficulty, topicName, statement)
+values (31,1,'Inheritance','Mechanism of deriving a class from another derived class is known as____');
+insert into  question (questionId, expectedDifficulty, topicName, statement)
+values (32,9,'Inheritance','RunTime Polymorphism is achieved by ______');
+insert into  question (questionId, expectedDifficulty, topicName, statement)
+values (33,4,'Inheritance','The major goal of inheritance in c++ is:');
+insert into  question (questionId, expectedDifficulty, topicName, statement)
+values (34,3,'Inheritance','A class defined within another class is:');
+insert into  question (questionId, expectedDifficulty, topicName, statement)
+values (35,2,'Inheritance','A copy constructor takes');
+insert into  question (questionId, expectedDifficulty, topicName, statement)
+values (36,10,'Interfaces','Overloading a postfix increment operator by means of a member function takes');
+insert into  question (questionId, expectedDifficulty, topicName, statement)
+values (37,6,'Interfaces','Which of the following ways are legal to access a class data member using this pointer?');
+insert into  question (questionId, expectedDifficulty, topicName, statement)
+values (38,5,'Interfaces','Which of the following declarations are illegal?');
+insert into  question (questionId, expectedDifficulty, topicName, statement)
+values (39,7,'Interfaces','Which of the following operator can be overloaded through friend function?');
+insert into  question (questionId, expectedDifficulty, topicName, statement)
+values (40,8,'Interfaces','Which of the following statement is valid?');
+insert into  question (questionId, expectedDifficulty, topicName, statement)
+values (41,1,'Proofs','Which of the following statement is a proposition?');
+insert into  question (questionId, expectedDifficulty, topicName, statement)
+values (42,2,'Proofs','The truth value of ‘4+3=7 or 5 is not prime');
+insert into  question (questionId, expectedDifficulty, topicName, statement)
+values (43,3,'Proofs','Which of the following option is true?');
+insert into  question (questionId, expectedDifficulty, topicName, statement)
+values (44,4,'Proofs','Let P: I am in Bangalore.; Q: I love cricket.; then q -> p(q implies p) is?');
+insert into  question (questionId, expectedDifficulty, topicName, statement)
+values (45,5,'Proofs','The truth value ‘9 is prime then 3 is even’.');
+insert into  question (questionId, expectedDifficulty, topicName, statement)
+values (46,6,'Number Theory','Let P: I am in Delhi.; Q: Delhi is clean.; then q ^ p(q and p) is?');
+insert into  question (questionId, expectedDifficulty, topicName, statement)
+values (47,7,'Number Theory','Let P: This is a great website, Q: You should not come back here. Then ‘This is a great website and you should come back here.’ is best represented by?');
+insert into  question (questionId, expectedDifficulty, topicName, statement)
+values (48,8,'Number Theory',' Let P: We should be honest., Q: We should be dedicated., R: We should be overconfident. Then ‘We should be honest or dedicated but not overconfident.’ is best represented by?');
+insert into  question (questionId, expectedDifficulty, topicName, statement)
+values (49,9,'Number Theory','How many bits string of length 4 are possible such that they contain 2 ones and 2 zeroes?');
+insert into  question (questionId, expectedDifficulty, topicName, statement)
+values (50,10,'Number Theory','If a bit string contains {0, 1} only, having length 5 has no more than 2 ones in it. Then how many such bit strings are possible?');
+insert into  question (questionId, expectedDifficulty, topicName, statement)
+values (51,1,'Motion','In which of the following states does a body possess kinetic energy?');
+insert into  question (questionId, expectedDifficulty, topicName, statement)
+values (52,2,'Motion','Which of the following types of motion can be used for describing the motion of a car on a straight road?');
+insert into  question (questionId, expectedDifficulty, topicName, statement)
+values (53,3,'Motion','Which of the following types of motion cannot describe the motion of a clock’s hands?');
+insert into  question (questionId, expectedDifficulty, topicName, statement)
+values (54,4,'Motion','Which force can possibly act on a body moving in a straight line?');
+insert into  question (questionId, expectedDifficulty, topicName, statement)
+values (55,5,'Motion',' What kind of motion is rectilinear motion?');
+insert into  question (questionId, expectedDifficulty, topicName, statement)
+values (56,6,'Momentum','When a body is in the state of complete rest, what kind of energy does it possess?');
+insert into  question (questionId, expectedDifficulty, topicName, statement)
+values (57,7,'Momentum','Which of the following are obtained by dividing total displacement by total time taken?');
+insert into  question (questionId, expectedDifficulty, topicName, statement)
+values (58,8,'Momentum','What is the rate of change of rate of change of displacement of a body?');
+insert into  question (questionId, expectedDifficulty, topicName, statement)
+values (59,9,'Momentum','The displacement of a particle is given as function of time as x = t2 + 2t. How much displacement is covered in the first 5 seconds?');
+insert into  question (questionId, expectedDifficulty, topicName, statement)
+values (60,10,'Momentum','A person is standing at -2 location on the number line. He runs to and fro from -2 to +5 location 5 times. How much distance has he covered if he comes back to -2 location at the end?');
+insert into  question (questionId, expectedDifficulty, topicName, statement)
+values (61,1,'Combinatorics','Consider a dice with the property that that probability of a face with n dots showing up is proportional to n. The probability of face showing 4 dots is?');
+insert into  question (questionId, expectedDifficulty, topicName, statement)
+values (62,2,'Combinatorics','Let X be a random variable with probability distribution function f (x)=0.2 for |x|<1
+= 0.1 for 1 < |x| < 4
+= 0 otherwise
+The probability P (0.5 < x < 5) is _____');
+insert into  question (questionId, expectedDifficulty, topicName, statement)
+values (63,3,'Combinatorics','Runs scored by batsman in 5 one day matches are 50, 70, 82, 93, and 20. The standard deviation is ______');
+insert into  question (questionId, expectedDifficulty, topicName, statement)
+values (64,4,'Combinatorics','Find median and mode of the messages received on 9 consecutive days 15, 11, 9, 5, 18, 4, 15, 13, 17.');
+insert into  question (questionId, expectedDifficulty, topicName, statement)
+values (65,4,'Combinatorics','Mode is the value of x where f(x) is a maximum if X is continuous.');
+insert into  question (questionId, expectedDifficulty, topicName, statement)
+values (66,6,'Random Variable','E (XY)=E (X)E (Y) if x and y are independent.');
+insert into  question (questionId, expectedDifficulty, topicName, statement)
+values (67,8,'Random Variable','A coin is tossed up 4 times. The probability that tails turn up in 3 cases is ______');
+insert into  question (questionId, expectedDifficulty, topicName, statement)
+values (68,2,'Random Variable','If E denotes the expectation the variance of a random variable X is denoted as?');
+insert into  question (questionId, expectedDifficulty, topicName, statement)
+values (69,2,'Random Variable','X is a variate between 0 and 3. The value of E(X2) is ______');
+insert into  question (questionId, expectedDifficulty, topicName, statement)
+values (70,3,'Random Variable','The random variables X and Y have variances 0.2 and 0.5 respectively. Let Z= 5X-2Y. The variance of Z is?');
+insert into  question (questionId, expectedDifficulty, topicName, statement)
+values (71,2,'Standard Deviation','If the probability of hitting the target is 0.4, find mean and variance.');
+insert into  question (questionId, expectedDifficulty, topicName, statement)
+values (72,3,'Standard Deviation','If the probability that a bomb dropped from a place will strike the target is 60% and if 10 bombs are dropped, find mean and variance?');
+insert into  question (questionId, expectedDifficulty, topicName, statement)
+values (73,2,'Standard Deviation','If P(1) = P(3) in Poisson’s distribution, what is the mean?');
+insert into  question (questionId, expectedDifficulty, topicName, statement)
+values (74,3,'Standard Deviation','What is the mean and variance for standard normal distribution?');
+insert into  question (questionId, expectedDifficulty, topicName, statement)
+values (75,4,'Standard Deviation','Find λ in Poisson’s distribution if the probabilities of getting a head in biased coin toss as 34 and 6 coins are tossed.');
+insert into  question (questionId, expectedDifficulty, topicName, statement)
+values (76,5,'The Normal Distribution','Normal Distribution is applied for _____');
+insert into  question (questionId, expectedDifficulty, topicName, statement)
+values (77,6,'The Normal Distribution','The shape of the Normal Curve is ____');
+insert into  question (questionId, expectedDifficulty, topicName, statement)
+values (78,7,'The Normal Distribution','Normal Distribution is symmetric is about _____');
+insert into  question (questionId, expectedDifficulty, topicName, statement)
+values (79,1,'The Normal Distribution',' For a standard normal variate, the value of mean is?');
+insert into  question (questionId, expectedDifficulty, topicName, statement)
+values (80,9,'The Normal Distribution','The area under a standard normal curve is?');
+insert into  question (questionId, expectedDifficulty, topicName, statement)
+values (81,1,'Soft Skills',' In the CV, the _____ part indicates specific position for which you are applying for');
+insert into  question (questionId, expectedDifficulty, topicName, statement)
+values (82,2,'Soft Skills','All the following are techniques for capturing attention during a presentation except:');
+insert into  question (questionId, expectedDifficulty, topicName, statement)
+values (83,2,'Soft Skills','All the following are parts of the software release notes except:');
+insert into  question (questionId, expectedDifficulty, topicName, statement)
+values (84,3,'Soft Skills','In an email, people who are required to respond are placed in:');
+insert into  question (questionId, expectedDifficulty, topicName, statement)
+values (85,4,'Soft Skills','All the following are steps soft skills except:');
+insert into  question (questionId, expectedDifficulty, topicName, statement)
+values (86,2,'C.V.','All the following are steps of planning a presentation except:');
+insert into  question (questionId, expectedDifficulty, topicName, statement)
+values (87,4,'C.V.','It is ok to arrive up to 15 minutes late to an interview');
+insert into  question (questionId, expectedDifficulty, topicName, statement)
+values (88,5,'C.V.','Deployment Guide provides relevant information regarding the installation ,deployment, configuration of system');
+insert into  question (questionId, expectedDifficulty, topicName, statement)
+values (89,2,'C.V.','Project proposal explains how to use a software application in language that a nontechnical person can understand.');
+insert into  question (questionId, expectedDifficulty, topicName, statement)
+values (90,3,'C.V.','Gross income is the amount of salary paid to the individual by an employer, before any deductions are taken');
+
+
 /*inserting into questioncohice*/
+/*qId, choiceNumber, choiceStatement*/
 insert into questionchoice
-values (1,'a','os ');
+values (1,'a','Circle all odd implicants on the K-map.');
 insert into questionchoice
-values (2,'b','cs');
+values (1,'b','Identify and delete all essential prime implicants for the cover');
 insert into questionchoice
-values (3,'c','oop');
+values (1,'c','Select a maximum subset of the remaining prime implicants to complete the cover, that is, to cover those Minterms not covered by the essential prime implicants.');
+insert into questionchoice
+values (1,'d','None of the above');
+insert into questionchoice
+values (2,'a','Minterms');
+insert into questionchoice
+values (2,'b','Maxterm');
+insert into questionchoice
+values (2,'c','K-Map');
+insert into questionchoice
+values (2,'d','None of the above');
+insert into questionchoice
+values (3,'a','XNOR');
+insert into questionchoice
+values (3,'b','XOR');
+insert into questionchoice
+values (3,'c','NOR');
+insert into questionchoice
+values (3,'d','All of the above');
+insert into questionchoice
+values (4,'a','Circuit');
+insert into questionchoice
+values (4,'b','Digital');
+insert into questionchoice
+values (4,'c','Analog');
+insert into questionchoice
+values (4,'d','Block');
+insert into questionchoice
+values (5,'a','Diagonal Adjacencies');
+insert into questionchoice
+values (5,'b','Offset Adjacencies');
+insert into questionchoice
+values (5,'c','Straight Adjacencies');
+insert into questionchoice
+values (5,'d','Both (A) and (B)');
+insert into questionchoice
+values (6,'a','Full Adder');
+insert into questionchoice
+values (6,'b','Half Adder');
+insert into questionchoice
+values (6,'c','Null Adder');
+insert into questionchoice
+values (6,'d','None of the above');
+insert into questionchoice
+values (7,'a','Subtractor');
+insert into questionchoice
+values (7,'b','Decoder');
+insert into questionchoice
+values (7,'c','Multiplexer');
+insert into questionchoice
+values (7,'d','Encoder');
+insert into questionchoice
+values (8,'a','Demultiplexer');
+insert into questionchoice
+values (8,'b','Multiplexer');
+insert into questionchoice
+values (8,'c','Coder');
+insert into questionchoice
+values (8,'d','Both (A) and (B)');
+insert into questionchoice
+values (9,'a','Parity bit Checker');
+insert into questionchoice
+values (9,'b','Parity bit Generator');
+insert into questionchoice
+values (9,'c','Parity bit');
+insert into questionchoice
+values (9,'d','Both (A) and (B)');
+insert into questionchoice
+values (10,'a','Binary to Gray Code Converter');
+insert into questionchoice
+values (10,'b','Gray to Binary Code Converter');
+insert into questionchoice
+values (10,'c','Binary Code Converter');
+insert into questionchoice
+values (10,'d','Gray Code Converter');
+insert into questionchoice
+values (11,'a','Data base marginal system');
+insert into questionchoice
+values (11,'b','Directory Based Memory Standard');
+insert into questionchoice
+values (11,'c','Data Base Management System');
+insert into questionchoice
+values (11,'d','Dual Bus Mask Storage');
+insert into questionchoice
+values (12,'a','Conceptual view.');
+insert into questionchoice
+values (12,'b','Internal view');
+insert into questionchoice
+values (12,'c','External view');
+insert into questionchoice
+values (12,'d','Physical View');
+insert into questionchoice
+values (13,'a','Description of logical structure of database.');
+insert into questionchoice
+values (13,'b','Addition of new structures in the database system.');
+insert into questionchoice
+values (13,'c','Manipulation \& processing of database.');
+insert into questionchoice
+values (13,'d','Definition of physical structure of database system.');
+insert into questionchoice
+values (14,'a','not Null');
+insert into questionchoice
+values (14,'b','Null');
+insert into questionchoice
+values (14,'c','both Null \& not Null.');
+insert into questionchoice
+values (14,'d','any value.');
+insert into questionchoice
+values (15,'a','strong entity set.');
+insert into questionchoice
+values (15,'b','weak entity set.');
+insert into questionchoice
+values (15,'c','simple entity set.');
+insert into questionchoice
+values (15,'d','primary entity set.');
+insert into questionchoice
+values (16,'a','rectangle');
+insert into questionchoice
+values (16,'b','square');
+insert into questionchoice
+values (16,'c','ellipse');
+insert into questionchoice
+values (16,'d','triangle');
+insert into questionchoice
+values (17,'a','The data definition language (DDL).');
+insert into questionchoice
+values (17,'b','The data manipulation language (DML).');
+insert into questionchoice
+values (17,'c','The database administrator (DBA).');
+insert into questionchoice
+values (17,'d','A query language.');
+insert into questionchoice
+values (18,'a','is a documentation technique.');
+insert into questionchoice
+values (18,'b','needs data volume and processing frequencies to determine the size of the database.');
+insert into questionchoice
+values (18,'c','involves modelling independent of the DBMS.');
+insert into questionchoice
+values (18,'d','is designing the relational model.');
+insert into questionchoice
+values (19,'a','values');
+insert into questionchoice
+values (19,'b','distinct values');
+insert into questionchoice
+values (19,'c','groups');
+insert into questionchoice
+values (19,'d','columns');
+insert into questionchoice
+values (20,'a','Alter');
+insert into questionchoice
+values (20,'b','Update');
+insert into questionchoice
+values (20,'c','Create');
+insert into questionchoice
+values (20,'d','select');
+insert into questionchoice
+values (21,'a','*temp');
+insert into questionchoice
+values (21,'b','\&temp');
+insert into questionchoice
+values (21,'c','float\& temp');
+insert into questionchoice
+values (21,'d','float temp\&');
+insert into questionchoice
+values (22,'a','a b c');
+insert into questionchoice
+values (22,'b','“abc”');
+insert into questionchoice
+values (22,'c','abc');
+insert into questionchoice
+values (22,'d','‘abc’');
+insert into questionchoice
+values (23,'a','new');
+insert into questionchoice
+values (23,'b','this');
+insert into questionchoice
+values (23,'c','malloc( )');
+insert into questionchoice
+values (23,'d','delete');
+insert into questionchoice
+values (24,'a','from the innermost loop only.');
+insert into questionchoice
+values (24,'b','only from the innermost switch.');
+insert into questionchoice
+values (24,'c','from all loops \& switches.');
+insert into questionchoice
+values (24,'d','from the innermost loop or switch.');
+insert into questionchoice
+values (25,'a','the normal cout << combination.');
+insert into questionchoice
+values (25,'b','the cin.get( ) function with one argument.');
+insert into questionchoice
+values (25,'c','the cin.get( ) function with two arguments. ');
+insert into questionchoice
+values (25,'d','the cin.get( ) function with three arguments. ');
+insert into questionchoice
+values (26,'a','i = 20; i++;');
+insert into questionchoice
+values (26,'b','for (i = 0; i<20; i++) { } ');
+insert into questionchoice
+values (26,'c','a = i++; ');
+insert into questionchoice
+values (26,'d','while (i++ = 20) cout i;');
+insert into questionchoice
+values (27,'a','if (count<100) cout << “Too many”;');
+insert into questionchoice
+values (27,'b','if (count>100) cout >> “Too many”;');
+insert into questionchoice
+values (27,'c','if (count>100) cout << “Too many”;');
+insert into questionchoice
+values (27,'d','None of these');
+insert into questionchoice
+values (28,'a','open and close files as in procedural languages');
+insert into questionchoice
+values (28,'b','use classes derived from ios');
+insert into questionchoice
+values (28,'c','use C language library functions to read and write data.');
+insert into questionchoice
+values (28,'d','include the IOSTREAM.H header file.');
+insert into questionchoice
+values (29,'a','->');
+insert into questionchoice
+values (29,'b','\&');
+insert into questionchoice
+values (29,'c','*');
+insert into questionchoice
+values (29,'d','>>');
+insert into questionchoice
+values (30,'a','first letter');
+insert into questionchoice
+values (30,'b','entire string');
+insert into questionchoice
+values (30,'c','it is a syntax error');
+insert into questionchoice
+values (30,'d','last letter');
+insert into questionchoice
+values (31,'a','Polymorphism');
+insert into questionchoice
+values (31,'b','Single Inheritance');
+insert into questionchoice
+values (31,'c','Multilevel Inheritance');
+insert into questionchoice
+values (31,'d','Message Passing');
+insert into questionchoice
+values (32,'a','friend function');
+insert into questionchoice
+values (32,'b','virtual function');
+insert into questionchoice
+values (32,'c','operator overloading');
+insert into questionchoice
+values (32,'d','function overloading');
+insert into questionchoice
+values (33,'a','To facilitate the conversion of data types.');
+insert into questionchoice
+values (33,'b','To help modular programming.');
+insert into questionchoice
+values (33,'c','To extend the capabilities of a class.');
+insert into questionchoice
+values (33,'d','To hide the details of base class.');
+insert into questionchoice
+values (34,'a','Nested class');
+insert into questionchoice
+values (34,'b','Inheritance');
+insert into questionchoice
+values (34,'c','Containership');
+insert into questionchoice
+values (34,'d','Encapsulation');
+insert into questionchoice
+values (35,'a','no argument');
+insert into questionchoice
+values (35,'b','one argument');
+insert into questionchoice
+values (35,'c','two arguments');
+insert into questionchoice
+values (35,'d','arbitrary no. of arguments');
+insert into questionchoice
+values (36,'a','no argument');
+insert into questionchoice
+values (36,'b','one argument');
+insert into questionchoice
+values (36,'c','two arguments');
+insert into questionchoice
+values (36,'d','three arguments');
+insert into questionchoice
+values (37,'a','this.x');
+insert into questionchoice
+values (37,'b','*this.x');
+insert into questionchoice
+values (37,'c','*(this.x)');
+insert into questionchoice
+values (37,'d','(*this).x');
+insert into questionchoice
+values (38,'a','void *ptr;');
+insert into questionchoice
+values (38,'b','char *str = “hello”;');
+insert into questionchoice
+values (38,'c','char str = “hello”;');
+insert into questionchoice
+values (38,'d','const *int p1;');
+insert into questionchoice
+values (39,'a','->');
+insert into questionchoice
+values (39,'b','=');
+insert into questionchoice
+values (39,'c','( )');
+insert into questionchoice
+values (39,'d','*');
+insert into questionchoice
+values (40,'a','We can create new C++ operators.');
+insert into questionchoice
+values (40,'b','We can change the precedence of the C++ operators.');
+insert into questionchoice
+values (40,'c','We can change the associativity of the C++ operators.');
+insert into questionchoice
+values (40,'d','We can not change operator templates.');
+insert into questionchoice
+values (41,'a','Get me a glass of milkshake');
+insert into questionchoice
+values (41,'b','God bless you!');
+insert into questionchoice
+values (41,'c','What is the time now?');
+insert into questionchoice
+values (41,'d','The only odd prime number is 2');
+insert into questionchoice
+values (42,'a','False');
+insert into questionchoice
+values (42,'b','True');
+insert into questionchoice
+values (43,'a','If the Sun is a planet, elephants will fly');
+insert into questionchoice
+values (43,'b','3 +2 = 8 if 5-2 = 7');
+insert into questionchoice
+values (43,'c','1 > 3 and 3 is a positive integer');
+insert into questionchoice
+values (43,'d','-2 > 3 or 3 is a negative integer');
+insert into questionchoice
+values (44,'a','If I love cricket then I am in Bangalore');
+insert into questionchoice
+values (44,'b','If I am in Bangalore then I love cricket');
+insert into questionchoice
+values (44,'c','I am not in Bangalore');
+insert into questionchoice
+values (44,'d','I love cricket');
+insert into questionchoice
+values (45,'a','False');
+insert into questionchoice
+values (45,'b','True');
+insert into questionchoice
+values (46,'a','Delhi is clean and I am in Delhi');
+insert into questionchoice
+values (46,'b','Delhi is not clean or I am in Delhi');
+insert into questionchoice
+values (46,'c','I am in Delhi and Delhi is not clean');
+insert into questionchoice
+values (46,'d','Delhi is clean but I am in Mumbai');
+insert into questionchoice
+values (47,'a','~P V ~Q');
+insert into questionchoice
+values (47,'b','P ∧ ~Q');
+insert into questionchoice
+values (47,'c','P V Q');
+insert into questionchoice
+values (47,'d','P ∧ Q');
+insert into questionchoice
+values (48,'a','~P V ~Q V R');
+insert into questionchoice
+values (48,'b','P ∧ ~Q ∧ R');
+insert into questionchoice
+values (48,'c','P V Q ∧ R');
+insert into questionchoice
+values (48,'d','P V Q ∧ ~R');
+insert into questionchoice
+values (49,'a','4');
+insert into questionchoice
+values (49,'b','2');
+insert into questionchoice
+values (49,'c','5');
+insert into questionchoice
+values (49,'d','6');
+insert into questionchoice
+values (50,'a','14');
+insert into questionchoice
+values (50,'b','12');
+insert into questionchoice
+values (50,'c','15');
+insert into questionchoice
+values (50,'d','16');
+insert into questionchoice
+values (51,'a','Rest');
+insert into questionchoice
+values (51,'b','Motion');
+insert into questionchoice
+values (51,'c','When placed on a platform');
+insert into questionchoice
+values (51,'d','In zero gravity');
+insert into questionchoice
+values (52,'a','Rectilinear');
+insert into questionchoice
+values (52,'b','Circular');
+insert into questionchoice
+values (52,'c','Periodic');
+insert into questionchoice
+values (52,'d','Harmonic');
+insert into questionchoice
+values (53,'a','Rectilinear');
+insert into questionchoice
+values (53,'b','Circular');
+insert into questionchoice
+values (53,'c','Periodic');
+insert into questionchoice
+values (53,'d','Harmonic');
+insert into questionchoice
+values (54,'a','Tangential force');
+insert into questionchoice
+values (54,'b','Friction force');
+insert into questionchoice
+values (54,'c','Centrifugal force');
+insert into questionchoice
+values (54,'d','Centripetal force');
+insert into questionchoice
+values (55,'a','One dimensional');
+insert into questionchoice
+values (55,'b','Two dimensional');
+insert into questionchoice
+values (55,'c','Three dimensional');
+insert into questionchoice
+values (55,'d','Zero dimensional');
+insert into questionchoice
+values (56,'a','Potential energy');
+insert into questionchoice
+values (56,'b','Kinetic energy');
+insert into questionchoice
+values (56,'c','Total energy');
+insert into questionchoice
+values (56,'d','Heat energy');
+insert into questionchoice
+values (57,'a','Average velocity');
+insert into questionchoice
+values (57,'b','Instantaneous velocity');
+insert into questionchoice
+values (57,'c','Uniform velocity');
+insert into questionchoice
+values (57,'d','Speed');
+insert into questionchoice
+values (58,'a','Velocity');
+insert into questionchoice
+values (58,'b','Acceleration');
+insert into questionchoice
+values (58,'c','Force');
+insert into questionchoice
+values (58,'d','Jerk');
+insert into questionchoice
+values (59,'a','5 units');
+insert into questionchoice
+values (59,'b','35 units');
+insert into questionchoice
+values (59,'c','40 units');
+insert into questionchoice
+values (59,'d','0 units');
+insert into questionchoice
+values (60,'a','35 units');
+insert into questionchoice
+values (60,'b','7 units');
+insert into questionchoice
+values (60,'c','30 units');
+insert into questionchoice
+values (60,'d','15 units');
+insert into questionchoice
+values (61,'a','1/7');
+insert into questionchoice
+values (61,'b','5/42');
+insert into questionchoice
+values (61,'c','1/21');
+insert into questionchoice
+values (61,'d','4/21');
+insert into questionchoice
+values (62,'a','0.3');
+insert into questionchoice
+values (62,'b','0.5');
+insert into questionchoice
+values (62,'c','0.4');
+insert into questionchoice
+values (62,'d','0.8');
+insert into questionchoice
+values (63,'a','25.79');
+insert into questionchoice
+values (63,'b','25.49');
+insert into questionchoice
+values (63,'c','25.29');
+insert into questionchoice
+values (63,'d','25.69');
+insert into questionchoice
+values (64,'a','13, 6');
+insert into questionchoice
+values (64,'b','13, 18');
+insert into questionchoice
+values (64,'c','18, 15');
+insert into questionchoice
+values (64,'d','15, 16');
+insert into questionchoice
+values (65,'a','True');
+insert into questionchoice
+values (65,'b','False');
+insert into questionchoice
+values (66,'a','True');
+insert into questionchoice
+values (66,'b','False');
+insert into questionchoice
+values (67,'a','1/2');
+insert into questionchoice
+values (67,'b','1/3');
+insert into questionchoice
+values (67,'c','1/4');
+insert into questionchoice
+values (67,'d','1/6');
+insert into questionchoice
+values (68,'a','(E(X))^2');
+insert into questionchoice
+values (68,'b','E(X^2)-(E(X))^2');
+insert into questionchoice
+values (68,'c','E(X^2)');
+insert into questionchoice
+values (68,'d','2E(X)');
+insert into questionchoice
+values (69,'a','8');
+insert into questionchoice
+values (69,'b','7');
+insert into questionchoice
+values (69,'c','27');
+insert into questionchoice
+values (69,'d','9');
+insert into questionchoice
+values (70,'a','3');
+insert into questionchoice
+values (70,'b','4');
+insert into questionchoice
+values (70,'c','5');
+insert into questionchoice
+values (70,'d','7');
+insert into questionchoice
+values (71,'a','0.4, 0.24');
+insert into questionchoice
+values (71,'b','0.6, 0.24');
+insert into questionchoice
+values (71,'c','0.4, 0.16');
+insert into questionchoice
+values (71,'d','0.6, 0.16');
+insert into questionchoice
+values (72,'a','0.6, 0.24');
+insert into questionchoice
+values (72,'b','6, 2.4');
+insert into questionchoice
+values (72,'c','0.4, 0.16');
+insert into questionchoice
+values (72,'d','4, 1.6');
+insert into questionchoice
+values (73,'a','root 2');
+insert into questionchoice
+values (73,'b','root 3');
+insert into questionchoice
+values (73,'c','root 6');
+insert into questionchoice
+values (73,'d','root 7');
+insert into questionchoice
+values (74,'a','Mean is 0 and variance is 1');
+insert into questionchoice
+values (74,'b','Mean is 1 and variance is 0');
+insert into questionchoice
+values (74,'c','Mean is 0 and variance is ∞');
+insert into questionchoice
+values (74,'d','Mean is ∞ and variance is 0');
+insert into questionchoice
+values (75,'a','3.5');
+insert into questionchoice
+values (75,'b','4.5');
+insert into questionchoice
+values (75,'c','5.5');
+insert into questionchoice
+values (75,'d','6.6');
+insert into questionchoice
+values (76,'a','Continuous Random Distribution');
+insert into questionchoice
+values (76,'b','Discrete Random Variable');
+insert into questionchoice
+values (76,'c','Irregular Random Variable');
+insert into questionchoice
+values (76,'d','Uncertain Random Variable');
+insert into questionchoice
+values (77,'a','Bell Shaped');
+insert into questionchoice
+values (77,'b','Flat');
+insert into questionchoice
+values (77,'c','Circular');
+insert into questionchoice
+values (77,'d','Spiked');
+insert into questionchoice
+values (78,'a','Variance');
+insert into questionchoice
+values (78,'b','Mean');
+insert into questionchoice
+values (78,'c','Standard deviation');
+insert into questionchoice
+values (78,'d','Covariance');
+insert into questionchoice
+values (79,'a','∞');
+insert into questionchoice
+values (79,'b','1');
+insert into questionchoice
+values (79,'c','0');
+insert into questionchoice
+values (79,'d','not defined');
+insert into questionchoice
+values (80,'a','0');
+insert into questionchoice
+values (80,'b','1');
+insert into questionchoice
+values (80,'c','∞');
+insert into questionchoice
+values (80,'d','not defined');
+insert into questionchoice
+values (81,'a','Objective');
+insert into questionchoice
+values (81,'b','Personal Information');
+insert into questionchoice
+values (81,'c','work experience');
+insert into questionchoice
+values (82,'a','Silence');
+insert into questionchoice
+values (82,'b','Introducing yourself');
+insert into questionchoice
+values (82,'c','Eye Contact');
+insert into questionchoice
+values (83,'a','Recent Changes');
+insert into questionchoice
+values (83,'b','Bug Fixes');
+insert into questionchoice
+values (83,'c','Price');
+insert into questionchoice
+values (84,'a','BCC');
+insert into questionchoice
+values (84,'b','CC');
+insert into questionchoice
+values (84,'c','TO');
+insert into questionchoice
+values (85,'a','Leadership');
+insert into questionchoice
+values (85,'b','Computer Programming');
+insert into questionchoice
+values (85,'c','Communication');
+insert into questionchoice
+values (86,'a','Introducing yourself');
+insert into questionchoice
+values (86,'b','Knowing the audience');
+insert into questionchoice
+values (86,'c','Preparing the title of the presentation');
+insert into questionchoice
+values (87,'a','true');
+insert into questionchoice
+values (87,'b','false');
+insert into questionchoice
+values (88,'a','true');
+insert into questionchoice
+values (88,'b','false');
+insert into questionchoice
+values (89,'a','true');
+insert into questionchoice
+values (89,'b','false');
+insert into questionchoice
+values (90,'a','true');
+insert into questionchoice
+values (90,'b','false');
+
+
+
+/*inserting into correctChoice*/
+/*qId, correctChoiceNumber*/
+insert into correctChoice
+values (1, 'd');
+insert into correctChoice
+values (2, 'a');
+insert into correctChoice
+values (3, 'a');
+insert into correctChoice
+values (4, 'b');
+insert into correctChoice
+values (5, 'd');
+insert into correctChoice
+values (6, 'b');
+insert into correctChoice
+values (7, 'd');
+insert into correctChoice
+values (8, 'a');
+insert into correctChoice
+values (9, 'd');
+insert into correctChoice
+values (10, 'a');
+insert into correctChoice
+values (11, 'c');
+insert into correctChoice
+values (12, 'a');
+insert into correctChoice
+values (13, 'c');
+insert into correctChoice
+values (14, 'a');
+insert into correctChoice
+values (15, 'b');
+insert into correctChoice
+values (16, 'c');
+insert into correctChoice
+values (17, 'b');
+insert into correctChoice
+values (18, 'c');
+insert into correctChoice
+values (19, 'a');
+insert into correctChoice
+values (20, 'a');
+insert into correctChoice
+values (21, 'b');
+insert into correctChoice
+values (22, 'c');
+insert into correctChoice
+values (23, 'a');
+insert into correctChoice
+values (24, 'd');
+insert into correctChoice
+values (25, 'c');
+insert into correctChoice
+values (26, 'a');
+insert into correctChoice
+values (27, 'c');
+insert into correctChoice
+values (28, 'b');
+insert into correctChoice
+values (29, 'd');
+insert into correctChoice
+values (30, 'a');
+insert into correctChoice
+values (31, 'c');
+insert into correctChoice
+values (32, 'b');
+insert into correctChoice
+values (33, 'c');
+insert into correctChoice
+values (34, 'a');
+insert into correctChoice
+values (35, 'b');
+insert into correctChoice
+values (36, 'a');
+insert into correctChoice
+values (37, 'd');
+insert into correctChoice
+values (38, 'c');
+insert into correctChoice
+values (39, 'd');
+insert into correctChoice
+values (40, 'd');
+insert into correctChoice
+values (41, 'd');
+insert into correctChoice
+values (42, 'b');
+insert into correctChoice
+values (43, 'a');
+insert into correctChoice
+values (44, 'a');
+insert into correctChoice
+values (45, 'b');
+insert into correctChoice
+values (46, 'a');
+insert into correctChoice
+values (47, 'b');
+insert into correctChoice
+values (48, 'd');
+insert into correctChoice
+values (49, 'd');
+insert into correctChoice
+values (50, 'd');
+insert into correctChoice
+values (51, 'b');
+insert into correctChoice
+values (52, 'a');
+insert into correctChoice
+values (53, 'a');
+insert into correctChoice
+values (54, 'b');
+insert into correctChoice
+values (55, 'a');
+insert into correctChoice
+values (56, 'a');
+insert into correctChoice
+values (57, 'a');
+insert into correctChoice
+values (58, 'b');
+insert into correctChoice
+values (59, 'b');
+insert into correctChoice
+values (60, 'a');
+insert into correctChoice
+values (61, 'd');
+insert into correctChoice
+values (62, 'c');
+insert into correctChoice
+values (63, 'a');
+insert into correctChoice
+values (64, 'b');
+insert into correctChoice
+values (65, 'a');
+insert into correctChoice
+values (66, 'a');
+insert into correctChoice
+values (67, 'a');
+insert into correctChoice
+values (68, 'b');
+insert into correctChoice
+values (69, 'd');
+insert into correctChoice
+values (70, 'd');
+insert into correctChoice
+values (71, 'a');
+insert into correctChoice
+values (72, 'b');
+insert into correctChoice
+values (73, 'c');
+insert into correctChoice
+values (74, 'a');
+insert into correctChoice
+values (75, 'b');
+insert into correctChoice
+values (76, 'a');
+insert into correctChoice
+values (77, 'a');
+insert into correctChoice
+values (78, 'b');
+insert into correctChoice
+values (79, 'c');
+insert into correctChoice
+values (80, 'b');
+insert into correctChoice
+values (81, 'a');
+insert into correctChoice
+values (82, 'b');
+insert into correctChoice       
+values (83, 'c');
+insert into correctChoice
+values (84, 'c');
+insert into correctChoice
+values (85, 'b');
+insert into correctChoice
+values (86, 'a');
+insert into correctChoice
+values (87, 'b');
+insert into correctChoice
+values (88, 'a');
+insert into correctChoice
+values (89, 'b');
+insert into correctChoice
+values (90, 'a');
+
 
 /*
  * We Plan on doing some test exam and also test models
@@ -411,21 +1462,152 @@ values (2,2,'mohamedyaser');
 insert into assignedmodel
 values (1,1,'ahmedmohamed');*/
 
-/*inserting into studentregister*/
-insert into studentregister
-values (1,'aymanhassan');
-insert into studentregister
-values (2,'mohamedyaser');
-insert into studentregister
-values (4,'ahmedmohamed');
-insert into studentregister
-values (6,'ziadkhobeiz');
-insert into studentregister
-values (1,'georgesamy');
-insert into studentregister
-values (4,'georgesamy');
+/*inserting into studentRegister*/
+
+/*FRESHMEN*/
+insert into studentRegister
+values (1, 'mostafaali');
+insert into studentRegister
+values (1, 'georgesamy');
+insert into studentRegister
+values (1, 'ahmedmohamed');
+insert into studentRegister
+values (1, 'alimohamed');
+insert into studentRegister
+values (1, 'mohamedyaser');
+insert into studentRegister
+values (2, 'mostafaali');
+insert into studentRegister
+values (2, 'georgesamy');
+insert into studentRegister
+values (2, 'ahmedmohamed');
+insert into studentRegister
+values (2, 'alimohamed');
+insert into studentRegister
+values (2, 'mohamedyaser');
+insert into studentRegister
+values (3, 'mostafaali');
+insert into studentRegister
+values (3, 'georgesamy');
+insert into studentRegister
+values (3, 'ahmedmohamed');
+insert into studentRegister
+values (3, 'alimohamed');
+insert into studentRegister
+values (3, 'mohamedyaser');
+insert into studentRegister
+values (4, 'mostafaali');
+insert into studentRegister
+values (4, 'georgesamy');
+insert into studentRegister
+values (4, 'ahmedmohamed');
+insert into studentRegister
+values (4, 'alimohamed');
+insert into studentRegister
+values (4, 'mohamedyaser');
+insert into studentRegister
+values (6, 'mostafaali');
+insert into studentRegister
+values (6, 'georgesamy');
+insert into studentRegister
+values (6, 'ahmedmohamed');
+insert into studentRegister
+values (6, 'alimohamed');
+insert into studentRegister
+values (6, 'mohamedyaser');
+insert into studentRegister
+values (8, 'mostafaali');
+insert into studentRegister
+values (8, 'georgesamy');
+insert into studentRegister
+values (8, 'ahmedmohamed');
+insert into studentRegister
+values (8, 'alimohamed');
+insert into studentRegister
+values (8, 'mohamedyaser');
+
+/*SOPHMORE*/
+insert into studentRegister
+values (4, 'aymanhassan');
+insert into studentRegister
+values (4, 'yusufnasser');
+insert into studentRegister
+values (4, 'youssefnader');
+insert into studentRegister
+values (4, 'stevensameh');
+insert into studentRegister
+values (4, 'ziadkhobeiz');
+insert into studentRegister
+values (4, 'abdelazizmostafa');
+insert into studentRegister
+values (5, 'aymanhassan');
+insert into studentRegister
+values (5, 'yusufnasser');
+insert into studentRegister
+values (5, 'youssefnader');
+insert into studentRegister
+values (5, 'stevensameh');
+insert into studentRegister
+values (5, 'ziadkhobeiz');
+insert into studentRegister
+values (5, 'abdelazizmostafa');
+insert into studentRegister
+values (6, 'aymanhassan');
+insert into studentRegister
+values (6, 'yusufnasser');
+insert into studentRegister
+values (6, 'youssefnader');
+insert into studentRegister
+values (6, 'stevensameh');
+insert into studentRegister
+values (6, 'ziadkhobeiz');
+insert into studentRegister
+values (6, 'abdelazizmostafa');
+insert into studentRegister
+values (7, 'aymanhassan');
+insert into studentRegister
+values (7, 'yusufnasser');
+insert into studentRegister
+values (7, 'youssefnader');
+insert into studentRegister
+values (7, 'stevensameh');
+insert into studentRegister
+values (7, 'ziadkhobeiz');
+insert into studentRegister
+values (7, 'abdelazizmostafa');
+insert into studentRegister
+values (8, 'aymanhassan');
+insert into studentRegister
+values (8, 'yusufnasser');
+insert into studentRegister
+values (8, 'youssefnader');
+insert into studentRegister
+values (8, 'stevensameh');
+insert into studentRegister
+values (8, 'ziadkhobeiz');
+insert into studentRegister
+values (8, 'abdelazizmostafa');
+insert into studentRegister
+values (9, 'aymanhassan');
+insert into studentRegister
+values (9, 'yusufnasser');
+insert into studentRegister
+values (9, 'youssefnader');
+insert into studentRegister
+values (9, 'stevensameh');
+insert into studentRegister
+values (9, 'ziadkhobeiz');
+insert into studentRegister
+values (9, 'abdelazizmostafa');
 
 /*
  * Enhancement done by Yusuf Nasser and Youssef Nader at Feb 5th 2021
  * From 16:39 to 20:11
+ * & at Feb 6th 2021 From 16:04 to 16:57
+ * Questions and its answers provided by Yusuf Nader and Ayman Hassan
+ * inserted by Yusuf Nasser and Youssef Nader Feb 7th 2021 From 20:30 to 22:11
+                                          * & Feb 8th 2021 From 16:39 to 19:00
+                                          * & Feb 9th 2021 From 00:32 to 01:45
+ * Final round of testing at Feb 8th 2021 From 01:46 to 02:52
+ * PASSED Final round of testing by Youssef Nader and Yusuf Nasser. 
 */

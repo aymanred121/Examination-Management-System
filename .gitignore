@@ -4,3 +4,11 @@
 /DBScript/build/
 /DBScript/dist/
 /DBScript/nbproject/private/
+
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+.history/
