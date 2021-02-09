@@ -1,200 +1,225 @@
-/*userData table */
-CREATE TABLE userData (
-UserName varchar2(20) primary key,
-First_Name varchar2(20),
-Middle_Name varchar2(20),
-Last_Name varchar2(20),
-BirthDate DATE,
-Mobile_Number varchar2(15),
-Email varchar2(30) UNIQUE,
-Password varchar2(40));
+/*DROPPING all the pre-existing TABLEs preparing for the DB update*/
+DROP TABLE adminstrator cascade CONSTRAINTs;
+DROP TABLE assignedmodel cascade CONSTRAINTs;
+DROP TABLE class cascade CONSTRAINTs;
+DROP TABLE course cascade CONSTRAINTs;
+DROP TABLE exam cascade CONSTRAINTs;
+DROP TABLE exammodel cascade CONSTRAINTs;
+DROP TABLE instructor cascade CONSTRAINTs;
+DROP TABLE instructorof cascade CONSTRAINTs;
+DROP TABLE question cascade CONSTRAINTs;
+DROP TABLE questionChoice cascade CONSTRAINTs;
+DROP TABLE correctChoice cascade CONSTRAINTs;
+DROP TABLE solve cascade CONSTRAINTs;
+DROP TABLE student cascade CONSTRAINTs;
+DROP TABLE studentregister cascade CONSTRAINTs;
+DROP TABLE topic cascade CONSTRAINTs;
+DROP TABLE userdata cascade CONSTRAINTs;
 
-/*class table*/
+/*userData TABLE */
+CREATE TABLE userData (
+UserName VARCHAR2(50) PRIMARY KEY,
+firstName VARCHAR2(50),
+middleName VARCHAR2(50),
+lastName VARCHAR2(50),
+birthdate DATE,
+mobileNumber VARCHAR2(50),
+email VARCHAR2(50) UNIQUE,
+Password VARCHAR2(50));
+
+/*class TABLE*/
 CREATE TABLE class
 (
-id number(5) primary key,
-courseCode varchar2(20)
+id NUMBER(5) PRIMARY KEY,
+courseCode VARCHAR2(50)
 );
 
-/*topic table*/
+/*topic TABLE*/
 CREATE TABLE topic(
-classId number(5),
-name varchar2(20) unique);
+classId NUMBER(5),
+name VARCHAR2(50));
 
-/*studentRegister table*/
-create table studentRegister(
-classId number(5)/*FK refers to class table*/,
-username varchar2(30)/*FK refers to student table*/
-/*both are composite PK*/
-);
-
-/*course table*/
-create table course(
-courseCode varchar(20) primary key,
-courseName varchar2(50) UNIQUE);
-
-/*admin table*/
-create table adminstrator(
-username varchar2(25)
-);
-
-/*instructor table*/
-create table instructor(
-username varchar2(25)
-);
-
-/*student table*/
-create table student(
-username varchar2(25),
+/*student TABLE*/
+CREATE TABLE student(
+username VARCHAR2(50),
 Id NUMBER(6)
 );
 
-/*exam table*/
-create table exam(
-examId number(5) primary key,
-examDate Date,
+/*studentRegister TABLE*/
+CREATE TABLE studentRegister(
+classId NUMBER(5)/*FK refers to class TABLE*/,
+username VARCHAR2(50)/*FK refers to student TABLE*/
+/*both are composite PK*/
+);
+
+/*course TABLE*/
+CREATE TABLE course(
+courseCode VARCHAR(50) PRIMARY KEY,
+courseName VARCHAR2(50) UNIQUE);
+
+/*admin TABLE*/
+CREATE TABLE adminstrator(
+username VARCHAR2(50)
+);
+
+/*instructor TABLE*/
+CREATE TABLE instructor(
+username VARCHAR2(50)
+);
+
+/*exam TABLE*/
+CREATE TABLE exam(
+examId NUMBER(5) PRIMARY KEY,
 startTime DATE,
 endTime DATE,
-classId number(5)/*Fk refers to class table*/
+classId NUMBER(5)/*Fk refers to class TABLE*/
 );
 
-/*question table*/
-create table question(
-questionId number(5) primary key,
-/*statment varchar2(5000),*/
-expectedDifficulty number(3),
-topicName varchar2(20),/*FK refers to topic table*/
-examId number(5),/*FK refers to examModel (points to both examid and model number)*/
-modelNumber number(3)/*FK refers to examModel table*/
+/*question TABLE*/
+CREATE TABLE question(
+questionId NUMBER(5) PRIMARY KEY,
+/*statment VARCHAR2(5000),*/
+expectedDifficulty NUMBER(3),
+topicName VARCHAR2(50),/*FK refers to topic TABLE*/
+examId NUMBER(5),/*FK refers to examModel (points to both examid and model number)*/
+modelNumber NUMBER(3),/*FK refers to examModel TABLE*/
+classId NUMBER(5)/*Fk refers to class TABLE*/
 );
 
-/*instructorOf table*/
-create table instructorOf(
-classId number(5),/*FK refers to class table*/
-username varchar2(25)/*FK refers to instructor table*/
+/*instructorOf TABLE*/
+CREATE TABLE instructorOf(
+classId NUMBER(5),/*FK refers to class TABLE*/
+username VARCHAR2(50)/*FK refers to instructor TABLE*/
 );
 
-/*questionChoice table*/
-create table questionchoice(
-questionId number(5)/*FK refers to question table*/,
-choiceNumber varchar2(2)
+/*questionChoice TABLE*/
+CREATE TABLE questionChoice(
+questionId NUMBER(5)/*FK refers to question TABLE*/,
+choiceNumber VARCHAR2(2)
 /*both form a composite PK*/
-/*choiceStatment varchar2(400)*/);
+/*choiceStatment VARCHAR2(400)*/);
 
-/*solve table*/
-create table solve (
-questionId number(5)/*FK refer to question table*/,
-username varchar2(25)/*FK refers to student table*/,
+/*correctChoice TABLE*/
+CREATE TABLE correctChoice(
+questionId NUMBER(5),
+correctChoiceNumber VARCHAR2(2));
+
+/*solve TABLE*/
+CREATE TABLE solve (
+questionId NUMBER(5)/*FK refer to question TABLE*/,
+username VARCHAR2(50)/*FK refers to student TABLE*/,
 /*both are composite PK*/
-studentChoice varchar2(2));
+studentChoice VARCHAR2(2));
 
-/*examModel table*/
-create table examModel(
-examId number(5)/*FK refer to exam table*/,
-modelNumber number(3)
+/*examModel TABLE*/
+CREATE TABLE examModel(
+examId NUMBER(5)/*FK refer to exam TABLE*/,
+modelNumber NUMBER(3)
 /*both are form composite PK*/);
 
-/*assignedModel table*/
-create table assignedModel(
-modelNumber number(3)/*FK refers to model table*/,
-examId number(5)/*FK refers to exam table*/,
-username varchar2(30)/*FK refers to student table*/
+/*assignedModel TABLE*/
+CREATE TABLE assignedModel(
+modelNumber NUMBER(3)/*FK refers to model TABLE*/,
+examId NUMBER(5)/*FK refers to exam TABLE*/,
+username VARCHAR2(50)/*FK refers to student TABLE*/
 /*all together are fk*/);
 
-/*alter to join class tbale with course table*/
-ALTER table class
+/*ALTER to join class TABLE with course TABLE*/
+ALTER TABLE class
 ADD FOREIGN KEY (courseCode) REFERENCES course(courseCode);
 
-/*alter to make composite PK*/ 
+/*ALTER to make composite PK*/ 
 ALTER TABLE topic
-add foreign key (classId) REFERENCES class(id)
-add constraint topicCompositePK primary key(classId , name);
+ADD FOREIGN KEY (classId) REFERENCES class(id)
+ADD CONSTRAINT topicCompositePK PRIMARY KEY(classId , name);
 
+/*ALTER to join admin TABLE with userData TABLE*/
+ALTER TABLE adminstrator
+ADD FOREIGN KEY (username) REFERENCES userData (username)
+ADD PRIMARY KEY (username);
 
-/*alter to join student table with userData table*/
-alter table student 
-add foreign key (username) REFERENCES userData (username)
-add primary key (username);
+/*ALTER to join instructor TABLE with userData TABLE*/
+ALTER TABLE instructor 
+ADD FOREIGN KEY (username) REFERENCES userData (username)
+ADD PRIMARY KEY (username);
 
-/*alter to join studentRegister with class,student(table)*/
+/*ALTER to join student TABLE with userData TABLE*/
+ALTER TABLE student 
+ADD FOREIGN KEY (username) REFERENCES userData (username)
+ADD PRIMARY KEY (username);
+
+/*ALTER to join studentRegister with class,student(TABLE)*/
 ALTER TABLE studentRegister
-add foreign key (classId) REFERENCES class(id)
-add foreign key (username) REFERENCES student(username)
-add constraint studentRegisterPK primary key(classId,username);
+ADD FOREIGN KEY (classId) REFERENCES class(id)
+ADD FOREIGN KEY (username) REFERENCES student(username)
+ADD CONSTRAINT studentRegisterPK PRIMARY KEY(classId,username);
 
-/*alter to join admin table with userData table*/
-alter table adminstrator
-add foreign key (username) REFERENCES userData (username)
-add primary key (username);
+/*ALTER to join exam with class TABLE*/
+ALTER TABLE exam
+ADD FOREIGN KEY (classId) REFERENCES class(id);
 
-/*alter to join instructor table with userData table*/
-alter table instructor 
-add foreign key (username) REFERENCES userData (username)
-add primary key (username);
+/*ALTER to join examModel TABLE with exam TABLE*/
+ALTER TABLE examModel
+ADD FOREIGN KEY (examId) REFERENCES exam(examId)
+ADD CONSTRAINT examModelPK PRIMARY KEY(examId,modelNumber);
 
+/*ALTER to join question TABLE with topic and model TABLE*/
+ALTER TABLE question
+ADD FOREIGN KEY (topicName,classid) REFERENCES topic(name,classid)
+ADD FOREIGN KEY (modelNumber,examid) REFERENCES examModel(modelNumber,examid);
 
-/*alter to join exam with class table*/
-alter table exam
-add foreign key (classId) REFERENCES class(id);
+/*ALTER to join instructorOf TABLE with class and instructor TABLE*/
+ALTER TABLE instructorOf
+ADD FOREIGN KEY (classId) REFERENCES class(id)
+ADD FOREIGN KEY (username) REFERENCES instructor(username)
+ADD CONSTRAINT instructorOfPK PRIMARY KEY(classId,username);
 
-/*alter to join examModel table with exam table*/
-alter table examModel
-add foreign key (examId) REFERENCES exam(examId)
-add constraint examModelPK primary key(examId,modelNumber);
-
-/*alter to join question table with topic and model table*/
-alter table question 
-add foreign key (topicName) REFERENCES topic(name)
-add foreign key (modelNumber,examid) REFERENCES examModel(modelNumber,examid);
-
-
-/*alter to join instructorOf table with class and instructor table*/
-alter table instructorOf
-add foreign key (classId) REFERENCES class(id)
-add foreign key (username) REFERENCES instructor(username)
-add constraint instructorOfPK primary key(classId,username);
+/*ALTER to join questionChoice TABLE with question TABLE*/
+ALTER TABLE questionChoice
+ADD FOREIGN KEY (questionId) REFERENCES question(questionId)
+ADD CONSTRAINT questionChoicePK PRIMARY KEY(questionId,choiceNumber);
 
 
-/*alter to join questionChoice table with question table*/
-alter table questionChoice
-add foreign key (questionId) REFERENCES question(questionId)
-add constraint questionChoicePK primary key(questionId,choiceNumber);
+/*ALTER to join correctChoice TABLE with question TABLE*/
+ALTER TABLE correctChoice 
+ADD FOREIGN KEY (questionId) REFERENCES question (questionId)
+ADD PRIMARY KEY (questionId);
 
-/*alter to join solve table withstudent and question table*/
-alter table solve
-add foreign key (questionId) REFERENCES question(questionId)
-add foreign key (username) REFERENCES student(username)
-add constraint solvePK primary key(questionId,username);
+/*ALTER to join solve TABLE withstudent and question TABLE*/
+ALTER TABLE solve
+ADD FOREIGN KEY (questionId) REFERENCES question(questionId)
+ADD FOREIGN KEY (username) REFERENCES student(username)
+ADD CONSTRAINT solvePK PRIMARY KEY(questionId,username);
 
+/*ADD name into exam TABLE*/
+ALTER TABLE exam
+ADD (name VARCHAR2(50));
 
+/*ADD choiceStatement into questionChoice TABLE*/
+ALTER TABLE questionChoice
+ADD (choiceStatement  VARCHAR2(1000));
 
-/*alter to join assignedModel table with student , exam and question tables*/
-alter table assignedModel
-add foreign key (modelNumber,examid) REFERENCES examModel(modelNumber,examId)
-add foreign key (username) REFERENCES student(username)
-add constraint assignedModelPK primary key(modelNumber,examId,username);
+/*ADD statement into question TABLE*/
+ALTER TABLE question
+ADD (statement  VARCHAR2(1000));
 
-/*add name into exam table*/
-alter table exam
-add (name varchar2(20));
+/*ADD isPublished into exam */
+ALTER TABLE exam
+ADD (ispublished CHAR(1));
 
-/*add choiceStatement into questionChoice table*/
-alter table questionchoice
-add (choiceStatement  varchar2(1000));
+/*ALTER to join assignedModel TABLE with student , exam and question TABLEs*/
+ALTER TABLE assignedModel
+ADD FOREIGN KEY (modelNumber,examid) REFERENCES examModel(modelNumber,examId)
+ADD FOREIGN KEY (username) REFERENCES student(username)
+ADD CONSTRAINT assignedModelPK PRIMARY KEY(modelNumber,examId,username);
 
-/*add statement into question table*/
-alter table question
-add (statement  varchar2(1000));
-
-/*add isPublished into exam */
-alter table exam
-add (ispublished char(1));
-
-/*dropping examdata from exam since start/end time contains the examdata */
-alter table "HR"."EXAM" drop column "EXAMDATE" cascade constraints;
-
-
-
-
-
-
+/*
+ * TESTED and PASSED By Yusuf Nasser, Ayman Hassan and Youssef Nader at 23:54 3rd FEB 2021
+*/
+/*
+ * Enhancement done by Yusuf Nasser and Youssef Nader at Feb 5th 2021
+ * From 15:14 to 16:17
+*/
+/*
+ * PASSED the final round of testing at Feb 9th 2021 01:48 by Yusuf Nasser and Youssef Nasser.
+*/
