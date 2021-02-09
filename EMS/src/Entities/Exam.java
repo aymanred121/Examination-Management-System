@@ -10,6 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.time.*;
 import java.util.Date;
+import java.util.Vector;
 import javax.xml.transform.Result;
 import javax.xml.transform.Source;
 
@@ -38,6 +39,7 @@ public class Exam implements SqlEntity {
     private String instructorName;
     private String name;
     private LocalDateTime startTime, endTime;
+    private Vector<Model> models;
     private Duration duration;
     private boolean isFilled;
     private boolean isPublished;
@@ -128,6 +130,12 @@ public class Exam implements SqlEntity {
                 isPublished = myResultSet.getString(5).equals("Y");
                 duration = Duration.between(startTime,endTime);
            }
+            PreparedStatement modelsStatement = myConnection.prepareStatement("select MODELNUMBER FROM EXAMMODEL where EXAMID = ?");
+            modelsStatement.setInt(1, id);
+            ResultSet modelsResultSet = modelsStatement.executeQuery();
+            while (modelsResultSet.next()) {
+                models.add(new Model(id, modelsResultSet.getInt(1)));
+            }
             myConnection.close();
         } catch (Exception e) {
             System.out.println(e);
@@ -137,7 +145,8 @@ public class Exam implements SqlEntity {
 
     @Override
     public void add() {
-         Connection myConnection = SqlConnection.getConnection();
+        this.generateID();
+        Connection myConnection = SqlConnection.getConnection();
         try {
             PreparedStatement myStatement = myConnection.prepareStatement("insert into exam values (?,?,?,?,?,?)");
             myStatement.setInt(1, id);
@@ -145,9 +154,9 @@ public class Exam implements SqlEntity {
             myStatement.setDate(3, java.sql.Date.valueOf(endTime.toLocalDate()));
             myStatement.setInt(4, examClass.getId());
             myStatement.setString(5, name);
-            myStatement.setString(6,"Y");
+            myStatement.setString(6,isPublished ? "Y" : "N");
             myStatement.executeQuery();
-           
+            
         } catch (Exception e) {
             System.out.println(e);
         } 
@@ -227,6 +236,13 @@ public class Exam implements SqlEntity {
             fillData();
         }
         return duration;
+    }
+
+    public Vector<Model> getModels() {
+        if(!isFilled) {
+            fillData();
+        }
+        return models;
     }
     
     /**
