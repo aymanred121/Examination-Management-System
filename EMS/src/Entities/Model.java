@@ -36,6 +36,7 @@ public class Model implements SqlEntity {
             myStatement.setInt(1, examID);
             myStatement.setInt(2, modelNumber);
             ResultSet myResultSet = myStatement.executeQuery();
+            questions = new Vector<Question>();
             while (myResultSet.next()) {
                 questions.add(new Question(myResultSet.getInt(1)));
             }
@@ -45,11 +46,31 @@ public class Model implements SqlEntity {
         }
     }
 
-    @Override
-    public void add() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Vector<Question> getQuestions() {
+       if (!isFilled)
+       {
+           fillData();
+       }
+        return questions;
     }
 
+    public int getExamID() {
+        return examID;
+    }
+
+    @Override
+    public void add() {
+        Connection myConnection = SqlConnection.getConnection();
+        try {
+            PreparedStatement myStatement = myConnection.prepareStatement("insert into exammodel values (?,?)");
+            myStatement.setInt(1, examID);
+            myStatement.setInt(2, modelNumber);
+            myStatement.executeQuery();            
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }   
+    
     @Override
     public void update() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -58,6 +79,10 @@ public class Model implements SqlEntity {
     @Override
     public void delete() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public int getModelNumber() {
+        return modelNumber;
     }
     
 }

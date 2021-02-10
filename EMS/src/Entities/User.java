@@ -51,8 +51,8 @@ public abstract class User{
         isUserFilled = true;
         Connection myConnection = SqlConnection.getConnection();
         try{
-            PreparedStatement myStatement = myConnection.prepareStatement("select first_name, "
-                    + "middle_name, last_name, birthdate, mobile_number, email"
+            PreparedStatement myStatement = myConnection.prepareStatement("select firstname, "
+                    + "middlename, lastname, birthdate, mobilenumber, email"
                 + " from userdata where username = ?");
             myStatement.setString(1, username);
             ResultSet myResultSet = myStatement.executeQuery();

@@ -34,7 +34,7 @@ public class Exam implements SqlEntity {
     
     final static private int MAX_QUESTION = 50;
     
-    private int id;
+    private int id , numberOfModels;
     private Class examClass;
     private String instructorName;
     private String name;
@@ -50,7 +50,6 @@ public class Exam implements SqlEntity {
     */
 
     public Exam(Entities.Class examClass) {
-        this.generateID();
         this.examClass = examClass;
     }
     
@@ -133,6 +132,7 @@ public class Exam implements SqlEntity {
             PreparedStatement modelsStatement = myConnection.prepareStatement("select MODELNUMBER FROM EXAMMODEL where EXAMID = ?");
             modelsStatement.setInt(1, id);
             ResultSet modelsResultSet = modelsStatement.executeQuery();
+            models = new Vector<Model>();
             while (modelsResultSet.next()) {
                 models.add(new Model(id, modelsResultSet.getInt(1)));
             }
@@ -154,12 +154,16 @@ public class Exam implements SqlEntity {
             myStatement.setDate(3, java.sql.Date.valueOf(endTime.toLocalDate()));
             myStatement.setInt(4, examClass.getId());
             myStatement.setString(5, name);
-            myStatement.setString(6,isPublished ? "Y" : "N");
+            myStatement.setString(6, "N");
             myStatement.executeQuery();
-            
+
         } catch (Exception e) {
             System.out.println(e);
-        } 
+        }
+        for(int modelNumber = 1; modelNumber <= numberOfModels; ++modelNumber) {
+            models.add(new Model(id, modelNumber));
+            models.lastElement().add();
+        }
     }
 
     @Override
