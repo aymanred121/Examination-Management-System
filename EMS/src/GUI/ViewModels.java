@@ -11,6 +11,7 @@ import java.awt.event.ActionListener;
 import java.util.Vector;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import oracle.net.ano.SupervisorService;
 /**
@@ -33,9 +34,37 @@ public class ViewModels extends Page{
                 dispose();
         }});
         showQuestion();
-        getTitleLabel().setText("Model " + model.getModelNumber());
+        showTopBarElements();
     }
     
+    private void showTopBarElements() {
+        getTitleLabel().setText("Model " + model.getModelNumber() + '/' + exam.getModels().size());
+        JButton previousModelButton = new JButton("Previous");
+        previousModelButton.setBounds(160 , 70, 90, 30);
+        getTopBar().add(previousModelButton);
+        if(model.getModelNumber() == 1) {
+            previousModelButton.setEnabled(false);
+        } else {
+            previousModelButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                new ViewModels(instructor, new Model(exam.getId(), model.getModelNumber() - 1)).setVisible(true);
+                dispose();
+            }});
+        }
+        JButton nextModelButton = new JButton("Next");
+        nextModelButton.setBounds(260 , 70, 90, 30);
+        getTopBar().add(nextModelButton);
+        if(model.getModelNumber() == exam.getModels().size()) {
+            nextModelButton.setEnabled(false);
+        } else {
+            nextModelButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                new ViewModels(instructor, new Model(exam.getId(), model.getModelNumber() + 1)).setVisible(true);
+                dispose();
+            }});
+        }
+
+    }    
     private void showQuestion(){
         Vector<Question> questions = model.getQuestions();
         int delta = 0 , currentIndex = 0; 
@@ -45,15 +74,14 @@ public class ViewModels extends Page{
             questionNumber.setBounds(20, delta, 300, 80);
             questionNumber.setFont(myFont);
             getPanel().add(questionNumber);
-            System.out.println(question.getStatement());
             JTextField questionStatement = new JTextField(question.getStatement());
             questionStatement.setEditable(false);
-            questionStatement.setBounds(50, 25+delta, 420, 30);
+            questionStatement.setBounds(50, 25+delta, 550, 30);
             questionStatement.setFont(myFont);
             getPanel().add(questionStatement);
             JButton  showQuestionButton = new JButton("Show Question");
             showQuestionButton.setFont(myFont);
-            showQuestionButton.setBounds(550, 25+delta , 100, 30);
+            showQuestionButton.setBounds(630, 25+delta , 130, 30);
             showQuestionButton.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     //
@@ -63,9 +91,37 @@ public class ViewModels extends Page{
             getPanel().add(showQuestionButton);
             currentIndex++;
             delta += 45;
+        }  
+        if(exam.getStatus() == Exam.Status.UNPUBLISHED && exam.getStartTime().compareTo(java.time.LocalDateTime.now()) > 0) {
+            JButton addQuestionButton = new JButton("Add Question");
+            addQuestionButton.setBounds(490 ,50 + delta, 130, 30);
+            getPanel().add(addQuestionButton);
+            addQuestionButton.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        //
+                        dispose();
+                    }
+                });
+            JButton publishExamButton = new JButton("Publish Exam");
+            publishExamButton.setBounds(630 ,50 + delta, 130, 30);
+            getPanel().add(publishExamButton);
+            publishExamButton.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    if(exam.isReadyToPublish()) {
+                        showAlertMessage("The exam has been published successfully");
+                        exam.publish();
+                        new ViewExams((User) new Instructor(instructor.getUsername()), new Entities.Class(exam.getExamClass().getId(), false)).setVisible(true);
+                        dispose();
+                    } else {
+                        showAlertMessage("The exam cannot be published. Please make sure that:\n"
+                                + "1- All the models have the same number of questions.\n"
+                                + "2- There is at least one question in each model.");
+                    }
+                }
+            });
         }
     }
      public static void main(String args[]) {
-   
+         new UserDashboard(User.UserType.INSTRUCTOR, "omarhassan").setVisible(true);
     }
 }
