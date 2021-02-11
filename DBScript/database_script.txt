@@ -16,6 +16,12 @@ DROP TABLE studentregister cascade CONSTRAINTs;
 DROP TABLE topic cascade CONSTRAINTs;
 DROP TABLE userdata cascade CONSTRAINTs;
 
+/*DROPPING all the pre-existing SEQUENCES preparing for the DB update*/
+DROP SEQUENCE "HR"."CLASSIDSEQ";
+DROP SEQUENCE "HR"."QUESTIONIDSEQ";
+DROP SEQUENCE "HR"."STUDENTIDSEQ";
+DROP SEQUENCE "HR"."EXAMIDSEQ";
+
 /*userData TABLE */
 CREATE TABLE userData (
 UserName VARCHAR2(50) PRIMARY KEY,
@@ -213,13 +219,54 @@ ADD FOREIGN KEY (modelNumber,examid) REFERENCES examModel(modelNumber,examId)
 ADD FOREIGN KEY (username) REFERENCES student(username)
 ADD CONSTRAINT assignedModelPK PRIMARY KEY(modelNumber,examId,username);
 
+/*CREATEING SEQUENCES*/
+/*CREATE classId SEQENCE*/
+CREATE SEQUENCE classIdSeq
+START WITH 10
+INCREMENT BY 1
+MAXVALUE 99999
+NOCYCLE
+NOCACHE;
+
+/*CREATE examId SEQUENCE*/
+CREATE SEQUENCE examIdSeq
+START WITH 37
+INCREMENT BY 1
+MAXVALUE 99999
+NOCYCLE
+NOCACHE;
+
+/*CREATE questionId SEQUENCE*/
+CREATE SEQUENCE questionIdSeq
+START WITH 91
+INCREMENT BY 1
+MAXVALUE 99999
+NOCYCLE
+NOCACHE;
+
+/*CREATE studentId SEQUENCE*/
+CREATE SEQUENCE studentIdSeq
+START WITH 12
+INCREMENT BY 1
+MAXVALUE 99999
+NOCYCLE
+NOCACHE;
+
+
 /*
  * TESTED and PASSED By Yusuf Nasser, Ayman Hassan and Youssef Nader at 23:54 3rd FEB 2021
 */
+
 /*
  * Enhancement done by Yusuf Nasser and Youssef Nader at Feb 5th 2021
  * From 15:14 to 16:17
 */
+
 /*
  * PASSED the final round of testing at Feb 9th 2021 01:48 by Yusuf Nasser and Youssef Nasser.
+*/
+
+/*
+ * SEQUENCEs added by Ayman Hassan, Youssef Nader and Yusuf Nasser
+ * At 11th FEB 2021 22:48
 */
