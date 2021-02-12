@@ -8,6 +8,7 @@ package Entities;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Timestamp;
 import java.time.*;
 import java.util.Date;
 import java.util.Vector;
@@ -34,7 +35,7 @@ public class Exam implements SqlEntity {
     
     final static private int MAX_QUESTION = 50;
     
-    private int id;
+    private int id , numberOfModels;
     private Class examClass;
     private String instructorName;
     private String name;
@@ -50,7 +51,6 @@ public class Exam implements SqlEntity {
     */
 
     public Exam(Entities.Class examClass) {
-        this.generateID();
         this.examClass = examClass;
     }
     
@@ -133,6 +133,7 @@ public class Exam implements SqlEntity {
             PreparedStatement modelsStatement = myConnection.prepareStatement("select MODELNUMBER FROM EXAMMODEL where EXAMID = ?");
             modelsStatement.setInt(1, id);
             ResultSet modelsResultSet = modelsStatement.executeQuery();
+            models = new Vector<Model>();
             while (modelsResultSet.next()) {
                 models.add(new Model(id, modelsResultSet.getInt(1)));
             }
@@ -150,21 +151,36 @@ public class Exam implements SqlEntity {
         try {
             PreparedStatement myStatement = myConnection.prepareStatement("insert into exam values (?,?,?,?,?,?)");
             myStatement.setInt(1, id);
-            myStatement.setDate(2, java.sql.Date.valueOf(startTime.toLocalDate()));
-            myStatement.setDate(3, java.sql.Date.valueOf(endTime.toLocalDate()));
+           myStatement.setTimestamp(2, Timestamp.valueOf(startTime));
+            myStatement.setTimestamp(3, Timestamp.valueOf(endTime));
             myStatement.setInt(4, examClass.getId());
             myStatement.setString(5, name);
-            myStatement.setString(6,isPublished ? "Y" : "N");
+            myStatement.setString(6, "N");
             myStatement.executeQuery();
-            
+
         } catch (Exception e) {
             System.out.println(e);
-        } 
+        }
+        for(int modelNumber = 1; modelNumber <= numberOfModels; ++modelNumber) {
+            models.add(new Model(id, modelNumber));
+            models.lastElement().add();
+        }
     }
 
     @Override
     public void update() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Connection myConnection = SqlConnection.getConnection();
+        try {
+            PreparedStatement myStatement = myConnection.prepareStatement("update exam set ispublished = ?, name = ?, starttime = ?, endtime = ? where examid = ?");
+            myStatement.setString(1, isPublished ? "Y" : "N");
+            myStatement.setString(2, name);
+            myStatement.setTimestamp(3, Timestamp.valueOf(startTime));
+            myStatement.setTimestamp(4, Timestamp.valueOf(endTime));
+            myStatement.setInt(5, id);
+            myStatement.executeQuery();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
     }
 
     @Override
@@ -272,6 +288,28 @@ public class Exam implements SqlEntity {
         return name;
     }
 
+    /**
+     * It checks whether all the models of the exam have the same positive number of question
+     * and the exam start time is upcoming (i.e. the exam is ready to be published)
+     * @return boolean Whether the exam is ready to be published
+     */
+    public boolean isReadyToPublish() {
+        if(models.size() == 0) {
+            return false;
+        }
+        for(int i = 1; i < models.size(); ++i) {
+            if(models.elementAt(i).getQuestions().size() == 0 || 
+                    models.elementAt(i).getQuestions().size() != models.elementAt(i - 1).getQuestions().size()) {
+                return false;
+            }
+        }
+        return true;
+    }
+    
+    public void publish() {
+        isPublished = true;
+        update();
+    }
     
     public static void main(String[] args) {
         Exam test = new Exam(new Entities.Class  (5,false));

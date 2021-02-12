@@ -37,6 +37,14 @@ public abstract class Page extends javax.swing.JFrame {
     protected JPanel getPanel() {
         return panel;
     }
+
+    /**
+     * A getter function for the top bar panel in the JFrame to be used by the subclasses
+     * @return JPanel The top bar panel of the page
+     */
+    protected JPanel getTopBar() {
+        return topBar;
+    }
     
     /**
      * A getter function for the title in the top bar to be used by the subclasses
@@ -52,6 +60,15 @@ public abstract class Page extends javax.swing.JFrame {
      */
     protected JButton getBackButton() {
         return backButton;
+    }
+    
+    
+    /**
+     * It displays an alert message
+     * @param message 
+     */
+    protected void showAlertMessage(String message) {
+        JOptionPane.showMessageDialog(this, message, "Message", JOptionPane.PLAIN_MESSAGE);
     }
 
     /**

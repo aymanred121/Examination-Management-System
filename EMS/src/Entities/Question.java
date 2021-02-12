@@ -18,7 +18,7 @@ public class Question implements SqlEntity {
     
     private final int id;
     private int totalFrequency, correctFrequency;
-    private Vector<Character> correctChoices;
+    private char correctChoice;
     private boolean isFilled;
     private String statement;
     private Vector<String> choices;
@@ -36,17 +36,45 @@ public class Question implements SqlEntity {
             myStatement.setInt(1, id);
             ResultSet myResultSet = myStatement.executeQuery();
             if (myResultSet.next()) {
-                statement = myResultSet.getString(1);
+                statement = new String(myResultSet.getString(1));
             }
             PreparedStatement choicesStatement = myConnection.prepareStatement("select CHOICESTATEMENT from QUESTIONCHOICE where QUESTIONID = ? order by CHOICENUMBER");
             choicesStatement.setInt(1, id);
             ResultSet choicesResultSet = choicesStatement.executeQuery();
+            choices = new Vector<String>();
             while (choicesResultSet.next()) {
                 choices.add(new String(choicesResultSet.getString(1)));
+            }
+            PreparedStatement correctChoicesStatement = myConnection.prepareStatement("select CORRECTCHOICENUMBER from CORRECTCHOICE where QUESTIONID = ?");
+            correctChoicesStatement.setInt(1, id);
+            ResultSet correctChoicesResultSet = correctChoicesStatement.executeQuery();
+            if (correctChoicesResultSet.next()) {
+                correctChoice = correctChoicesResultSet.getString(1).charAt(0);
+            }
+            PreparedStatement totalFrequencyStatement = myConnection.prepareStatement("select count(*) from SOLVE where QUESTIONID = ?");
+            totalFrequencyStatement.setInt(1, id);
+            ResultSet totalFrequencyResultSet = totalFrequencyStatement.executeQuery();
+            if (totalFrequencyResultSet.next()) {
+                totalFrequency = totalFrequencyResultSet.getInt(1);
+            }
+            PreparedStatement correctFrequencyStatement = myConnection.prepareStatement("select count(*) from SOLVE where QUESTIONID = ? AND STUDENTCHOICE = ?");
+            correctFrequencyStatement.setInt(1, id);
+            correctFrequencyStatement.setString(2, Character.toString(correctChoice));
+            ResultSet correctFrequencyResultSet = correctFrequencyStatement.executeQuery();
+            if (correctFrequencyResultSet.next()) {
+                correctFrequency = totalFrequencyResultSet.getInt(1);
             }
         } catch (Exception e) {
             System.out.println(e);
         } 
+    }
+
+    public String getStatement() {
+        if (!isFilled)
+        {
+            fillData();
+        }
+        return statement;
     }
 
     @Override
