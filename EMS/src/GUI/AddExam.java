@@ -6,6 +6,7 @@
 package GUI;
 
 import Entities.*;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,7 +14,6 @@ import java.util.Calendar;
 import java.util.Vector;
 
 /**
- *
  * @author Steven, Ziad, Ayman, Yusuf Nasser, Youssef Nader
  */
 public class AddExam extends Page {
@@ -26,13 +26,14 @@ public class AddExam extends Page {
     private Calendar now;
     private Vector<Integer> months, days, years, hours, minutes, models, durations;
     private int currentYear, currentMonth, currentDay, currentHour, currentMinute;
+    private JButton addExamButton;
 
     /**
      * It constructs a new AddExam page for a certain instructor in a specific
      * class
      *
      * @param instructor The instructor object
-     * @param userClass The current class to set an exam for it
+     * @param userClass  The current class to set an exam for it
      */
     public AddExam(Instructor instructor, Entities.Class userClass) {
         this.instructor = instructor;
@@ -57,8 +58,14 @@ public class AddExam extends Page {
         getExamBasicData(newExam);
         getBackButton().setVisible(true);
 
-        //For testing purposes
+        // For testing purposes
         setDefaultCloseOperation(EXIT_ON_CLOSE);
+
+        // Setting the size for the AddExam Page
+        setSize(new java.awt.Dimension(800, 600));
+
+        // Disabling the scroll bar
+        getJScrollPane1().getVerticalScrollBar().setEnabled(false);
     }
 
     private void setCurrentDate() {
@@ -84,7 +91,7 @@ public class AddExam extends Page {
 
         // Initializing years vector to store the years in the valid range.
         years = new Vector<Integer>();
-        for (int yearIterator = currentYear; yearIterator <= Exam.getYearLimit();) {
+        for (int yearIterator = currentYear; yearIterator <= Exam.getYearLimit(); ) {
             years.add(yearIterator++);
         }
 
@@ -107,7 +114,7 @@ public class AddExam extends Page {
 
         // Creating a vector to store the months in the combobox.
         months = new Vector<Integer>();
-        for (int monthIterator = currentMonth; monthIterator <= Exam.getMonthLimit();) {
+        for (int monthIterator = currentMonth; monthIterator <= Exam.getMonthLimit(); ) {
             months.add(monthIterator++);
         }
 
@@ -131,7 +138,7 @@ public class AddExam extends Page {
         days = new Vector<Integer>();
         //setting the dayLimit
         int dayLimit = getDayLimit((int) monthComboBox.getSelectedItem(), (int) yearComboBox.getSelectedItem());
-        for (int dayIterator = currentDay; dayIterator <= dayLimit;) {
+        for (int dayIterator = currentDay; dayIterator <= dayLimit; ) {
             days.add(dayIterator++);
         }
 
@@ -149,7 +156,7 @@ public class AddExam extends Page {
     }
 
     private void showTimePortion() {
-        int baseXPosition = 320; // A base position so that changing multiple component at once would be easily done.
+        int baseXPosition = 400; // A base position so that changing multiple component at once would be easily done.
         JLabel timeLabel = new JLabel("Time");
         timeLabel.setFont(new java.awt.Font("Tahoma", 1, 20));
         timeLabel.setBounds(baseXPosition + 60, 37, 100, 40);
@@ -161,7 +168,7 @@ public class AddExam extends Page {
 
         // Initializing years vector to store the hours in the valid range.
         hours = new Vector<Integer>();
-        for (int hourIterator = currentHour; hourIterator < Exam.getHourLimit();) {
+        for (int hourIterator = currentHour; hourIterator < Exam.getHourLimit(); ) {
             hours.add(hourIterator++);
         }
 
@@ -183,7 +190,7 @@ public class AddExam extends Page {
 
         // Initializing years vector to store the minutes in the valid range.
         minutes = new Vector<Integer>();
-        for (int minuteIterator = currentMinute; minuteIterator < Exam.getMinutesLimit();) {
+        for (int minuteIterator = currentMinute; minuteIterator < Exam.getMinutesLimit(); ) {
             minutes.add(minuteIterator++);
         }
 
@@ -232,6 +239,11 @@ public class AddExam extends Page {
         nameLabel.setBounds(40, 20 + 200, 180, 40);
         getPanel().add(nameLabel);
 
+        addExamButton = new JButton("Add Exam");
+        addExamButton.setBounds(570, 350, 100, 35);
+        addExamButton.setVisible(true);
+        getPanel().add(addExamButton);
+
         // Creating an event handler to handle whatever changes might occur while running
         PageEventHandler handler = new PageEventHandler();
 
@@ -241,6 +253,7 @@ public class AddExam extends Page {
         dayComboBox.addActionListener(handler);
         hourComboBox.addActionListener(handler);
         minuteComboBox.addActionListener(handler);
+        addExamButton.addActionListener(handler);
     }
 
     void refreshMonthList() {
@@ -262,8 +275,7 @@ public class AddExam extends Page {
         if ((int) yearComboBox.getSelectedItem() == currentYear) {
             monthIterator = currentMonth;
             monthLowerLimit = currentMonth;
-        }
-        else
+        } else
             monthIterator = 1;
 
         // Adding the valid months to the vector
@@ -283,7 +295,7 @@ public class AddExam extends Page {
     void refreshDayList() {
         // Declaring the day iterator variable
         int dayIterator = 1, dayLowerLimit = 1, selectedDay = (int) dayComboBox.getSelectedItem(),
-            dayLimit = getDayLimit((int) monthComboBox.getSelectedItem(), (int) yearComboBox.getSelectedItem()); //setting the dayLimit
+                dayLimit = getDayLimit((int) monthComboBox.getSelectedItem(), (int) yearComboBox.getSelectedItem()); //setting the dayLimit
 
         // clearing days vector
         days.clear();
@@ -296,8 +308,7 @@ public class AddExam extends Page {
          * ELSE every day shall be added since any other month would be an upcoming one.
          */
 
-        if ((int) yearComboBox.getSelectedItem() == currentYear)
-        {
+        if ((int) yearComboBox.getSelectedItem() == currentYear) {
             if ((int) monthComboBox.getSelectedItem() == currentMonth) {
                 dayIterator = currentDay;
                 dayLowerLimit = currentDay;
@@ -378,7 +389,7 @@ public class AddExam extends Page {
         if ((int) hourComboBox.getSelectedItem() == currentHour) {
             if ((int) dayComboBox.getSelectedItem() == currentDay) {
                 if ((int) monthComboBox.getSelectedItem() == currentMonth) {
-                    if ((int) yearComboBox.getSelectedItem() == currentYear){
+                    if ((int) yearComboBox.getSelectedItem() == currentYear) {
                         minuteIterator = currentMinute;
                         minuteLowerLimit = currentMinute;
                     }
@@ -434,8 +445,7 @@ public class AddExam extends Page {
     private class PageEventHandler implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent event) {
-            if (event.getSource() == yearComboBox)
-            {
+            if (event.getSource() == yearComboBox) {
                 // Refreshing the current time
                 // #order_of_the_refreshing_matters cliché, haa?
                 /*
@@ -447,21 +457,24 @@ public class AddExam extends Page {
                 refreshHourList();
                 refreshDayList();
                 refreshMonthList();
-            }
-            else if (event.getSource() == monthComboBox) {
+            } else if (event.getSource() == monthComboBox) {
                 setCurrentDate();
                 refreshMinuteList();
                 refreshHourList();
                 refreshDayList();
-            }
-            else if (event.getSource() == dayComboBox) {
+            } else if (event.getSource() == dayComboBox) {
                 setCurrentDate();
                 refreshMinuteList();
                 refreshHourList();
-            }
-            else if (event.getSource() == hourComboBox) {
+            } else if (event.getSource() == hourComboBox) {
                 setCurrentDate();
                 refreshMinuteList();
+            } else if (event.getSource() == addExamButton) {
+                /*
+                 * TODO
+                 *  * CREATE and add models to the database
+                 *  * Forward the user to Show models of the Exam
+                 */
             }
         }
     }
