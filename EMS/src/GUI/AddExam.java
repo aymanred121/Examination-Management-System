@@ -6,12 +6,19 @@
 package GUI;
 
 import Entities.*;
+import com.sun.xml.internal.ws.policy.sourcemodel.ModelNode;
+import org.w3c.dom.Entity;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.Calendar;
 import java.util.Vector;
+import java.time.*;
 
 /**
  * @author Steven, Ziad, Ayman, Yusuf Nasser, Youssef Nader
@@ -21,12 +28,15 @@ public class AddExam extends Page {
     private Instructor instructor;
     private Entities.Class userClass;
     private JComboBox yearComboBox, monthComboBox, dayComboBox,
-            hourComboBox, minuteComboBox, modelNumberComboBox, durationComboBox;
+            hourComboBox, minuteComboBox, modelComboBox, durationComboBox;
     private DefaultListCellRenderer listRenderer;
     private Calendar now;
     private Vector<Integer> months, days, years, hours, minutes, models, durations;
-    private int currentYear, currentMonth, currentDay, currentHour, currentMinute;
+    private int currentYear, currentMonth, currentDay, currentHour, currentMinute, examStartHour,
+            examStartMinute, examDurationTime, examStartYear, examStartMonth, examStartDay;
     private JButton addExamButton;
+    private JTextField addExamName;
+    private Exam newExam;
 
     /**
      * It constructs a new AddExam page for a certain instructor in a specific
@@ -40,14 +50,14 @@ public class AddExam extends Page {
         this.userClass = userClass;
 
         // Creating nex exam to store the new exam data
-        Exam newExam = new Exam(userClass);
+        newExam = new Exam(userClass);
 
         // Setting the title label and its properties
         String titleLabel = userClass.getCourse().getName() + " Exam";
         getTitleLabel().setText(titleLabel);
         getTitleLabel().setBounds(500, 500, 100, 100);
 
-        // Adding an action listener for the back button in the superclass to go to the ViewExams page 
+        // Adding an action listener for the back button in the superclass to go to the ViewExams page
         getBackButton().addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 new ViewExams((User) instructor, userClass).setVisible(true);
@@ -55,7 +65,6 @@ public class AddExam extends Page {
             }
         });
         showExamDataInput();
-        getExamBasicData(newExam);
         getBackButton().setVisible(true);
 
         // For testing purposes
@@ -65,7 +74,12 @@ public class AddExam extends Page {
         setSize(new java.awt.Dimension(800, 600));
 
         // Disabling the scroll bar
-        getJScrollPane1().getVerticalScrollBar().setEnabled(false);
+        //getJScrollPane1().getVerticalScrollBar().setEnabled(false);
+        /**
+         * Remove scrollbar from the side of the panel
+         */
+        getJScrollPane1().setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+
     }
 
     private void setCurrentDate() {
@@ -207,10 +221,64 @@ public class AddExam extends Page {
         getPanel().add(minuteComboBox);
     }
 
-    private void getExamBasicData(Exam exam) {
-        //exam.setStartTime();
-        //exam.setDuration();
-        //exam.setName();
+    private void showDurationPortion() {
+
+        durationComboBox = new JComboBox();
+        durationComboBox.setBounds(40 + 90, 120 + 5, 70, 30);
+
+        // Initializing years vector to store the minutes in the valid range.
+        durations = new Vector<Integer>();
+        for (int minuteIterator = 5; minuteIterator <= 180; ) {
+            durations.add(minuteIterator);
+            minuteIterator += 5;
+        }
+
+        // Adding minutes vector to the combobox list of items.
+        durationComboBox.setModel(new DefaultComboBoxModel(durations));
+
+        // Centering the items in the combobox
+        durationComboBox.setRenderer(listRenderer);
+
+
+        // Adding the minuteComboBox to the panel
+        getPanel().add(durationComboBox);
+
+
+    }
+
+    private void showModelPortion() {
+        modelComboBox = new JComboBox();
+        modelComboBox.setBounds(40 + 150, 170 + 5, 70, 30);
+
+        // Initializing hours vector to store the hours in the valid range.
+        models = new Vector<Integer>();
+        for (int i = 1; i <= 5; ) {
+            models.add(i++);
+        }
+        modelComboBox.setModel(new DefaultComboBoxModel(models));
+
+        // Centering the items in the combobox
+        modelComboBox.setRenderer(listRenderer);
+        getPanel().add(modelComboBox);
+
+    }
+
+    private void setExamBasicData(Exam exam) {
+        examDurationTime = (int) durationComboBox.getSelectedItem();
+
+        examStartHour = (int) hourComboBox.getSelectedItem();
+        examStartMinute = (int) minuteComboBox.getSelectedItem();
+        examStartYear = (int) yearComboBox.getSelectedItem();
+        examStartMonth = (int) monthComboBox.getSelectedItem();
+        examStartDay = (int) dayComboBox.getSelectedItem();
+
+        LocalDateTime examStartDate = LocalDateTime.of(examStartYear, examStartMonth, examStartDay, examStartHour, examStartMinute);
+        LocalDateTime examEndDate = examStartDate.plusMinutes(examDurationTime);
+
+        exam.setStartTime(examStartDate);
+        exam.setEndTime(examEndDate);
+        exam.setDuration(Duration.ofMinutes(examDurationTime));
+        exam.setName(addExamName.getText());
         exam.setIsPublished(false);
     }
 
@@ -227,16 +295,19 @@ public class AddExam extends Page {
         JLabel durationLabel = new JLabel("Duration");
         durationLabel.setFont(new java.awt.Font("Tahoma", 1, 18));
         durationLabel.setBounds(40, 20 + 100, 180, 40);
+        showDurationPortion();
         getPanel().add(durationLabel);
 
         JLabel numberOfModelsLabel = new JLabel("Models Number");
         numberOfModelsLabel.setFont(new java.awt.Font("Tahoma", 1, 18));
         numberOfModelsLabel.setBounds(40, 20 + 150, 180, 40);
+        showModelPortion();
         getPanel().add(numberOfModelsLabel);
 
         JLabel nameLabel = new JLabel("Name");
         nameLabel.setFont(new java.awt.Font("Tahoma", 1, 18));
         nameLabel.setBounds(40, 20 + 200, 180, 40);
+        showNameBox();
         getPanel().add(nameLabel);
 
         addExamButton = new JButton("Add Exam");
@@ -254,6 +325,13 @@ public class AddExam extends Page {
         hourComboBox.addActionListener(handler);
         minuteComboBox.addActionListener(handler);
         addExamButton.addActionListener(handler);
+    }
+
+    private void showNameBox() {
+        addExamName = new JTextField();
+        addExamName.setBounds(40 + 70, 220 + 13, 120, 25);
+        getPanel().add(addExamName);
+
     }
 
     void refreshMonthList() {
@@ -470,11 +548,12 @@ public class AddExam extends Page {
                 setCurrentDate();
                 refreshMinuteList();
             } else if (event.getSource() == addExamButton) {
-                /*
-                 * TODO
-                 *  * CREATE and add models to the database
-                 *  * Forward the user to Show models of the Exam
-                 */
+                if (addExamName.getText().isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "please Enter a valid name");
+                }
+                else {
+                    setExamBasicData(newExam);
+                }
             }
         }
     }
