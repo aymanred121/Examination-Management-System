@@ -33,8 +33,8 @@ public class Exam implements SqlEntity {
      * can input in a test.
     */
     
-    final static private int MAX_QUESTION = 50, MODEL_NUMBER_LIMIT = 4, EXAM_TIME_LIMIT = 180,
-            YEAR_LIMIT = 2051, MONTH_LIMIT = 12, HOUR_LIMIT = 24, MINUTES_LIMIT = 60;
+    final static private int MAX_QUESTION = 50, MODEL_NUMBER_LIMIT = 5, YEAR_LIMIT = 2051,
+            MONTH_LIMIT = 12, HOUR_LIMIT = 24, MINUTES_LIMIT = 60, EXAM_DURATION_LIMIT = 180;
     
     private int id , numberOfModels;
     private Class examClass;
@@ -96,7 +96,7 @@ public class Exam implements SqlEntity {
     {
         Connection myConnection = SqlConnection.getConnection();
         try {
-            PreparedStatement myStatement = myConnection.prepareStatement("select EXAM_SEQ.NEXTVAL from dual");
+            PreparedStatement myStatement = myConnection.prepareStatement("select EXAMIDSEQ.NEXTVAL from dual");
             ResultSet myResultSet = myStatement.executeQuery();
             if (myResultSet.next()) {
                 id = myResultSet.getInt(1);
@@ -112,8 +112,6 @@ public class Exam implements SqlEntity {
 
     public static int getModelNumberLimit() { return MODEL_NUMBER_LIMIT; }
 
-    public static int getExamTimeLimit() { return EXAM_TIME_LIMIT; }
-
     public static int getYearLimit() { return YEAR_LIMIT; }
 
     public static int getMonthLimit() { return MONTH_LIMIT; }
@@ -121,6 +119,8 @@ public class Exam implements SqlEntity {
     public static int getHourLimit() { return HOUR_LIMIT; }
 
     public static int getMinutesLimit() { return MINUTES_LIMIT; }
+
+    public static int getExamDurationLimit() { return EXAM_DURATION_LIMIT; }
 
     /**
      * Ayman Hassan, Ziad Khobeiz
@@ -227,6 +227,9 @@ public class Exam implements SqlEntity {
     /*
      * All the getter functions of the Exam class
     */
+
+    public void setNumberOfModels(int numberOfModels) { this.numberOfModels = numberOfModels; }
+
     public int getId() {
         return id;
     }

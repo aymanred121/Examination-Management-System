@@ -15,7 +15,7 @@ public abstract class User{
     
     private final String username;
     private String mobileNumber, email, firstName, middleName, lastName, birthdate;
-    protected boolean isFilled,isUserFilled;
+    protected boolean isFilled, isUserFilled;
     public User(String username, String mobileNumber, String email, String firstName, String middleName, 
             String lastName, String birthdate) {
         this.username = username;

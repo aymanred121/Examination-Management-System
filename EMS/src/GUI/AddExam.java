@@ -10,8 +10,13 @@ import com.sun.xml.internal.ws.policy.sourcemodel.ModelNode;
 import org.w3c.dom.Entity;
 
 import javax.swing.*;
+import javax.swing.text.DefaultCaret;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.font.TextLayout;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -20,11 +25,12 @@ import java.util.Calendar;
 import java.util.Vector;
 import java.time.*;
 
+import static java.text.DateFormat.DEFAULT;
+
 /**
  * @author Steven, Ziad, Ayman, Yusuf Nasser, Youssef Nader
  */
 public class AddExam extends Page {
-
     private Instructor instructor;
     private Entities.Class userClass;
     private JComboBox yearComboBox, monthComboBox, dayComboBox,
@@ -33,10 +39,13 @@ public class AddExam extends Page {
     private Calendar now;
     private Vector<Integer> months, days, years, hours, minutes, models, durations;
     private int currentYear, currentMonth, currentDay, currentHour, currentMinute, examStartHour,
-            examStartMinute, examDurationTime, examStartYear, examStartMonth, examStartDay;
+            examStartMinute, examDurationTime, examStartYear, examStartMonth, examStartDay, examModels;
     private JButton addExamButton;
-    private JTextField addExamName;
+    private JTextField addExamNameField;
     private Exam newExam;
+    private LocalDateTime examStartDate, examEndDate;
+    // difference between X & Y positions for label and combobox
+    final static private int deltaXLabelCombo = 15, deltaYLabelCombo = 3;
 
     /**
      * It constructs a new AddExam page for a certain instructor in a specific
@@ -73,13 +82,12 @@ public class AddExam extends Page {
         // Setting the size for the AddExam Page
         setSize(new java.awt.Dimension(800, 600));
 
-        // Disabling the scroll bar
-        //getJScrollPane1().getVerticalScrollBar().setEnabled(false);
         /**
          * Remove scrollbar from the side of the panel
+         * Disabling the Horizontal and Vertical scroll bar
          */
         getJScrollPane1().setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
-
+        getJScrollPane1().setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
     }
 
     private void setCurrentDate() {
@@ -93,15 +101,17 @@ public class AddExam extends Page {
     }
 
     private void showDatePortion() {
-        int baseXPosition = 40; // A base position so that changing multiple component at once would be easily done.
+        int baseXPosition = 40; // A base X position so that changing multiple component at once would be easily done.
+        int baseYPosition = 40; // A base Y position so that changing multiple component at once would be easily done.
+
         JLabel dateLabel = new JLabel("Date");
         dateLabel.setFont(new java.awt.Font("Tahoma", 1, 20));
-        dateLabel.setBounds(baseXPosition, 37, 50, 40);
+        dateLabel.setBounds(baseXPosition, baseYPosition - deltaYLabelCombo, 50, 40);
         getPanel().add(dateLabel);
 
-        //Creating ComboBox to hold years in range CURRENT_YEAR : 2051 and setting its properties
+        // Creating ComboBox to hold years in range CURRENT_YEAR : Exam.getYearLimit() and setting its properties
         yearComboBox = new JComboBox();
-        yearComboBox.setBounds(baseXPosition + 220, 40, 70, 30);
+        yearComboBox.setBounds(baseXPosition + 210  + deltaXLabelCombo, baseYPosition, 70, 30);
 
         // Initializing years vector to store the years in the valid range.
         years = new Vector<Integer>();
@@ -115,16 +125,18 @@ public class AddExam extends Page {
         // Centering the items in the combobox
         yearComboBox.setRenderer(listRenderer);
 
+        // Setting the font to the combobox
+        yearComboBox.setFont(new java.awt.Font("Tahoma", 1, 13));
+
         // Setting the selected Item to the current Year
         yearComboBox.setSelectedItem(currentYear);
 
         // Adding the yearComboBox to the panel
         getPanel().add(yearComboBox);
 
-
         // Initializing months vector to store the months in the valid range.
         monthComboBox = new JComboBox();
-        monthComboBox.setBounds(baseXPosition + 140, 40, 70, 30);
+        monthComboBox.setBounds(baseXPosition + 130 + deltaXLabelCombo, baseYPosition, 70, 30);
 
         // Creating a vector to store the months in the combobox.
         months = new Vector<Integer>();
@@ -138,6 +150,9 @@ public class AddExam extends Page {
         // Centering the items in the combobox
         monthComboBox.setRenderer(listRenderer);
 
+        // Setting the font to the combobox
+        monthComboBox.setFont(new java.awt.Font("Tahoma", 1, 13));
+
         // Setting the selected item to the current month
         monthComboBox.setSelectedItem(currentMonth);
 
@@ -146,7 +161,7 @@ public class AddExam extends Page {
 
         // Creating ComboBox to hold month in range 1 : 12 and setting its properties
         dayComboBox = new JComboBox();
-        dayComboBox.setBounds(baseXPosition + 60, 40, 70, 30);
+        dayComboBox.setBounds(baseXPosition + 50 + deltaXLabelCombo, baseYPosition, 70, 30);
 
         // Initializing days vector to store the days in the valid range
         days = new Vector<Integer>();
@@ -162,6 +177,9 @@ public class AddExam extends Page {
         // Centering the items in the combobox
         dayComboBox.setRenderer(listRenderer);
 
+        // Setting the font to the combobox
+        dayComboBox.setFont(new java.awt.Font("Tahoma", 1, 13));
+
         // Setting the selected item to the current day
         dayComboBox.setSelectedItem(currentDay);
 
@@ -170,15 +188,17 @@ public class AddExam extends Page {
     }
 
     private void showTimePortion() {
-        int baseXPosition = 400; // A base position so that changing multiple component at once would be easily done.
+        int baseXPosition = 400; // A base X position so that changing multiple component at once would be easily done.
+        int baseYPosition = 40; // A base Y position so that changing multiple component at once would be easily done.
+
         JLabel timeLabel = new JLabel("Time");
         timeLabel.setFont(new java.awt.Font("Tahoma", 1, 20));
-        timeLabel.setBounds(baseXPosition + 60, 37, 100, 40);
+        timeLabel.setBounds(baseXPosition + 60, baseYPosition - deltaYLabelCombo, 100, 40);
         getPanel().add(timeLabel);
 
         // Creating ComboBox to hold valid hours and setting its properties
         hourComboBox = new JComboBox();
-        hourComboBox.setBounds(baseXPosition + 120, 40, 70, 30);
+        hourComboBox.setBounds(baseXPosition + 110 + deltaXLabelCombo, baseYPosition, 70, 30);
 
         // Initializing years vector to store the hours in the valid range.
         hours = new Vector<Integer>();
@@ -192,6 +212,9 @@ public class AddExam extends Page {
         // Centering the items in the combobox
         hourComboBox.setRenderer(listRenderer);
 
+        // Setting the font to the combobox
+        hourComboBox.setFont(new java.awt.Font("Tahoma", 1, 13));
+
         // Setting the selected Item to the current hour
         hourComboBox.setSelectedItem(currentYear);
 
@@ -200,7 +223,7 @@ public class AddExam extends Page {
 
         // Creating ComboBox to hold valid minutes and setting its properties
         minuteComboBox = new JComboBox();
-        minuteComboBox.setBounds(baseXPosition + 200, 40, 70, 30);
+        minuteComboBox.setBounds(baseXPosition + 190 + deltaXLabelCombo, baseYPosition, 70, 30);
 
         // Initializing years vector to store the minutes in the valid range.
         minutes = new Vector<Integer>();
@@ -214,6 +237,9 @@ public class AddExam extends Page {
         // Centering the items in the combobox
         minuteComboBox.setRenderer(listRenderer);
 
+        // Setting the font to the combobox
+        minuteComboBox.setFont(new java.awt.Font("Tahoma", 1, 13));
+
         // Setting the selected Item to the current minute
         minuteComboBox.setSelectedItem(currentMinute);
 
@@ -222,15 +248,21 @@ public class AddExam extends Page {
     }
 
     private void showDurationPortion() {
+        int baseXPosition = 40; // A base X position so that changing multiple component at once would be easily done.
+        int baseYPosition = 100; // A base Y position so that changing multiple component at once would be easily done.
+
+        JLabel durationLabel = new JLabel("Duration");
+        durationLabel.setFont(new java.awt.Font("Tahoma", 1, 20));
+        durationLabel.setBounds(baseXPosition, baseYPosition - deltaYLabelCombo, 90, 40);
+        getPanel().add(durationLabel);
 
         durationComboBox = new JComboBox();
-        durationComboBox.setBounds(40 + 90, 120 + 5, 70, 30);
+        durationComboBox.setBounds(baseXPosition + 90 + deltaXLabelCombo, baseYPosition, 70, 30);
 
         // Initializing years vector to store the minutes in the valid range.
         durations = new Vector<Integer>();
-        for (int minuteIterator = 5; minuteIterator <= 180; ) {
+        for (int minuteIterator = 5; minuteIterator <= Exam.getExamDurationLimit(); minuteIterator += 5) {
             durations.add(minuteIterator);
-            minuteIterator += 5;
         }
 
         // Adding minutes vector to the combobox list of items.
@@ -239,23 +271,43 @@ public class AddExam extends Page {
         // Centering the items in the combobox
         durationComboBox.setRenderer(listRenderer);
 
+        // Setting the font to the combobox
+        durationComboBox.setFont(new java.awt.Font("Tahoma", 1, 13));
 
         // Adding the minuteComboBox to the panel
         getPanel().add(durationComboBox);
 
-
+        JLabel minLabel = new JLabel("(min)");
+        minLabel.setFont(new java.awt.Font("Tahoma", Font.BOLD + Font.ITALIC, 15));
+        minLabel.setBounds(baseXPosition + 170 + deltaXLabelCombo, baseYPosition - deltaYLabelCombo, 90, 40);
+        getPanel().add(minLabel);
     }
 
     private void showModelPortion() {
-        modelComboBox = new JComboBox();
-        modelComboBox.setBounds(40 + 150, 170 + 5, 70, 30);
+        int baseXPosition = 430; // A base X position so that changing multiple component at once would be easily done.
+        int baseYPosition = 100; // A base Y position so that changing multiple component at once would be easily done.
 
-        // Initializing hours vector to store the hours in the valid range.
+        JLabel numberOfModelsLabel = new JLabel("Models Number");
+        numberOfModelsLabel.setFont(new java.awt.Font("Tahoma", 1, 20));
+        numberOfModelsLabel.setBounds(baseXPosition, baseYPosition - deltaYLabelCombo, 160, 40);
+        getPanel().add(numberOfModelsLabel);
+
+        modelComboBox = new JComboBox();
+        modelComboBox.setBounds(baseXPosition + 160 + deltaXLabelCombo, baseYPosition, 70, 30);
+
+        // Initializing models vector to store modelsNumber until the modelNumberLimit Exceeded.
         models = new Vector<Integer>();
-        for (int i = 1; i <= 5; ) {
-            models.add(i++);
+
+        // Filling the models vector
+        for (int modelIterator = 1; modelIterator <= Exam.getModelNumberLimit(); ) {
+            models.add(modelIterator++);
         }
+
+        // Adding models vector to the combobox list
         modelComboBox.setModel(new DefaultComboBoxModel(models));
+
+        // Setting the font to the combobox
+        modelComboBox.setFont(new java.awt.Font("Tahoma", 1, 13));
 
         // Centering the items in the combobox
         modelComboBox.setRenderer(listRenderer);
@@ -263,23 +315,99 @@ public class AddExam extends Page {
 
     }
 
-    private void setExamBasicData(Exam exam) {
-        examDurationTime = (int) durationComboBox.getSelectedItem();
+    private void showNameBox() {
+        final int baseXPosition = 40; // A base X position so that changing multiple component at once would be easily done.
+        final int baseYPosition = 160; // A base Y position so that changing multiple component at once would be easily done.
 
+        JLabel nameLabel = new JLabel("Name");
+        nameLabel.setFont(new java.awt.Font("Tahoma", 1, 20));
+        nameLabel.setBounds(baseXPosition, baseYPosition - deltaYLabelCombo, 180, 40);
+        getPanel().add(nameLabel);
+
+        /*
+         * PlaceHolder LOGIC:
+          * Since we're using JAVA .. The most beautiful language .. There is no support for a placeholder
+          * So what would we do? we go around it ..
+
+            1 - Set the placeHolding text to the textField
+
+            2 - Give it a gray color
+
+            .. Hold your breath .. here is the real deal ..
+
+            3 - Implement MouseListener in a newly created class PageMouseListener to override mouseClicked
+
+            4 - Make an Instance of our PageMouseListener class and add it to addExamNameField.ddMouseListener()
+
+            5 - Implement mouseClicked So whenever the user clicks inside addExamNameField Triggers two things:
+
+              iff addExamNameField.getText().equals("Enter exam name")
+
+                a - Set addExamNameField text to "" #NOTHING
+
+                b - Give it a black color
+
+             TA DAA .. Nice story, right? U can go to sleep now!
+
+             ******************
+
+             As you know .. A lot of great stories have sequels
+
+             So After we finished the first part .. we found out that after the user exit the textField without
+               changing anything, the placeholder is gone which is a tragedy .. because no place should have no holder
+               my dear friends
+
+             So What do we do again?
+
+              1 - Override mouseExited() so that whenever the user exit the textField without changing
+                    any thing, we would return our placeholder to its rightful place.
+
+              We hoped that THAT would be the end of it, but If it ain't for JAVA ..
+
+              We saw that the cursor stays in the textField which is a bug .. but don't worry .. We fixed it!
+
+              2 - We Added - addExamNameField.transferFocus(); - I know it's not a sexy ending but it took us a lot
+                   to find it ..
+
+              Hope you liked our movie .. Yusuf Nasser and Youssef Nader
+         */
+
+        addExamNameField = new JTextField("Enter exam name");
+        addExamNameField.setForeground(Color.gray);
+
+        addExamNameField.setBounds(baseXPosition + 60 + deltaXLabelCombo, baseYPosition, 200, 35);
+        getPanel().add(addExamNameField);
+    }
+    
+    private void showAddExamButton() {
+        addExamButton = new JButton("Add Exam");
+        addExamButton.setBounds(570, 350, 130, 50);
+        addExamButton.setFont(new java.awt.Font("Tahoma", 1, 16));
+        addExamButton.setVisible(true);
+        getPanel().add(addExamButton);
+    }
+
+    private void retrieveDataFromGUI() {
+        examDurationTime = (int) durationComboBox.getSelectedItem();
         examStartHour = (int) hourComboBox.getSelectedItem();
         examStartMinute = (int) minuteComboBox.getSelectedItem();
         examStartYear = (int) yearComboBox.getSelectedItem();
         examStartMonth = (int) monthComboBox.getSelectedItem();
         examStartDay = (int) dayComboBox.getSelectedItem();
+        examModels = (int) modelComboBox.getSelectedItem();
 
-        LocalDateTime examStartDate = LocalDateTime.of(examStartYear, examStartMonth, examStartDay, examStartHour, examStartMinute);
-        LocalDateTime examEndDate = examStartDate.plusMinutes(examDurationTime);
+        examStartDate = LocalDateTime.of(examStartYear, examStartMonth, examStartDay, examStartHour, examStartMinute);
+        examEndDate = examStartDate.plusMinutes(examDurationTime);
+    }
 
+    private void setExamBasicData(Exam exam) {
         exam.setStartTime(examStartDate);
         exam.setEndTime(examEndDate);
         exam.setDuration(Duration.ofMinutes(examDurationTime));
-        exam.setName(addExamName.getText());
+        exam.setName(addExamNameField.getText());
+        exam.setNumberOfModels(examModels);
         exam.setIsPublished(false);
+        exam.add();
     }
 
     private void showExamDataInput() {
@@ -291,47 +419,27 @@ public class AddExam extends Page {
 
         showDatePortion();
         showTimePortion();
-
-        JLabel durationLabel = new JLabel("Duration");
-        durationLabel.setFont(new java.awt.Font("Tahoma", 1, 18));
-        durationLabel.setBounds(40, 20 + 100, 180, 40);
         showDurationPortion();
-        getPanel().add(durationLabel);
-
-        JLabel numberOfModelsLabel = new JLabel("Models Number");
-        numberOfModelsLabel.setFont(new java.awt.Font("Tahoma", 1, 18));
-        numberOfModelsLabel.setBounds(40, 20 + 150, 180, 40);
         showModelPortion();
-        getPanel().add(numberOfModelsLabel);
-
-        JLabel nameLabel = new JLabel("Name");
-        nameLabel.setFont(new java.awt.Font("Tahoma", 1, 18));
-        nameLabel.setBounds(40, 20 + 200, 180, 40);
         showNameBox();
-        getPanel().add(nameLabel);
+        showAddExamButton();
 
-        addExamButton = new JButton("Add Exam");
-        addExamButton.setBounds(570, 350, 100, 35);
-        addExamButton.setVisible(true);
-        getPanel().add(addExamButton);
-
-        // Creating an event handler to handle whatever changes might occur while running
-        PageEventHandler handler = new PageEventHandler();
+        // Creating an action listener to handle whatever changes might occur while running
+        PageActionListener listener = new PageActionListener();
 
         // Adding an Action Listener to the combobox-es to track the changes occurring to them
-        yearComboBox.addActionListener(handler);
-        monthComboBox.addActionListener(handler);
-        dayComboBox.addActionListener(handler);
-        hourComboBox.addActionListener(handler);
-        minuteComboBox.addActionListener(handler);
-        addExamButton.addActionListener(handler);
-    }
+        yearComboBox.addActionListener(listener);
+        monthComboBox.addActionListener(listener);
+        dayComboBox.addActionListener(listener);
+        hourComboBox.addActionListener(listener);
+        minuteComboBox.addActionListener(listener);
+        addExamButton.addActionListener(listener);
 
-    private void showNameBox() {
-        addExamName = new JTextField();
-        addExamName.setBounds(40 + 70, 220 + 13, 120, 25);
-        getPanel().add(addExamName);
+        // Creating an event listener to handle mouse events
+        PageMouseListener mouseListener = new PageMouseListener();
 
+        // Adding a mouse listener to track mouse events
+        addExamNameField.addMouseListener(mouseListener);
     }
 
     void refreshMonthList() {
@@ -489,6 +597,22 @@ public class AddExam extends Page {
         minuteComboBox.setSelectedItem(selectedMinute);
     }
 
+    boolean isNameEntered() {
+        return addExamNameField.getForeground().equals(Color.black);
+    }
+
+    boolean userIsSure() {
+        String message = new String();
+        retrieveDataFromGUI();
+
+        message = "Exam name: " + addExamNameField.getText();
+        message += "\nDuration: " + examDurationTime + " min";
+        message += ("\nStart time: " + examStartHour + " : " + examStartMinute);
+        message += ("\nDate: " + examStartDay + " - " + examStartMonth + " - " + examStartYear );
+        message += ("\nNumber of models: " + examModels + "\n");
+        return JOptionPane.showConfirmDialog(null, message, "Are you sure to submit?", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION;
+    }
+
     boolean leapYear(int year) {
         if (year % 4 == 0) {
             if (year % 100 == 0) {
@@ -520,7 +644,7 @@ public class AddExam extends Page {
         return 31;
     }
 
-    private class PageEventHandler implements ActionListener {
+    private class PageActionListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent event) {
             if (event.getSource() == yearComboBox) {
@@ -548,11 +672,52 @@ public class AddExam extends Page {
                 setCurrentDate();
                 refreshMinuteList();
             } else if (event.getSource() == addExamButton) {
-                if (addExamName.getText().isEmpty()) {
-                    JOptionPane.showMessageDialog(null, "please Enter a valid name");
+                if (!isNameEntered()) {
+                    JOptionPane.showMessageDialog(null, "Please Enter a Valid Name");
                 }
                 else {
-                    setExamBasicData(newExam);
+                    if (userIsSure())
+                        setExamBasicData(newExam);
+                }
+            }
+        }
+    }
+
+    private class PageMouseListener implements MouseListener {
+        @Override
+        public void mouseClicked(MouseEvent e) {
+            if (e.getSource() == addExamNameField)
+            {
+                if (addExamNameField.getText().equals("Enter exam name"))
+                {
+                    addExamNameField.setText("");
+                    addExamNameField.setForeground(Color.black);
+                }
+            }
+        }
+
+        @Override
+        public void mousePressed(MouseEvent e) {
+
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent e) {
+
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent e) {}
+
+        @Override
+        public void mouseExited(MouseEvent e) {
+            if (e.getSource() == addExamNameField)
+            {
+                if (addExamNameField.getText().equals(""))
+                {
+                    addExamNameField.setForeground(Color.gray);
+                    addExamNameField.setText("Enter exam name");
+                    addExamNameField.transferFocus(); // so that the cursor would move away from the textField
                 }
             }
         }
