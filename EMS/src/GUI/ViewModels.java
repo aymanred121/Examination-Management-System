@@ -98,7 +98,7 @@ public class ViewModels extends Page{
             getPanel().add(addQuestionButton);
             addQuestionButton.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
-                        //
+                        new CreateQuestion(instructor, model).setVisible(true);
                         dispose();
                     }
                 });

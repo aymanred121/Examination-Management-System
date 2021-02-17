@@ -10,6 +10,8 @@ import javax.swing.JOptionPane;
 import java.util.Enumeration;
 import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
+import Entities.*;
+import java.util.Vector;
 
 
 /**
@@ -18,11 +20,17 @@ import javax.swing.ButtonGroup;
  */
 public class CreateQuestion extends javax.swing.JFrame {
 
+    Model model;
+    String correctChoice;
+    Instructor instructor;
+    
     /**
      * Creates new form CreateQuestion
      */
-    public CreateQuestion() {
+    public CreateQuestion(Instructor instructor, Model model) {
         initComponents();
+        this.instructor = instructor;
+        this.model = model;
         setVisible(true);
     }
 
@@ -37,11 +45,10 @@ public class CreateQuestion extends javax.swing.JFrame {
 
         buttonGroup1 = new javax.swing.ButtonGroup();
         createQuestPanel = new javax.swing.JPanel();
+        correctChoiceLabel = new javax.swing.JLabel();
         logoutButton = new javax.swing.JButton();
-        nextButton = new javax.swing.JButton();
         finishButton = new javax.swing.JButton();
         backButton = new javax.swing.JButton();
-        cancelButton = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         questionTextArea = new javax.swing.JTextArea();
         enterQuestLabel = new javax.swing.JLabel();
@@ -62,17 +69,12 @@ public class CreateQuestion extends javax.swing.JFrame {
 
         createQuestPanel.setBackground(new java.awt.Color(134, 171, 161));
 
+        correctChoiceLabel.setText("Correct choice");
+
         logoutButton.setText("Logout");
         logoutButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 logoutButtonActionPerformed(evt);
-            }
-        });
-
-        nextButton.setText("Next");
-        nextButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                nextButtonActionPerformed(evt);
             }
         });
 
@@ -83,17 +85,10 @@ public class CreateQuestion extends javax.swing.JFrame {
             }
         });
 
-        backButton.setText("Back");
+        backButton.setText("Cancel");
         backButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 backButtonActionPerformed(evt);
-            }
-        });
-
-        cancelButton.setText("Cancel");
-        cancelButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cancelButtonActionPerformed(evt);
             }
         });
 
@@ -102,13 +97,13 @@ public class CreateQuestion extends javax.swing.JFrame {
         jScrollPane1.setViewportView(questionTextArea);
 
         enterQuestLabel.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        enterQuestLabel.setText("Enter the question body here : ");
+        enterQuestLabel.setText("Enter the question statement here: ");
 
         option1Label.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        option1Label.setText("Enter option 1");
+        option1Label.setText("Enter choice 1");
 
         option2Label.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        option2Label.setText("Enter option 2");
+        option2Label.setText("Enter choice 2");
 
         option1TextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -117,10 +112,10 @@ public class CreateQuestion extends javax.swing.JFrame {
         });
 
         option4Label.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        option4Label.setText("Enter option 4");
+        option4Label.setText("Enter choice 4");
 
         option3Label.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        option3Label.setText("Enter option 3");
+        option3Label.setText("Enter choice 3");
 
         option1Rad.setBackground(new java.awt.Color(134, 171, 161));
         buttonGroup1.add(option1Rad);
@@ -148,62 +143,67 @@ public class CreateQuestion extends javax.swing.JFrame {
         createQuestPanelLayout.setHorizontalGroup(
             createQuestPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(createQuestPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(createQuestPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(createQuestPanelLayout.createSequentialGroup()
-                        .addComponent(cancelButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(backButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(nextButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(finishButton))
-                    .addGroup(createQuestPanelLayout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(logoutButton)))
+                .addGap(37, 37, 37)
+                .addComponent(backButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(logoutButton)
                 .addGap(20, 20, 20))
             .addGroup(createQuestPanelLayout.createSequentialGroup()
-                .addGap(48, 48, 48)
                 .addGroup(createQuestPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(enterQuestLabel)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 500, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(createQuestPanelLayout.createSequentialGroup()
-                        .addGap(9, 9, 9)
-                        .addGroup(createQuestPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(createQuestPanelLayout.createSequentialGroup()
-                                .addGroup(createQuestPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(option4Label)
-                                    .addComponent(option3Label))
-                                .addGap(26, 26, 26)
-                                .addGroup(createQuestPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(option3TextField, javax.swing.GroupLayout.DEFAULT_SIZE, 377, Short.MAX_VALUE)
-                                    .addComponent(option4TextField)))
-                            .addGroup(createQuestPanelLayout.createSequentialGroup()
-                                .addGroup(createQuestPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(option2Label)
-                                    .addComponent(option1Label))
-                                .addGap(26, 26, 26)
-                                .addGroup(createQuestPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(option2TextField, javax.swing.GroupLayout.DEFAULT_SIZE, 377, Short.MAX_VALUE)
-                                    .addComponent(option1TextField))))
-                        .addGap(39, 39, 39)
+                        .addGap(48, 48, 48)
                         .addGroup(createQuestPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(option1Rad)
-                            .addComponent(option2Rad)
-                            .addComponent(option3Rad)
-                            .addComponent(option4Rad))))
-                .addContainerGap(176, Short.MAX_VALUE))
+                            .addComponent(enterQuestLabel)
+                            .addGroup(createQuestPanelLayout.createSequentialGroup()
+                                .addGroup(createQuestPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(createQuestPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addGroup(createQuestPanelLayout.createSequentialGroup()
+                                            .addGroup(createQuestPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addComponent(option4Label)
+                                                .addComponent(option3Label))
+                                            .addGap(26, 26, 26)
+                                            .addGroup(createQuestPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addComponent(option3TextField, javax.swing.GroupLayout.DEFAULT_SIZE, 377, Short.MAX_VALUE)
+                                                .addComponent(option4TextField)))
+                                        .addGroup(createQuestPanelLayout.createSequentialGroup()
+                                            .addGroup(createQuestPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addComponent(option2Label)
+                                                .addComponent(option1Label))
+                                            .addGap(26, 26, 26)
+                                            .addGroup(createQuestPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                                .addComponent(option2TextField, javax.swing.GroupLayout.DEFAULT_SIZE, 377, Short.MAX_VALUE)
+                                                .addComponent(option1TextField))))
+                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 500, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(createQuestPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(createQuestPanelLayout.createSequentialGroup()
+                                        .addGap(39, 39, 39)
+                                        .addGroup(createQuestPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(option1Rad)
+                                            .addComponent(option2Rad)
+                                            .addComponent(option3Rad)
+                                            .addComponent(option4Rad)))
+                                    .addGroup(createQuestPanelLayout.createSequentialGroup()
+                                        .addGap(18, 18, 18)
+                                        .addComponent(correctChoiceLabel))))))
+                    .addGroup(createQuestPanelLayout.createSequentialGroup()
+                        .addGap(342, 342, 342)
+                        .addComponent(finishButton)))
+                .addContainerGap(141, Short.MAX_VALUE))
         );
         createQuestPanelLayout.setVerticalGroup(
             createQuestPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(createQuestPanelLayout.createSequentialGroup()
                 .addGap(21, 21, 21)
-                .addComponent(logoutButton)
+                .addGroup(createQuestPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(backButton)
+                    .addComponent(logoutButton))
                 .addGap(38, 38, 38)
                 .addComponent(enterQuestLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(22, 22, 22)
+                .addGap(18, 18, 18)
+                .addGroup(createQuestPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(correctChoiceLabel))
+                .addGap(15, 15, 15)
                 .addGroup(createQuestPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(option1Label)
                     .addComponent(option1TextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -223,50 +223,35 @@ public class CreateQuestion extends javax.swing.JFrame {
                     .addComponent(option4Label)
                     .addComponent(option4TextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(option4Rad))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 240, Short.MAX_VALUE)
-                .addGroup(createQuestPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(nextButton)
-                    .addComponent(finishButton)
-                    .addComponent(backButton)
-                    .addComponent(cancelButton))
-                .addGap(23, 23, 23))
+                .addGap(33, 33, 33)
+                .addComponent(finishButton)
+                .addContainerGap(240, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(createQuestPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(createQuestPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(createQuestPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(createQuestPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void nextButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextButtonActionPerformed
-        // TODO add your handling code here:
-        boolean successFill = questionValidality();//this boolean will be used to store data into database 
-            
-        
-    }//GEN-LAST:event_nextButtonActionPerformed
-
     private void logoutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutButtonActionPerformed
         // TODO add your handling code here:
-        new Login();
+        new Login().setVisible(true);
         dispose();
     }//GEN-LAST:event_logoutButtonActionPerformed
-
-    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
-        // TODO add your handling code here:
-        int cancelChoice = JOptionPane.showConfirmDialog(new JFrame(), "Are you sure?");
-        if(cancelChoice==JOptionPane.YES_OPTION){  
-            new CreateExam();
-            dispose();
-        }  
-    }//GEN-LAST:event_cancelButtonActionPerformed
 
     private void option1TextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_option1TextFieldActionPerformed
         // TODO add your handling code here:
@@ -281,7 +266,13 @@ public class CreateQuestion extends javax.swing.JFrame {
         int finishChoice = JOptionPane.showConfirmDialog(new JFrame(), "Are you sure?");
         if(finishChoice == JOptionPane.YES_OPTION){  
             if(questionValidality()){
-                new CreateExam();
+                Question question = new Question(model.getExamID(), model.getModelNumber(), correctChoice.charAt(0), questionTextArea.getText());
+                question.getChoices().add(new QuestionChoice(question.getExamId(),'a',option1TextField.getText()));
+                question.getChoices().add(new QuestionChoice(question.getExamId(),'b',option2TextField.getText()));
+                question.getChoices().add(new QuestionChoice(question.getExamId(),'c',option3TextField.getText()));
+                question.getChoices().add(new QuestionChoice(question.getExamId(),'d',option4TextField.getText()));
+                question.add();
+                new ViewModels(instructor, model).setVisible(true);
                 dispose();
             }
         }
@@ -289,7 +280,7 @@ public class CreateQuestion extends javax.swing.JFrame {
 
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
         // TODO add your handling code here:
-        // When database is ready
+        
     }//GEN-LAST:event_backButtonActionPerformed
     
     /** Yusuf Nasser 31st Dec 2020 12:14
@@ -316,13 +307,13 @@ public class CreateQuestion extends javax.swing.JFrame {
         String getOption2 = option2TextField.getText();
         String getOption3 = option3TextField.getText();
         String getOption4 = option4TextField.getText();
-        String getCorrectOption = "";
+        correctChoice = "";
        
         for (Enumeration<AbstractButton> buttons = buttonGroup1.getElements(); buttons.hasMoreElements();) {
             AbstractButton button = buttons.nextElement();
 
             if (button.isSelected()) {
-                getCorrectOption = button.getText();
+                correctChoice = button.getText();
             
             }
         }
@@ -347,7 +338,7 @@ public class CreateQuestion extends javax.swing.JFrame {
             return false; 
         }
         
-        if(getCorrectOption.length() == 0){
+        if(correctChoice.length() == 0){
             JOptionPane.showMessageDialog(null, "You should choose the correct answer", "Error", JOptionPane.ERROR_MESSAGE);
             errorFound = true;
             return false;
@@ -359,7 +350,7 @@ public class CreateQuestion extends javax.swing.JFrame {
             return false;
         }
         if(errorFound == false){
-        JOptionPane.showMessageDialog(null, "You have added a question successfuly", "success", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(null, "You have added a question successfuly", "Success", JOptionPane.INFORMATION_MESSAGE);
         questionTextArea.setText("");
         option1TextField.setText("");
         option2TextField.setText("");
@@ -400,7 +391,7 @@ public class CreateQuestion extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new CreateQuestion().setVisible(true);
+                new CreateQuestion(new Instructor("omarhassan"), new Model(1, 3)).setVisible(true);
             }
         });
     }
@@ -408,13 +399,12 @@ public class CreateQuestion extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton backButton;
     private javax.swing.ButtonGroup buttonGroup1;
-    private javax.swing.JButton cancelButton;
+    private javax.swing.JLabel correctChoiceLabel;
     private javax.swing.JPanel createQuestPanel;
     private javax.swing.JLabel enterQuestLabel;
     private javax.swing.JButton finishButton;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton logoutButton;
-    private javax.swing.JButton nextButton;
     private javax.swing.JLabel option1Label;
     private javax.swing.JRadioButton option1Rad;
     private javax.swing.JTextField option1TextField;

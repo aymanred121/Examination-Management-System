@@ -91,20 +91,7 @@ public class Exam implements SqlEntity {
          */
         UNPUBLISHED
     }
-    private void generateID()
-    {
-        Connection myConnection = SqlConnection.getConnection();
-        try {
-            PreparedStatement myStatement = myConnection.prepareStatement("select EXAM_SEQ.NEXTVAL from dual");
-            ResultSet myResultSet = myStatement.executeQuery();
-            if (myResultSet.next()) {
-                id = myResultSet.getInt(1);
-           }
-            myConnection.close();
-        } catch (Exception e) {
-            System.out.println(e);
-        }
-    }
+    
     public static int getMaxQuestion() {
         return MAX_QUESTION;
     }
@@ -146,18 +133,17 @@ public class Exam implements SqlEntity {
 
     @Override
     public void add() {
-        this.generateID();
+        id = SqlEntity.generateID("EXAMIDSEQ");
         Connection myConnection = SqlConnection.getConnection();
         try {
             PreparedStatement myStatement = myConnection.prepareStatement("insert into exam values (?,?,?,?,?,?)");
             myStatement.setInt(1, id);
-           myStatement.setTimestamp(2, Timestamp.valueOf(startTime));
+            myStatement.setTimestamp(2, Timestamp.valueOf(startTime));
             myStatement.setTimestamp(3, Timestamp.valueOf(endTime));
             myStatement.setInt(4, examClass.getId());
             myStatement.setString(5, name);
             myStatement.setString(6, "N");
             myStatement.executeQuery();
-
         } catch (Exception e) {
             System.out.println(e);
         }

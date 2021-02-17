@@ -142,7 +142,7 @@ public class CreateExam extends javax.swing.JFrame {
 
     private void createQuestionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createQuestionButtonActionPerformed
         // TODO add your handling code here:
-        new CreateQuestion();
+//        new CreateQuestion();
         dispose();
     }//GEN-LAST:event_createQuestionButtonActionPerformed
 
