@@ -20,7 +20,12 @@ import javax.xml.transform.Source;
  * @author yn653, Steven Sameh, Yusuf Nasser, Ayman Hassasn
  */
 public class Exam implements SqlEntity {
-    
+
+    /*
+     TODO
+      Initialize variables in the constructor to avoid null pointer exceptions
+     */
+
     /*
      * All the attributes of the Exam Class   
     */
@@ -52,6 +57,7 @@ public class Exam implements SqlEntity {
     */
 
     public Exam(Entities.Class examClass) {
+        models = new Vector<Model>();
         this.examClass = examClass;
     }
     
@@ -69,6 +75,7 @@ public class Exam implements SqlEntity {
     */
     
     public Exam(int id) {
+        models = new Vector<Model>();
         this.id = id;
     }
     /**
@@ -147,7 +154,6 @@ public class Exam implements SqlEntity {
             PreparedStatement modelsStatement = myConnection.prepareStatement("select MODELNUMBER FROM EXAMMODEL where EXAMID = ?");
             modelsStatement.setInt(1, id);
             ResultSet modelsResultSet = modelsStatement.executeQuery();
-            models = new Vector<Model>();
             while (modelsResultSet.next()) {
                 models.add(new Model(id, modelsResultSet.getInt(1)));
             }

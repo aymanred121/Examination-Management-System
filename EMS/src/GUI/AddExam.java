@@ -1,62 +1,51 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package GUI;
 
 import Entities.*;
-import com.sun.xml.internal.ws.policy.sourcemodel.ModelNode;
-import org.w3c.dom.Entity;
-
 import javax.swing.*;
-import javax.swing.text.DefaultCaret;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.font.TextLayout;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.util.Calendar;
 import java.util.Vector;
 import java.time.*;
 
-import static java.text.DateFormat.DEFAULT;
-
 /**
- * @author Steven, Ziad, Ayman, Yusuf Nasser, Youssef Nader
+ * An extended version of GUI.Page that is used to create a new exam for
+ * the logged-in instructor in a specific class of his/her choice. It does that
+ * by taking the exam basic data through several combobox-es and other GUI components
+ * - some of the data is validated in the process of showing the combobox-es lists and others
+ * validated after being inserted - and calls Entities.Exam.add()
+ *
+ * @author Yusuf Nasser, Ayman Hassan, Youssef Nader, Steven Sameh, Ziad Khobeiz
+ * @version 1.0
  */
+
 public class AddExam extends Page {
     private Instructor instructor;
-    private Entities.Class userClass;
-    private JComboBox yearComboBox, monthComboBox, dayComboBox,
+    private Exam newExam;
+    private JComboBox<Integer> yearComboBox, monthComboBox, dayComboBox,
             hourComboBox, minuteComboBox, modelComboBox, durationComboBox;
     private DefaultListCellRenderer listRenderer;
-    private Calendar now;
-    private Vector<Integer> months, days, years, hours, minutes, models, durations;
+    private Vector<Integer> months, days, hours, minutes;
     private int currentYear, currentMonth, currentDay, currentHour, currentMinute, examStartHour,
             examStartMinute, examDurationTime, examStartYear, examStartMonth, examStartDay, examModels;
     private JButton addExamButton;
-    private JTextField addExamNameField;
-    private Exam newExam;
+    private JTextField enterExamNameField;
     private LocalDateTime examStartDate, examEndDate;
     // difference between X & Y positions for label and combobox
     final static private int deltaXLabelCombo = 15, deltaYLabelCombo = 3;
 
     /**
-     * It constructs a new AddExam page for a certain instructor in a specific
-     * class
+     * It constructs a new page in which the logged-in instructor can
+     * create a new exam for a specific class chosen at viewExams page
      *
-     * @param instructor The instructor object
-     * @param userClass  The current class to set an exam for it
+     * @param instructor The logged-in instructor instance
+     * @param userClass  The chosen class to set an exam for it
      */
     public AddExam(Instructor instructor, Entities.Class userClass) {
         this.instructor = instructor;
-        this.userClass = userClass;
 
         // Creating nex exam to store the new exam data
         newExam = new Exam(userClass);
@@ -67,11 +56,9 @@ public class AddExam extends Page {
         getTitleLabel().setBounds(500, 500, 100, 100);
 
         // Adding an action listener for the back button in the superclass to go to the ViewExams page
-        getBackButton().addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                new ViewExams((User) instructor, userClass).setVisible(true);
-                dispose();
-            }
+        getBackButton().addActionListener(e -> {
+            new ViewExams(instructor, userClass).setVisible(true);
+            dispose();
         });
         showExamDataInput();
         getBackButton().setVisible(true);
@@ -82,17 +69,32 @@ public class AddExam extends Page {
         // Setting the size for the AddExam Page
         setSize(new java.awt.Dimension(800, 600));
 
-        /**
-         * Remove scrollbar from the side of the panel
-         * Disabling the Horizontal and Vertical scroll bar
+        /*
+          Remove scrollbar from the side of the panel
+          Disabling the Horizontal and Vertical scroll bar
          */
         getJScrollPane1().setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
         getJScrollPane1().setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
     }
 
+    /**
+     * This method retrieves the current date and time and store each portion
+     * of the date in a member variable to be used in other methods.
+     * It does that using an instance of java.util.Calendar
+     */
+
     private void setCurrentDate() {
         // Getting the current year, month, day, hour HH, minute
-        now = Calendar.getInstance();
+        Calendar now = Calendar.getInstance();
+
+        /*
+         * You can't add exams as of the same moment u opened the create new exam page
+         * At least one hour is required to set the exam questions of one model or more
+         */
+
+        now.add(Calendar.HOUR_OF_DAY, 1);
+
+        // Setting the member variables to their respective values
         currentYear = now.get(Calendar.YEAR);
         currentMonth = now.get(Calendar.MONTH) + 1; // Months are indexed from 0 .. Java, right?
         currentDay = now.get(Calendar.DAY_OF_MONTH);
@@ -100,33 +102,42 @@ public class AddExam extends Page {
         currentMinute = now.get(Calendar.MINUTE);
     }
 
-    private void showDatePortion() {
-        int baseXPosition = 40; // A base X position so that changing multiple component at once would be easily done.
-        int baseYPosition = 40; // A base Y position so that changing multiple component at once would be easily done.
+    /**
+     * This method adds the time input related GUI components to the panel
+     * It does that by using an instance of javax.swing.JLabel to label the
+     * date portion and several instances of javax.swing.JComboBox<E> to
+     * take the day, month and year input.
+     */
 
+    private void showDatePortion() {
+        // A base X and Y positions so that changing multiple component at once would be easily done.
+        int baseXPosition = 40;
+        int baseYPosition = 40;
+
+        // Creating a Label for the date portion and setting its properties
         JLabel dateLabel = new JLabel("Date");
-        dateLabel.setFont(new java.awt.Font("Tahoma", 1, 20));
+        dateLabel.setFont(new java.awt.Font("Tahoma", Font.BOLD, 20));
         dateLabel.setBounds(baseXPosition, baseYPosition - deltaYLabelCombo, 50, 40);
         getPanel().add(dateLabel);
 
-        // Creating ComboBox to hold years in range CURRENT_YEAR : Exam.getYearLimit() and setting its properties
-        yearComboBox = new JComboBox();
+        // Initializing a ComboBox to hold years in range CURRENT_YEAR : Exam.getYearLimit() and setting its properties
+        yearComboBox = new JComboBox<>();
         yearComboBox.setBounds(baseXPosition + 210  + deltaXLabelCombo, baseYPosition, 70, 30);
 
-        // Initializing years vector to store the years in the valid range.
-        years = new Vector<Integer>();
+        // Creating years vector to store the years in the valid range.
+        Vector<Integer> years = new Vector<>();
         for (int yearIterator = currentYear; yearIterator <= Exam.getYearLimit(); ) {
             years.add(yearIterator++);
         }
 
         // Adding years vector to the combobox list of items.
-        yearComboBox.setModel(new DefaultComboBoxModel(years));
+        yearComboBox.setModel(new DefaultComboBoxModel<>(years));
 
         // Centering the items in the combobox
         yearComboBox.setRenderer(listRenderer);
 
         // Setting the font to the combobox
-        yearComboBox.setFont(new java.awt.Font("Tahoma", 1, 13));
+        yearComboBox.setFont(new java.awt.Font("Tahoma", Font.BOLD, 13));
 
         // Setting the selected Item to the current Year
         yearComboBox.setSelectedItem(currentYear);
@@ -135,23 +146,23 @@ public class AddExam extends Page {
         getPanel().add(yearComboBox);
 
         // Initializing months vector to store the months in the valid range.
-        monthComboBox = new JComboBox();
+        monthComboBox = new JComboBox<>();
         monthComboBox.setBounds(baseXPosition + 130 + deltaXLabelCombo, baseYPosition, 70, 30);
 
-        // Creating a vector to store the months in the combobox.
-        months = new Vector<Integer>();
+        // Initializing a vector to store the months in the combobox.
+        months = new Vector<>();
         for (int monthIterator = currentMonth; monthIterator <= Exam.getMonthLimit(); ) {
             months.add(monthIterator++);
         }
 
         // Adding months vector to the combobox list of items.
-        monthComboBox.setModel(new DefaultComboBoxModel(months));
+        monthComboBox.setModel(new DefaultComboBoxModel<>(months));
 
         // Centering the items in the combobox
         monthComboBox.setRenderer(listRenderer);
 
         // Setting the font to the combobox
-        monthComboBox.setFont(new java.awt.Font("Tahoma", 1, 13));
+        monthComboBox.setFont(new java.awt.Font("Tahoma", Font.BOLD, 13));
 
         // Setting the selected item to the current month
         monthComboBox.setSelectedItem(currentMonth);
@@ -160,11 +171,11 @@ public class AddExam extends Page {
         getPanel().add(monthComboBox);
 
         // Creating ComboBox to hold month in range 1 : 12 and setting its properties
-        dayComboBox = new JComboBox();
+        dayComboBox = new JComboBox<>();
         dayComboBox.setBounds(baseXPosition + 50 + deltaXLabelCombo, baseYPosition, 70, 30);
 
         // Initializing days vector to store the days in the valid range
-        days = new Vector<Integer>();
+        days = new Vector<>();
         //setting the dayLimit
         int dayLimit = getDayLimit((int) monthComboBox.getSelectedItem(), (int) yearComboBox.getSelectedItem());
         for (int dayIterator = currentDay; dayIterator <= dayLimit; ) {
@@ -172,13 +183,13 @@ public class AddExam extends Page {
         }
 
         // Adding days vector to the combobox list of items.
-        dayComboBox.setModel(new DefaultComboBoxModel(days));
+        dayComboBox.setModel(new DefaultComboBoxModel<>(days));
 
         // Centering the items in the combobox
         dayComboBox.setRenderer(listRenderer);
 
         // Setting the font to the combobox
-        dayComboBox.setFont(new java.awt.Font("Tahoma", 1, 13));
+        dayComboBox.setFont(new java.awt.Font("Tahoma", Font.BOLD, 13));
 
         // Setting the selected item to the current day
         dayComboBox.setSelectedItem(currentDay);
@@ -187,33 +198,42 @@ public class AddExam extends Page {
         getPanel().add(dayComboBox);
     }
 
-    private void showTimePortion() {
-        int baseXPosition = 400; // A base X position so that changing multiple component at once would be easily done.
-        int baseYPosition = 40; // A base Y position so that changing multiple component at once would be easily done.
+    /**
+     * This method adds the time input related GUI components to the panel
+     * It does that by using an instance of javax.swing.JLabel to label the
+     * time portion and couple of instances of javax.swing.JComboBox<E> to
+     * take the hour and minute input.
+     */
 
+    private void showTimePortion() {
+        // A base X and Y positions so that changing multiple component at once would be easily done.
+        int baseXPosition = 400;
+        int baseYPosition = 40;
+
+        // Creating a Label for the time portion and setting its properties
         JLabel timeLabel = new JLabel("Time");
-        timeLabel.setFont(new java.awt.Font("Tahoma", 1, 20));
+        timeLabel.setFont(new java.awt.Font("Tahoma", Font.BOLD, 20));
         timeLabel.setBounds(baseXPosition + 60, baseYPosition - deltaYLabelCombo, 100, 40);
         getPanel().add(timeLabel);
 
-        // Creating ComboBox to hold valid hours and setting its properties
-        hourComboBox = new JComboBox();
+        // Initializing ComboBox to hold the valid hours and setting its properties
+        hourComboBox = new JComboBox<>();
         hourComboBox.setBounds(baseXPosition + 110 + deltaXLabelCombo, baseYPosition, 70, 30);
 
-        // Initializing years vector to store the hours in the valid range.
-        hours = new Vector<Integer>();
+        // Initializing hours vector to store the hours in the valid range.
+        hours = new Vector<>();
         for (int hourIterator = currentHour; hourIterator < Exam.getHourLimit(); ) {
             hours.add(hourIterator++);
         }
 
         // Adding hours vector to the combobox list of items.
-        hourComboBox.setModel(new DefaultComboBoxModel(hours));
+        hourComboBox.setModel(new DefaultComboBoxModel<>(hours));
 
         // Centering the items in the combobox
         hourComboBox.setRenderer(listRenderer);
 
         // Setting the font to the combobox
-        hourComboBox.setFont(new java.awt.Font("Tahoma", 1, 13));
+        hourComboBox.setFont(new java.awt.Font("Tahoma", Font.BOLD, 13));
 
         // Setting the selected Item to the current hour
         hourComboBox.setSelectedItem(currentYear);
@@ -221,24 +241,24 @@ public class AddExam extends Page {
         // Adding the hourComboBox to the panel
         getPanel().add(hourComboBox);
 
-        // Creating ComboBox to hold valid minutes and setting its properties
-        minuteComboBox = new JComboBox();
+        // Initializing ComboBox to hold valid minutes and setting its properties
+        minuteComboBox = new JComboBox<>();
         minuteComboBox.setBounds(baseXPosition + 190 + deltaXLabelCombo, baseYPosition, 70, 30);
 
-        // Initializing years vector to store the minutes in the valid range.
-        minutes = new Vector<Integer>();
+        // Initializing minutes vector to store the minutes in the valid range.
+        minutes = new Vector<>();
         for (int minuteIterator = currentMinute; minuteIterator < Exam.getMinutesLimit(); ) {
             minutes.add(minuteIterator++);
         }
 
         // Adding minutes vector to the combobox list of items.
-        minuteComboBox.setModel(new DefaultComboBoxModel(minutes));
+        minuteComboBox.setModel(new DefaultComboBoxModel<>(minutes));
 
         // Centering the items in the combobox
         minuteComboBox.setRenderer(listRenderer);
 
         // Setting the font to the combobox
-        minuteComboBox.setFont(new java.awt.Font("Tahoma", 1, 13));
+        minuteComboBox.setFont(new java.awt.Font("Tahoma", Font.BOLD, 13));
 
         // Setting the selected Item to the current minute
         minuteComboBox.setSelectedItem(currentMinute);
@@ -247,56 +267,75 @@ public class AddExam extends Page {
         getPanel().add(minuteComboBox);
     }
 
-    private void showDurationPortion() {
-        int baseXPosition = 40; // A base X position so that changing multiple component at once would be easily done.
-        int baseYPosition = 100; // A base Y position so that changing multiple component at once would be easily done.
+    /**
+     * This method adds the duration input related GUI components to the panel
+     * It does that by using an instance of javax.swing.JComboBox<E> and an
+     * instance of javax.swing.JLabel
+     */
 
+    private void showDurationPortion() {
+        // A base X and Y positions so that changing multiple component at once would be easily done.
+        int baseXPosition = 40;
+        int baseYPosition = 100;
+
+        // Creating a Label for the duration portion and setting its properties
         JLabel durationLabel = new JLabel("Duration");
-        durationLabel.setFont(new java.awt.Font("Tahoma", 1, 20));
+        durationLabel.setFont(new java.awt.Font("Tahoma", Font.BOLD, 20));
         durationLabel.setBounds(baseXPosition, baseYPosition - deltaYLabelCombo, 90, 40);
         getPanel().add(durationLabel);
 
-        durationComboBox = new JComboBox();
+        // Initializing ComboBox to hold valid durations and setting its properties
+        durationComboBox = new JComboBox<>();
         durationComboBox.setBounds(baseXPosition + 90 + deltaXLabelCombo, baseYPosition, 70, 30);
 
-        // Initializing years vector to store the minutes in the valid range.
-        durations = new Vector<Integer>();
+        // Creating durations vector to store the minutes in the valid range.
+        Vector<Integer> durations = new Vector<>();
         for (int minuteIterator = 5; minuteIterator <= Exam.getExamDurationLimit(); minuteIterator += 5) {
             durations.add(minuteIterator);
         }
 
-        // Adding minutes vector to the combobox list of items.
-        durationComboBox.setModel(new DefaultComboBoxModel(durations));
+        // Adding durations vector to the combobox list of items.
+        durationComboBox.setModel(new DefaultComboBoxModel<>(durations));
 
         // Centering the items in the combobox
         durationComboBox.setRenderer(listRenderer);
 
         // Setting the font to the combobox
-        durationComboBox.setFont(new java.awt.Font("Tahoma", 1, 13));
+        durationComboBox.setFont(new java.awt.Font("Tahoma", Font.BOLD, 13));
 
-        // Adding the minuteComboBox to the panel
+        // Adding the durationComboBox to the panel
         getPanel().add(durationComboBox);
 
+        // Creating a Label to indicate to the user that the durations are in minutes and setting its properties
         JLabel minLabel = new JLabel("(min)");
         minLabel.setFont(new java.awt.Font("Tahoma", Font.BOLD + Font.ITALIC, 15));
         minLabel.setBounds(baseXPosition + 170 + deltaXLabelCombo, baseYPosition - deltaYLabelCombo, 90, 40);
         getPanel().add(minLabel);
     }
 
-    private void showModelPortion() {
-        int baseXPosition = 430; // A base X position so that changing multiple component at once would be easily done.
-        int baseYPosition = 100; // A base Y position so that changing multiple component at once would be easily done.
+    /**
+     * This method adds the number of models input related GUI components to the panel
+     * It does that by using an instance of javax.swing.JComboBox<E> and an instance of
+     * javax.swing.JLabel
+     */
 
+    private void showModelPortion() {
+        // A base X and Y positions so that changing multiple component at once would be easily done.
+        int baseXPosition = 430;
+        int baseYPosition = 100;
+
+        // Creating a Label for the model portion and setting its properties
         JLabel numberOfModelsLabel = new JLabel("Models Number");
-        numberOfModelsLabel.setFont(new java.awt.Font("Tahoma", 1, 20));
+        numberOfModelsLabel.setFont(new java.awt.Font("Tahoma", Font.BOLD, 20));
         numberOfModelsLabel.setBounds(baseXPosition, baseYPosition - deltaYLabelCombo, 160, 40);
         getPanel().add(numberOfModelsLabel);
 
-        modelComboBox = new JComboBox();
+        // Initializing ComboBox to hold numberOfModel in the desired range and setting its properties
+        modelComboBox = new JComboBox<>();
         modelComboBox.setBounds(baseXPosition + 160 + deltaXLabelCombo, baseYPosition, 70, 30);
 
-        // Initializing models vector to store modelsNumber until the modelNumberLimit Exceeded.
-        models = new Vector<Integer>();
+        // Creating models vector to store modelsNumber until the modelNumberLimit Exceeded.
+        Vector<Integer> models = new Vector<>();
 
         // Filling the models vector
         for (int modelIterator = 1; modelIterator <= Exam.getModelNumberLimit(); ) {
@@ -304,10 +343,10 @@ public class AddExam extends Page {
         }
 
         // Adding models vector to the combobox list
-        modelComboBox.setModel(new DefaultComboBoxModel(models));
+        modelComboBox.setModel(new DefaultComboBoxModel<>(models));
 
         // Setting the font to the combobox
-        modelComboBox.setFont(new java.awt.Font("Tahoma", 1, 13));
+        modelComboBox.setFont(new java.awt.Font("Tahoma", Font.BOLD, 13));
 
         // Centering the items in the combobox
         modelComboBox.setRenderer(listRenderer);
@@ -315,12 +354,19 @@ public class AddExam extends Page {
 
     }
 
-    private void showNameBox() {
-        final int baseXPosition = 40; // A base X position so that changing multiple component at once would be easily done.
-        final int baseYPosition = 160; // A base Y position so that changing multiple component at once would be easily done.
+    /**
+     * This method adds the exam name input related GUI components to the panel
+     * It does that by using an instance of javax.swing.JTextField and javax.swing.JLabel
+     */
 
+    private void showNameBox() {
+        // A base X and Y positions so that changing multiple component at once would be easily done.
+        final int baseXPosition = 40;
+        final int baseYPosition = 160;
+
+        // Creating a Label for the name box and setting its properties
         JLabel nameLabel = new JLabel("Name");
-        nameLabel.setFont(new java.awt.Font("Tahoma", 1, 20));
+        nameLabel.setFont(new java.awt.Font("Tahoma", Font.BOLD, 20));
         nameLabel.setBounds(baseXPosition, baseYPosition - deltaYLabelCombo, 180, 40);
         getPanel().add(nameLabel);
 
@@ -337,13 +383,13 @@ public class AddExam extends Page {
 
             3 - Implement MouseListener in a newly created class PageMouseListener to override mouseClicked
 
-            4 - Make an Instance of our PageMouseListener class and add it to addExamNameField.ddMouseListener()
+            4 - Make an Instance of our PageMouseListener class and add it to enterExamNameField.ddMouseListener()
 
-            5 - Implement mouseClicked So whenever the user clicks inside addExamNameField Triggers two things:
+            5 - Implement mouseClicked So whenever the user clicks inside enterExamNameField Triggers two things:
 
-              iff addExamNameField.getText().equals("Enter exam name")
+              iff enterExamNameField.getText().equals("Enter exam name")
 
-                a - Set addExamNameField text to "" #NOTHING
+                a - Set enterExamNameField text to "" #NOTHING
 
                 b - Give it a black color
 
@@ -366,26 +412,40 @@ public class AddExam extends Page {
 
               We saw that the cursor stays in the textField which is a bug .. but don't worry .. We fixed it!
 
-              2 - We Added - addExamNameField.transferFocus(); - I know it's not a sexy ending but it took us a lot
+              2 - We Added - enterExamNameField.transferFocus(); - I know it's not a sexy ending but it took us a lot
                    to find it ..
 
               Hope you liked our movie .. Yusuf Nasser and Youssef Nader
          */
 
-        addExamNameField = new JTextField("Enter exam name");
-        addExamNameField.setForeground(Color.gray);
+        // Initializing the textField and giving it an initial place holding text in GRAY
+        enterExamNameField = new JTextField("Enter exam name");
+        enterExamNameField.setForeground(Color.gray);
 
-        addExamNameField.setBounds(baseXPosition + 60 + deltaXLabelCombo, baseYPosition, 200, 35);
-        getPanel().add(addExamNameField);
+        // Setting the textField properties
+        enterExamNameField.setBounds(baseXPosition + 60 + deltaXLabelCombo, baseYPosition, 200, 35);
+        getPanel().add(enterExamNameField);
     }
-    
+
+    /**
+     * This method adds the add exam button to the panel
+     * It does that by using an instance of javax.swing.JButton
+     */
+
     private void showAddExamButton() {
+        // Initializing the addExamButton and setting its properties
         addExamButton = new JButton("Add Exam");
         addExamButton.setBounds(570, 350, 130, 50);
-        addExamButton.setFont(new java.awt.Font("Tahoma", 1, 16));
+        addExamButton.setFont(new java.awt.Font("Tahoma", Font.BOLD, 16));
         addExamButton.setVisible(true);
         getPanel().add(addExamButton);
     }
+
+    /**
+     * This method retrieves the exam basic data from the GUI combobox-es
+     * and store them in the member variables and generate the exam start
+     * and end date preparing to insert the data in the database.
+     */
 
     private void retrieveDataFromGUI() {
         examDurationTime = (int) durationComboBox.getSelectedItem();
@@ -400,23 +460,38 @@ public class AddExam extends Page {
         examEndDate = examStartDate.plusMinutes(examDurationTime);
     }
 
+    /**
+     * This method sets all exam basic data by calling Entities.Exam setters
+     * and calls Entities.Exam.add() to add a new exam to the data base and its models
+     * @param exam The new exam basic data entered by the logged-in instructor
+     */
+
     private void setExamBasicData(Exam exam) {
         exam.setStartTime(examStartDate);
         exam.setEndTime(examEndDate);
         exam.setDuration(Duration.ofMinutes(examDurationTime));
-        exam.setName(addExamNameField.getText());
+        exam.setName(enterExamNameField.getText());
         exam.setNumberOfModels(examModels);
-        exam.setIsPublished(false);
+        exam.setIsPublished(false); // TB Changed later after editing the models and adding questions to them
         exam.add();
     }
 
+    /**
+     * This method calls the GUI portions methods and draw them on the JFrame.
+     * It sets the current date, Initialize the listRenderer member variable to
+     * be used in multiple combobox-es, Creates and Initialize the PageActionListener
+     * and PageMouseListener instances and add all GUI components to both listeners.
+     */
+
     private void showExamDataInput() {
+        // Sets the current date and time
         setCurrentDate();
 
         // Setting the Alignment of the items in the list
         listRenderer = new DefaultListCellRenderer();
         listRenderer.setHorizontalAlignment(DefaultListCellRenderer.CENTER);
 
+        // Showing the page portions one by one by calling its dedicated method
         showDatePortion();
         showTimePortion();
         showDurationPortion();
@@ -424,10 +499,10 @@ public class AddExam extends Page {
         showNameBox();
         showAddExamButton();
 
-        // Creating an action listener to handle whatever changes might occur while running
+        // Creating an action listener instance to track whatever changes might occur while running
         PageActionListener listener = new PageActionListener();
 
-        // Adding an Action Listener to the combobox-es to track the changes occurring to them
+        // Adding the Action Listener to the combobox-es
         yearComboBox.addActionListener(listener);
         monthComboBox.addActionListener(listener);
         dayComboBox.addActionListener(listener);
@@ -435,12 +510,29 @@ public class AddExam extends Page {
         minuteComboBox.addActionListener(listener);
         addExamButton.addActionListener(listener);
 
-        // Creating an event listener to handle mouse events
+        // Creating a mouse listener to keep track of mouse events that can occur while running
         PageMouseListener mouseListener = new PageMouseListener();
 
-        // Adding a mouse listener to track mouse events
-        addExamNameField.addMouseListener(mouseListener);
+        // Adding a mouse listener to several GUI components
+        getPanel().addMouseListener(mouseListener);
+        getTopBar().addMouseListener(mouseListener);
+        enterExamNameField.addMouseListener(mouseListener);
+        yearComboBox.addMouseListener(mouseListener);
+        monthComboBox.addMouseListener(mouseListener);
+        dayComboBox.addMouseListener(mouseListener);
+        hourComboBox.addMouseListener(mouseListener);
+        minuteComboBox.addMouseListener(mouseListener);
+        durationComboBox.addMouseListener(mouseListener);
+        modelComboBox.addMouseListener(mouseListener);
     }
+
+    /**
+     * This method refreshes the month list so that every month available
+     * to the instructor to choose is a valid month.
+     * It does that by clearing the month vector, checks the lower limit
+     * for the month list and adds all the month from the lower limit up
+     * to Exam.getMonthLimit().
+     */
 
     void refreshMonthList() {
         // Declaring the month iterator variable
@@ -461,8 +553,7 @@ public class AddExam extends Page {
         if ((int) yearComboBox.getSelectedItem() == currentYear) {
             monthIterator = currentMonth;
             monthLowerLimit = currentMonth;
-        } else
-            monthIterator = 1;
+        }
 
         // Adding the valid months to the vector
         while (monthIterator <= Exam.getMonthLimit()) {
@@ -470,13 +561,20 @@ public class AddExam extends Page {
         }
 
         // Adding months vector to the combobox list of items.
-        monthComboBox.setModel(new DefaultComboBoxModel(months));
+        monthComboBox.setModel(new DefaultComboBoxModel<>(months));
 
-        // Setting the current month
-        // to avoid erasing the user's selection if not necessary
+        // Setting the current month to avoid erasing the user's selection if not necessary
         if (selectedMonth < monthLowerLimit) selectedMonth = currentMonth;
         monthComboBox.setSelectedItem(selectedMonth);
     }
+
+    /**
+     * This method refreshes the day list so that every day available
+     * to the instructor to choose is a valid day.
+     * It does that by clearing the day vector, checks the lower limit
+     * for the month list and adds all the month from the lower limit up
+     * to the upper limit returned from getDayLimit(selectedMonth, selectedYear).
+     */
 
     void refreshDayList() {
         // Declaring the day iterator variable
@@ -507,13 +605,20 @@ public class AddExam extends Page {
         }
 
         // Adding days vector to the combobox list of items.
-        dayComboBox.setModel(new DefaultComboBoxModel(days));
+        dayComboBox.setModel(new DefaultComboBoxModel<>(days));
 
-        // Getting the current month
-        // to avoid erasing the user's selection if not necessary
+        // Getting the current month to avoid erasing the user's selection if not necessary
         if (selectedDay < dayLowerLimit) selectedDay = currentDay;
         dayComboBox.setSelectedItem(selectedDay);
     }
+
+    /**
+     * This method refreshes the hour list so that every hour available
+     * to the instructor to choose is a valid hour.
+     * It does that by clearing the hour vector, checks the lower limit
+     * for the hour list and adds all the hours from the lower limit up
+     * to but not including Exam.getHourLimit().
+     */
 
     void refreshHourList() {
         // Declaring the hour iterator variable
@@ -547,13 +652,20 @@ public class AddExam extends Page {
         }
 
         // Adding hours vector to the combobox list of items.
-        hourComboBox.setModel(new DefaultComboBoxModel(hours));
+        hourComboBox.setModel(new DefaultComboBoxModel<>(hours));
 
-        // Setting the current hour
-        // to avoid erasing the user's selection if not necessary
+        // Setting the current hour to avoid erasing the user's selection if not necessary
         if (selectedHour < hourLowerLimit) selectedHour = currentHour;
         hourComboBox.setSelectedItem(selectedHour);
     }
+
+    /**
+     * This method refreshes the minute list so that every minute available
+     * to the instructor to choose is a valid minute.
+     * It does that by clearing the minute vector, checks the lower limit
+     * for the minute list and adds all the minutes from the lower limit up
+     * to but not including Exam.getMinutesLimit().
+     */
 
     void refreshMinuteList() {
         // Declaring the minute iterator variable, getting the selected minute
@@ -589,29 +701,58 @@ public class AddExam extends Page {
         }
 
         // Adding hours vector to the combobox list of items.
-        minuteComboBox.setModel(new DefaultComboBoxModel(minutes));
+        minuteComboBox.setModel(new DefaultComboBoxModel<>(minutes));
 
-        // Setting the selected minute
-        // to avoid erasing the user's selection if not necessary
+        // Setting the selected minute to avoid erasing the user's selection if not necessary
         if (selectedMinute < minuteLowerLimit) selectedMinute = currentMinute;
         minuteComboBox.setSelectedItem(selectedMinute);
     }
 
+    /**
+     * This method checks if the user entered a name for the exam, it does
+     * that by checking the color of the text returned as if it's black that
+     * means the user have write down something and replaced the gray place
+     * holder AND checking its size after trimming all white spaces.
+     * @return true if the foreground color is black and not empty; false otherwise.
+     */
+
     boolean isNameEntered() {
-        return addExamNameField.getForeground().equals(Color.black);
+        // Trimming the nameEntered from all white spaces.
+        String nameEntered = enterExamNameField.getText().trim();
+
+        // Checking for the color and length after trimming.
+        return enterExamNameField.getForeground().equals(Color.black)
+                && !(nameEntered.isEmpty());
     }
 
+    /**
+     * This method shows the instructor the exam basic data entered and
+     * asks whether the instructor wants to submit it or edit it.
+     * It does that via showConfirmDialog() that only take Yes or No as an answer
+     * @return true if the instructor is sure about the exam data; false otherwise.
+     */
+
     boolean userIsSure() {
-        String message = new String();
+        // retrieve exam basic data from the GUI to show it to the instructor before submission.
         retrieveDataFromGUI();
 
-        message = "Exam name: " + addExamNameField.getText();
+        // Generating the message from the exam basic data
+        String message = "Exam name: " + enterExamNameField.getText();
         message += "\nDuration: " + examDurationTime + " min";
         message += ("\nStart time: " + examStartHour + " : " + examStartMinute);
         message += ("\nDate: " + examStartDay + " - " + examStartMonth + " - " + examStartYear );
         message += ("\nNumber of models: " + examModels + "\n");
+
+        // Showing the data to the instructor and returning the answer.
         return JOptionPane.showConfirmDialog(null, message, "Are you sure to submit?", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION;
     }
+
+    /**
+     * This method checks if a year is leap or not, It does that via
+     * several if conditions.
+     * @param year the year in question
+     * @return true if the year is a leap year; false otherwise;
+     */
 
     boolean leapYear(int year) {
         if (year % 4 == 0) {
@@ -624,6 +765,14 @@ public class AddExam extends Page {
             return false;
         }
     }
+
+    /**
+     * It checks which month and returns its fixed limit and if it's February,
+     * checks for leap year as well.
+     * @param month the month in question
+     * @param year the year in question
+     * @return how many days in the month and the year in question
+     */
 
     private int getDayLimit(int month, int year) {
         switch (month) {
@@ -643,6 +792,12 @@ public class AddExam extends Page {
         }
         return 31;
     }
+
+    /**
+     * An Implementation for the ActionListener class used to override
+     * actionPerformed() and acting upon every event occurring while running.
+     * @author Yusuf Nasser
+     */
 
     private class PageActionListener implements ActionListener {
         @Override
@@ -675,55 +830,62 @@ public class AddExam extends Page {
                 if (!isNameEntered()) {
                     JOptionPane.showMessageDialog(null, "Please Enter a Valid Name");
                 }
-                else {
-                    if (userIsSure())
-                        setExamBasicData(newExam);
+                else if (userIsSure()) {
+                    setExamBasicData(newExam);
+                    new ViewModels(instructor, newExam.getModels().firstElement()).setVisible(true);
+                    dispose();
                 }
             }
         }
     }
 
+    /**
+     * An Implementation for the MouseListener class used to override
+     * mousePressed() and acting upon every event mouse press while running.
+     * It is used to support the implementation of creating a place holder in JTextField.
+     * @author Yusuf Nasser
+     */
+
     private class PageMouseListener implements MouseListener {
         @Override
-        public void mouseClicked(MouseEvent e) {
-            if (e.getSource() == addExamNameField)
+        public void mouseClicked(MouseEvent e) {}
+
+        @Override
+        public void mousePressed(MouseEvent e) {
+            if (e.getSource() == enterExamNameField)
             {
-                if (addExamNameField.getText().equals("Enter exam name"))
+                if (enterExamNameField.getText().equals("Enter exam name"))
                 {
-                    addExamNameField.setText("");
-                    addExamNameField.setForeground(Color.black);
+                    enterExamNameField.setText("");
+                    enterExamNameField.setForeground(Color.black);
+                }
+            }
+            else if (e.getSource() != enterExamNameField) {
+                if (enterExamNameField.getText().isEmpty())
+                {
+                    enterExamNameField.setForeground(Color.gray);
+                    enterExamNameField.setText("Enter exam name");
+                    enterExamNameField.transferFocus(); // so that the cursor would move away from the textField
                 }
             }
         }
 
         @Override
-        public void mousePressed(MouseEvent e) {
-
-        }
-
-        @Override
-        public void mouseReleased(MouseEvent e) {
-
-        }
+        public void mouseReleased(MouseEvent e) {}
 
         @Override
         public void mouseEntered(MouseEvent e) {}
 
         @Override
-        public void mouseExited(MouseEvent e) {
-            if (e.getSource() == addExamNameField)
-            {
-                if (addExamNameField.getText().equals(""))
-                {
-                    addExamNameField.setForeground(Color.gray);
-                    addExamNameField.setText("Enter exam name");
-                    addExamNameField.transferFocus(); // so that the cursor would move away from the textField
-                }
-            }
-        }
+        public void mouseExited(MouseEvent e) {}
     }
 
-    public static void main(String args[]) {
+    /**
+     * This method is used for running and testing AddExam.java while in development
+     * @param args arguments that can be passed in running the program
+     */
+
+    public static void main(String[] args) {
         Instructor instructor = new Instructor("aliyaser");
         Entities.Class classes = new Entities.Class(1, false);
         AddExam exam = new AddExam(instructor, classes);

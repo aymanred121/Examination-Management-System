@@ -293,11 +293,10 @@ public class CreateQuestion extends javax.swing.JFrame {
     }//GEN-LAST:event_backButtonActionPerformed
     
     /** Yusuf Nasser 31st Dec 2020 12:14
-    * This method is used to validate that the user input doesn't
-    * consist completely of white space
-    * @param data The data inputed by the user
-    * @return boolean This returns whether a certain inputed data consisted of only white spaces or not
-    */
+     * This method validates that the user input doesn't consist completely of white spaces
+     * @param data The data inputted by the user
+     * @return true if data is consisted of only white spaces; false otherwise.
+     */
     
     private boolean isAllWhiteSpaces(String data){
         int whiteSpaceFreq = 0;
