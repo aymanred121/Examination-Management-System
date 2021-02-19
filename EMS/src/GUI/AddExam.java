@@ -64,7 +64,7 @@ public class AddExam extends Page {
         getBackButton().setVisible(true);
 
         // For testing purposes
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        // setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         // Setting the size for the AddExam Page
         setSize(new java.awt.Dimension(800, 600));
@@ -381,11 +381,11 @@ public class AddExam extends Page {
 
             .. Hold your breath .. here is the real deal ..
 
-            3 - Implement MouseListener in a newly created class PageMouseListener to override mouseClicked
+            3 - Implement MouseListener in a newly created class PageMouseListener to override mousePressed
 
             4 - Make an Instance of our PageMouseListener class and add it to enterExamNameField.ddMouseListener()
 
-            5 - Implement mouseClicked So whenever the user clicks inside enterExamNameField Triggers two things:
+            5 - Implement mousePressed So whenever the user clicks inside enterExamNameField Triggers two things:
 
               iff enterExamNameField.getText().equals("Enter exam name")
 
@@ -405,8 +405,8 @@ public class AddExam extends Page {
 
              So What do we do again?
 
-              1 - Override mouseExited() so that whenever the user exit the textField without changing
-                    any thing, we would return our placeholder to its rightful place.
+              1 - Add another condition to mousePressed() so that whenever the user press anywhere outside
+                    the textField without changing any thing, we would return our placeholder to its rightful place.
 
               We hoped that THAT would be the end of it, but If it ain't for JAVA ..
 
@@ -463,7 +463,7 @@ public class AddExam extends Page {
     /**
      * This method sets all exam basic data by calling Entities.Exam setters
      * and calls Entities.Exam.add() to add a new exam to the data base and its models
-     * @param exam The new exam basic data entered by the logged-in instructor
+     * @param exam The new exam instance to be filled with its basic data
      */
 
     private void setExamBasicData(Exam exam) {
