@@ -8,6 +8,7 @@ package Entities;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Timestamp;
 import java.time.*;
 import java.util.Date;
 import java.util.Vector;
@@ -19,7 +20,12 @@ import javax.xml.transform.Source;
  * @author yn653, Steven Sameh, Yusuf Nasser, Ayman Hassasn
  */
 public class Exam implements SqlEntity {
-    
+
+    /*
+     TODO
+      Initialize variables in the constructor to avoid null pointer exceptions
+     */
+
     /*
      * All the attributes of the Exam Class   
     */
@@ -32,9 +38,10 @@ public class Exam implements SqlEntity {
      * can input in a test.
     */
     
-    final static private int MAX_QUESTION = 50;
+    final static private int MAX_QUESTION = 50, MODEL_NUMBER_LIMIT = 5, YEAR_LIMIT = 2051,
+            MONTH_LIMIT = 12, HOUR_LIMIT = 24, MINUTES_LIMIT = 60, EXAM_DURATION_LIMIT = 180;
     
-    private int id;
+    private int id , numberOfModels;
     private Class examClass;
     private String instructorName;
     private String name;
@@ -50,7 +57,7 @@ public class Exam implements SqlEntity {
     */
 
     public Exam(Entities.Class examClass) {
-        this.generateID();
+        models = new Vector<Model>();
         this.examClass = examClass;
     }
     
@@ -68,6 +75,7 @@ public class Exam implements SqlEntity {
     */
     
     public Exam(int id) {
+        models = new Vector<Model>();
         this.id = id;
     }
     /**
@@ -95,7 +103,7 @@ public class Exam implements SqlEntity {
     {
         Connection myConnection = SqlConnection.getConnection();
         try {
-            PreparedStatement myStatement = myConnection.prepareStatement("select EXAM_SEQ.NEXTVAL from dual");
+            PreparedStatement myStatement = myConnection.prepareStatement("select EXAMIDSEQ.NEXTVAL from dual");
             ResultSet myResultSet = myStatement.executeQuery();
             if (myResultSet.next()) {
                 id = myResultSet.getInt(1);
@@ -108,6 +116,19 @@ public class Exam implements SqlEntity {
     public static int getMaxQuestion() {
         return MAX_QUESTION;
     }
+
+    public static int getModelNumberLimit() { return MODEL_NUMBER_LIMIT; }
+
+    public static int getYearLimit() { return YEAR_LIMIT; }
+
+    public static int getMonthLimit() { return MONTH_LIMIT; }
+
+    public static int getHourLimit() { return HOUR_LIMIT; }
+
+    public static int getMinutesLimit() { return MINUTES_LIMIT; }
+
+    public static int getExamDurationLimit() { return EXAM_DURATION_LIMIT; }
+
     /**
      * Ayman Hassan, Ziad Khobeiz
      * finished fillData function
@@ -150,21 +171,36 @@ public class Exam implements SqlEntity {
         try {
             PreparedStatement myStatement = myConnection.prepareStatement("insert into exam values (?,?,?,?,?,?)");
             myStatement.setInt(1, id);
-            myStatement.setDate(2, java.sql.Date.valueOf(startTime.toLocalDate()));
-            myStatement.setDate(3, java.sql.Date.valueOf(endTime.toLocalDate()));
+           myStatement.setTimestamp(2, Timestamp.valueOf(startTime));
+            myStatement.setTimestamp(3, Timestamp.valueOf(endTime));
             myStatement.setInt(4, examClass.getId());
             myStatement.setString(5, name);
-            myStatement.setString(6,isPublished ? "Y" : "N");
+            myStatement.setString(6, "N");
             myStatement.executeQuery();
-            
+
         } catch (Exception e) {
             System.out.println(e);
-        } 
+        }
+        for(int modelNumber = 1; modelNumber <= numberOfModels; ++modelNumber) {
+            models.add(new Model(id, modelNumber));
+            models.lastElement().add();
+        }
     }
 
     @Override
     public void update() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Connection myConnection = SqlConnection.getConnection();
+        try {
+            PreparedStatement myStatement = myConnection.prepareStatement("update exam set ispublished = ?, name = ?, starttime = ?, endtime = ? where examid = ?");
+            myStatement.setString(1, isPublished ? "Y" : "N");
+            myStatement.setString(2, name);
+            myStatement.setTimestamp(3, Timestamp.valueOf(startTime));
+            myStatement.setTimestamp(4, Timestamp.valueOf(endTime));
+            myStatement.setInt(5, id);
+            myStatement.executeQuery();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
     }
 
     @Override
@@ -182,6 +218,7 @@ public class Exam implements SqlEntity {
     public void setDuration(Duration duration) {
         this.duration = duration;
     }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -196,6 +233,9 @@ public class Exam implements SqlEntity {
     /*
      * All the getter functions of the Exam class
     */
+
+    public void setNumberOfModels(int numberOfModels) { this.numberOfModels = numberOfModels; }
+
     public int getId() {
         return id;
     }
@@ -272,6 +312,28 @@ public class Exam implements SqlEntity {
         return name;
     }
 
+    /**
+     * It checks whether all the models of the exam have the same positive number of question
+     * and the exam start time is upcoming (i.e. the exam is ready to be published)
+     * @return boolean Whether the exam is ready to be published
+     */
+    public boolean isReadyToPublish() {
+        if(models.size() == 0) {
+            return false;
+        }
+        for(int i = 1; i < models.size(); ++i) {
+            if(models.elementAt(i).getQuestions().size() == 0 || 
+                    models.elementAt(i).getQuestions().size() != models.elementAt(i - 1).getQuestions().size()) {
+                return false;
+            }
+        }
+        return true;
+    }
+    
+    public void publish() {
+        isPublished = true;
+        update();
+    }
     
     public static void main(String[] args) {
         Exam test = new Exam(new Entities.Class  (5,false));

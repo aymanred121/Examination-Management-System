@@ -82,7 +82,7 @@ public class ViewExams extends Page {
                 modelsButton.setBounds(380 + 87, 65 + delta, 150, 30);
                 modelsButton.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
-                        // new Login();
+                        new ViewModels((Instructor)user ,exam.getModels().elementAt(0)).setVisible(true);
                         dispose();
                     }
                 });
@@ -150,9 +150,7 @@ public class ViewExams extends Page {
         Vector<Exam> upcomingExams = new Vector<Exam>();
         Vector<Exam> finishedExams = new Vector<Exam>();
         Vector<Exam> unpublishedExams = new Vector<Exam>();
-
         for (Entities.Exam exam : exams) {
-
             switch (exam.getStatus()) {
                 case UNPUBLISHED:
                     unpublishedExams.add(exam);
@@ -168,9 +166,7 @@ public class ViewExams extends Page {
                     break;
             }
         }
-
         Collections.reverse(finishedExams);
-
         int delta = 0;
         delta = showExams(runningExams, Exam.Status.RUNNING, delta);
         delta = showExams(upcomingExams, Exam.Status.UPCOMING, delta);
