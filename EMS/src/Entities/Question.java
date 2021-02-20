@@ -29,6 +29,7 @@ public class Question implements SqlEntity {
     }
 
     public Question(int examId, int modelNumber, char correctChoice, String statement) {
+        id = SqlEntity.generateID("QUESTIONIDSEQ");  
         this.examId = examId;
         this.modelNumber = modelNumber;
         this.correctChoice = correctChoice;
@@ -72,7 +73,7 @@ public class Question implements SqlEntity {
             System.out.println(e);
         }
         for (char choiceNumber = 'a'; choiceNumber <= 'd'; choiceNumber++) {
-            choices.add(new QuestionChoice(examId, choiceNumber));
+            choices.add(new QuestionChoice(id, choiceNumber));
         }
     }
 
@@ -84,18 +85,22 @@ public class Question implements SqlEntity {
     }
 
     @Override
-    public void add() {
-        id = SqlEntity.generateID("QUESTIONIDSEQ");   
+    public void add() { 
         Connection myConnection = SqlConnection.getConnection();
         try {
             PreparedStatement myStatement = myConnection.prepareStatement(
-                    "insert into  question (questionId, statement , modelNumber, examId , classId)\n"
+                    "insert into  question (questionId, statement , modelNumber, examId , classId) "
                     + "values (?,?,?,?,?)");
             myStatement.setInt(1, id);
             myStatement.setString(2, statement);
             myStatement.setInt(3, modelNumber);
             myStatement.setInt(4, examId);
             myStatement.setInt(5, classId);
+            myStatement.executeQuery();
+            myStatement = myConnection.prepareStatement("insert into correctChoice"
+                    + " (questionID , correctChoiceNumber) values (?, ?)");
+            myStatement.setInt(1, id);
+            myStatement.setString(2, String.valueOf(correctChoice));
             myStatement.executeQuery();
         } catch (Exception e) {
             System.out.println(e);
@@ -107,7 +112,24 @@ public class Question implements SqlEntity {
 
     @Override
     public void update() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Connection myConnection = SqlConnection.getConnection();
+        try {
+            PreparedStatement myStatement = myConnection.prepareStatement(
+                "update question set statement = ? where questionID = ?");
+            myStatement.setString(1, statement);
+            myStatement.setInt(2, id);
+            myStatement.executeQuery();
+            myStatement = myConnection.prepareStatement("update correctChoice"
+                    + " set correctChoiceNumber = ? where questionID = ?");
+            myStatement.setString(1, String.valueOf(correctChoice));
+            myStatement.setInt(2, id);
+            myStatement.executeQuery();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        for (QuestionChoice choice : choices) {
+            choice.update();
+        }
     }
 
     @Override
@@ -120,11 +142,38 @@ public class Question implements SqlEntity {
     }
 
     public int getExamId() {
+        if(!isFilled) {
+            fillData();
+        }
         return examId;
     }
 
+    public char getCorrectChoice() {
+        if(!isFilled) {
+            fillData();
+        }
+        return correctChoice;
+    }
+
+    public void setCorrectChoice(char correctChoice) {
+        this.correctChoice = correctChoice;
+    }
+
+    public void setStatement(String statement) {
+        this.statement = statement;
+    }
+
+    
+    
     public int getModelNumber() {
+        if(!isFilled) {
+            fillData();
+        }
         return modelNumber;
+    }
+
+    public int getId() {
+        return id;
     }
 
 }
