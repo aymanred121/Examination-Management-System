@@ -61,8 +61,14 @@ public abstract class Page extends javax.swing.JFrame {
     protected JButton getBackButton() {
         return backButton;
     }
-    
-    
+
+    /**
+     * A getter function for the JScrollPane to be used by the subclasses
+     * @return jScrollPane1 The Scroll Pane
+     */
+
+    public JScrollPane getJScrollPane1() { return jScrollPane1; }
+
     /**
      * It displays an alert message
      * @param message 

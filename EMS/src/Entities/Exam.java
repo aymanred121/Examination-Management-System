@@ -20,7 +20,12 @@ import javax.xml.transform.Source;
  * @author yn653, Steven Sameh, Yusuf Nasser, Ayman Hassasn
  */
 public class Exam implements SqlEntity {
-    
+
+    /*
+     TODO
+      Initialize variables in the constructor to avoid null pointer exceptions
+     */
+
     /*
      * All the attributes of the Exam Class   
     */
@@ -33,7 +38,8 @@ public class Exam implements SqlEntity {
      * can input in a test.
     */
     
-    final static private int MAX_QUESTION = 50;
+    final static private int MAX_QUESTION = 50, MODEL_NUMBER_LIMIT = 5, YEAR_LIMIT = 2051,
+            MONTH_LIMIT = 12, HOUR_LIMIT = 24, MINUTES_LIMIT = 60, EXAM_DURATION_LIMIT = 180;
     
     private int id , numberOfModels;
     private Class examClass;
@@ -51,6 +57,7 @@ public class Exam implements SqlEntity {
     */
 
     public Exam(Entities.Class examClass) {
+        models = new Vector<Model>();
         this.examClass = examClass;
     }
     
@@ -68,6 +75,7 @@ public class Exam implements SqlEntity {
     */
     
     public Exam(int id) {
+        models = new Vector<Model>();
         this.id = id;
     }
     /**
@@ -95,6 +103,19 @@ public class Exam implements SqlEntity {
     public static int getMaxQuestion() {
         return MAX_QUESTION;
     }
+
+    public static int getModelNumberLimit() { return MODEL_NUMBER_LIMIT; }
+
+    public static int getYearLimit() { return YEAR_LIMIT; }
+
+    public static int getMonthLimit() { return MONTH_LIMIT; }
+
+    public static int getHourLimit() { return HOUR_LIMIT; }
+
+    public static int getMinutesLimit() { return MINUTES_LIMIT; }
+
+    public static int getExamDurationLimit() { return EXAM_DURATION_LIMIT; }
+
     /**
      * Ayman Hassan, Ziad Khobeiz
      * finished fillData function
@@ -120,7 +141,6 @@ public class Exam implements SqlEntity {
             PreparedStatement modelsStatement = myConnection.prepareStatement("select MODELNUMBER FROM EXAMMODEL where EXAMID = ?");
             modelsStatement.setInt(1, id);
             ResultSet modelsResultSet = modelsStatement.executeQuery();
-            models = new Vector<Model>();
             while (modelsResultSet.next()) {
                 models.add(new Model(id, modelsResultSet.getInt(1)));
             }
@@ -184,6 +204,7 @@ public class Exam implements SqlEntity {
     public void setDuration(Duration duration) {
         this.duration = duration;
     }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -198,6 +219,9 @@ public class Exam implements SqlEntity {
     /*
      * All the getter functions of the Exam class
     */
+
+    public void setNumberOfModels(int numberOfModels) { this.numberOfModels = numberOfModels; }
+
     public int getId() {
         return id;
     }

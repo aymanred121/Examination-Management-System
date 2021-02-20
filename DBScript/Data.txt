@@ -936,19 +936,19 @@ values (46,'d','Delhi is clean but I am in Mumbai');
 insert into questionchoice
 values (47,'a','~P V ~Q');
 insert into questionchoice
-values (47,'b','P ∧ ~Q');
+values (47,'b','P ^ ~Q');
 insert into questionchoice
 values (47,'c','P V Q');
 insert into questionchoice
-values (47,'d','P ∧ Q');
+values (47,'d','P ^ Q');
 insert into questionchoice
 values (48,'a','~P V ~Q V R');
 insert into questionchoice
-values (48,'b','P ∧ ~Q ∧ R');
+values (48,'b','P ^ ~Q ^ R');
 insert into questionchoice
-values (48,'c','P V Q ∧ R');
+values (48,'c','P V Q ^ R');
 insert into questionchoice
-values (48,'d','P V Q ∧ ~R');
+values (48,'d','P V Q ^ ~R');
 insert into questionchoice
 values (49,'a','4');
 insert into questionchoice

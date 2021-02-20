@@ -54,7 +54,7 @@ public class UserDashboard extends Page{
     private void showCourses() {
 
         Vector<JLabel> courseName = new Vector<JLabel>();
-        Vector< JButton> topicsButtons = new Vector<JButton>(), examsButtons = new Vector<JButton>();
+        Vector<JButton> topicsButtons = new Vector<JButton>(), examsButtons = new Vector<JButton>();
         Vector<Entities.Class> classes;
         switch(userType) {
             case STUDENT:
