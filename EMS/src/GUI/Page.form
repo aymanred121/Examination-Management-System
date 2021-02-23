@@ -120,6 +120,7 @@
             </Property>
             <Property name="horizontalAlignment" type="int" value="11"/>
             <Property name="text" type="java.lang.String" value="Title"/>
+            <Property name="focusTraversalPolicyProvider" type="boolean" value="true"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JButton" name="LogoutButton">

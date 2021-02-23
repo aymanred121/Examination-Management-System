@@ -10,6 +10,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.time.*;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Vector;
 import javax.xml.transform.Result;
@@ -99,20 +101,24 @@ public class Exam implements SqlEntity {
          */
         UNPUBLISHED
     }
-    private void generateID()
-    {
-        Connection myConnection = SqlConnection.getConnection();
-        try {
-            PreparedStatement myStatement = myConnection.prepareStatement("select EXAMIDSEQ.NEXTVAL from dual");
-            ResultSet myResultSet = myStatement.executeQuery();
-            if (myResultSet.next()) {
-                id = myResultSet.getInt(1);
-           }
-            myConnection.close();
-        } catch (Exception e) {
-            System.out.println(e);
+    
+    public Vector<Question> getTopQuestions(int size) {
+        if(!isFilled) {
+            fillData();
         }
+        Vector<Question> topQuestions = new Vector<Question>();
+        for(Model model : models) {
+            for(Question question : model.getQuestions()) {
+                topQuestions.add(question);
+                Collections.sort(topQuestions);
+                if(topQuestions.size() > size) {
+                    topQuestions.remove(0);
+                }
+            }
+        }
+        return topQuestions;
     }
+    
     public static int getMaxQuestion() {
         return MAX_QUESTION;
     }
@@ -166,18 +172,17 @@ public class Exam implements SqlEntity {
 
     @Override
     public void add() {
-        this.generateID();
+        id = SqlEntity.generateID("EXAMIDSEQ");
         Connection myConnection = SqlConnection.getConnection();
         try {
             PreparedStatement myStatement = myConnection.prepareStatement("insert into exam values (?,?,?,?,?,?)");
             myStatement.setInt(1, id);
-           myStatement.setTimestamp(2, Timestamp.valueOf(startTime));
+            myStatement.setTimestamp(2, Timestamp.valueOf(startTime));
             myStatement.setTimestamp(3, Timestamp.valueOf(endTime));
             myStatement.setInt(4, examClass.getId());
             myStatement.setString(5, name);
             myStatement.setString(6, "N");
             myStatement.executeQuery();
-
         } catch (Exception e) {
             System.out.println(e);
         }

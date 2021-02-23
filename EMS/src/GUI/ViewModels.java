@@ -84,7 +84,7 @@ public class ViewModels extends Page{
             showQuestionButton.setBounds(630, 25+delta , 130, 30);
             showQuestionButton.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
-                    //
+                    new ViewQuestion(instructor, question, model, false).setVisible(true);
                     dispose();
                 }
             });
@@ -92,13 +92,13 @@ public class ViewModels extends Page{
             currentIndex++;
             delta += 45;
         }  
-        if(exam.getStatus() == Exam.Status.UNPUBLISHED && exam.getStartTime().compareTo(java.time.LocalDateTime.now()) > 0) {
+        if(exam.getStatus() == Exam.Status.UNPUBLISHED) {
             JButton addQuestionButton = new JButton("Add Question");
             addQuestionButton.setBounds(490 ,50 + delta, 130, 30);
             getPanel().add(addQuestionButton);
             addQuestionButton.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
-                        //
+                        new ViewQuestion(instructor, model).setVisible(true);
                         dispose();
                     }
                 });
@@ -120,8 +120,5 @@ public class ViewModels extends Page{
                 }
             });
         }
-    }
-     public static void main(String args[]) {
-         new UserDashboard(User.UserType.INSTRUCTOR, "omarhassan").setVisible(true);
     }
 }

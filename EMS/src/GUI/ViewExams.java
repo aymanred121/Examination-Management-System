@@ -95,7 +95,7 @@ public class ViewExams extends Page {
                     reportButton.setBounds(560, 65 + delta, 150, 30);
                     reportButton.addActionListener(new ActionListener() {
                         public void actionPerformed(ActionEvent e) {
-                            // new Login();
+                            new ViewReport((Instructor) user, exam).setVisible(true);
                             dispose();
                         }
                     });

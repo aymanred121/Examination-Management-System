@@ -5,6 +5,10 @@
  */
 package Entities;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+
 /**
  *
  * @author Ziad Khobeiz
@@ -30,5 +34,25 @@ interface SqlEntity {
      * Updates the object in the database.
      */
     public void delete();
-    
+    /**
+     * 
+     * @param sequenceName
+     * @return 
+     */
+    public static int  generateID( String sequenceName)
+    {
+        int id = 0;
+        Connection myConnection = SqlConnection.getConnection();
+        try {
+            PreparedStatement myStatement = myConnection.prepareStatement("select "+sequenceName+".NEXTVAL from dual");
+            ResultSet myResultSet = myStatement.executeQuery();
+            if (myResultSet.next()) {
+                id = myResultSet.getInt(1);
+           }
+            myConnection.close();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return id; 
+    }
 }

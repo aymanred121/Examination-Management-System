@@ -103,4 +103,8 @@ public class UserDashboard extends Page{
 
     }
     
+    public static void main(String args[]) {
+         new UserDashboard(User.UserType.INSTRUCTOR, "omarhassan").setVisible(true);
+    }
+    
 }

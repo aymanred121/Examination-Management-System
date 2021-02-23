@@ -8,42 +8,50 @@ package Entities;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Timestamp;
 import java.util.Vector;
 
 /**
  *
  * @author bizarre
  */
-public class Question implements SqlEntity {
-    
+public class Question implements SqlEntity, Comparable {
+
     private final int id;
-    private int totalFrequency, correctFrequency;
+    private int totalFrequency, correctFrequency, examId, modelNumber, classId;
     private char correctChoice;
     private boolean isFilled;
     private String statement;
-    private Vector<String> choices;
-    
+    private Vector<QuestionChoice> choices;
+
     public Question(int id) {
         this.id = id;
+        choices = new Vector<>();
     }
 
+    public Question(int examId, int modelNumber, char correctChoice, String statement) {
+        id = SqlEntity.generateID("QUESTIONIDSEQ");  
+        this.examId = examId;
+        this.modelNumber = modelNumber;
+        this.correctChoice = correctChoice;
+        this.statement = statement;
+        this.classId = new Exam(examId).getExamClass().getId();
+        choices = new Vector<>();
+    }
+
+    // Both examID and modelNumber should be retrieved from database
     @Override
     public void fillData() {
         isFilled = true;
         Connection myConnection = SqlConnection.getConnection();
         try {
-            PreparedStatement myStatement = myConnection.prepareStatement("select STATEMENT from QUESTION where QUESTIONID = ?");
+            PreparedStatement myStatement = myConnection.prepareStatement("select STATEMENT, MODELNUMBER, EXAMID from QUESTION where QUESTIONID = ?");
             myStatement.setInt(1, id);
             ResultSet myResultSet = myStatement.executeQuery();
             if (myResultSet.next()) {
                 statement = new String(myResultSet.getString(1));
-            }
-            PreparedStatement choicesStatement = myConnection.prepareStatement("select CHOICESTATEMENT from QUESTIONCHOICE where QUESTIONID = ? order by CHOICENUMBER");
-            choicesStatement.setInt(1, id);
-            ResultSet choicesResultSet = choicesStatement.executeQuery();
-            choices = new Vector<String>();
-            while (choicesResultSet.next()) {
-                choices.add(new String(choicesResultSet.getString(1)));
+                modelNumber = myResultSet.getInt(2);
+                examId = myResultSet.getInt(3);
             }
             PreparedStatement correctChoicesStatement = myConnection.prepareStatement("select CORRECTCHOICENUMBER from CORRECTCHOICE where QUESTIONID = ?");
             correctChoicesStatement.setInt(1, id);
@@ -66,30 +74,133 @@ public class Question implements SqlEntity {
             }
         } catch (Exception e) {
             System.out.println(e);
-        } 
+        }
+        for (char choiceNumber = 'a'; choiceNumber <= 'd'; choiceNumber++) {
+            choices.add(new QuestionChoice(id, choiceNumber));
+        }
     }
 
     public String getStatement() {
-        if (!isFilled)
-        {
+        if (!isFilled) {
             fillData();
         }
         return statement;
     }
 
     @Override
-    public void add() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void add() { 
+        Connection myConnection = SqlConnection.getConnection();
+        try {
+            PreparedStatement myStatement = myConnection.prepareStatement(
+                    "insert into  question (questionId, statement , modelNumber, examId , classId) "
+                    + "values (?,?,?,?,?)");
+            myStatement.setInt(1, id);
+            myStatement.setString(2, statement);
+            myStatement.setInt(3, modelNumber);
+            myStatement.setInt(4, examId);
+            myStatement.setInt(5, classId);
+            myStatement.executeQuery();
+            myStatement = myConnection.prepareStatement("insert into correctChoice"
+                    + " (questionID , correctChoiceNumber) values (?, ?)");
+            myStatement.setInt(1, id);
+            myStatement.setString(2, String.valueOf(correctChoice));
+            myStatement.executeQuery();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        for (QuestionChoice choice : choices) {
+            choice.add();
+        }
     }
 
-    @Override   
+    @Override
     public void update() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Connection myConnection = SqlConnection.getConnection();
+        try {
+            PreparedStatement myStatement = myConnection.prepareStatement(
+                "update question set statement = ? where questionID = ?");
+            myStatement.setString(1, statement);
+            myStatement.setInt(2, id);
+            myStatement.executeQuery();
+            myStatement = myConnection.prepareStatement("update correctChoice"
+                    + " set correctChoiceNumber = ? where questionID = ?");
+            myStatement.setString(1, String.valueOf(correctChoice));
+            myStatement.setInt(2, id);
+            myStatement.executeQuery();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        for (QuestionChoice choice : choices) {
+            choice.update();
+        }
     }
 
     @Override
     public void delete() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+    public Vector<QuestionChoice> getChoices() {
+        return choices;
+    }
+
+    public int getExamId() {
+        if(!isFilled) {
+            fillData();
+        }
+        return examId;
+    }
+
+    public char getCorrectChoice() {
+        if(!isFilled) {
+            fillData();
+        }
+        return correctChoice;
+    }
+
+    public void setCorrectChoice(char correctChoice) {
+        this.correctChoice = correctChoice;
+    }
+
+    public void setStatement(String statement) {
+        this.statement = statement;
+    }
     
+    public int getModelNumber() {
+        if(!isFilled) {
+            fillData();
+        }
+        return modelNumber;
+    }
+
+    public int getId() {
+        return id;
+    }
+    
+    public double getSolvingRate() {
+        if(!isFilled) {
+            fillData();
+        }
+        if(totalFrequency == 0) {
+            return 0;
+        } else {
+            return (double) correctFrequency / totalFrequency;
+        }
+        
+    }
+
+    @Override
+    public int compareTo(Object t) {
+        
+        Question otherQuestion = (Question) t;
+        if(getSolvingRate() < otherQuestion.getSolvingRate()) {
+            return 1;
+        } else if(getSolvingRate() > otherQuestion.getSolvingRate()) {
+            return -1;
+        } else {
+            return 0;
+        }
+        
+    }
+
 }
