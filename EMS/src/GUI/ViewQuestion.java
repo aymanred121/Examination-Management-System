@@ -24,7 +24,7 @@ public class ViewQuestion extends javax.swing.JFrame {
     String correctChoice;
     Instructor instructor;
     Question question;
-    boolean isNew;
+    boolean isNew, isFromReport;
     
     /**
      * Creates new form CreateQuestion
@@ -34,14 +34,15 @@ public class ViewQuestion extends javax.swing.JFrame {
         this.instructor = instructor;
         this.model = model;
         initComponents();
-        // Placeholders
+            // Placeholders
         setVisible(true);
     }
     
-    public ViewQuestion(Instructor instructor, Question question, Model model) {
+    public ViewQuestion(Instructor instructor, Question question, Model model, boolean isFromReport) {
         this.instructor = instructor;
         this.question = question;
         this.model = model;
+        this.isFromReport = isFromReport;
         initComponents();
         boolean isEditable = new Exam(model.getExamID()).getStatus() == Exam.Status.UNPUBLISHED;
         saveButton.setVisible(isEditable);
@@ -275,7 +276,11 @@ public class ViewQuestion extends javax.swing.JFrame {
     }//GEN-LAST:event_choice1TextFieldActionPerformed
 
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
-        new ViewModels(instructor, model).setVisible(true);
+        if(isFromReport) {
+            new ViewReport(instructor, new Exam(model.getExamID())).setVisible(true);
+        } else {
+            new ViewModels(instructor, model).setVisible(true);
+        }
         dispose();
     }//GEN-LAST:event_backButtonActionPerformed
 

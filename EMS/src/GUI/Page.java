@@ -117,6 +117,7 @@ public abstract class Page extends javax.swing.JFrame {
         title.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         title.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         title.setText("Title");
+        title.setFocusTraversalPolicyProvider(true);
 
         LogoutButton.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
         LogoutButton.setText("Logout");

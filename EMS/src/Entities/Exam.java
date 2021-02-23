@@ -10,6 +10,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.time.*;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Vector;
 import javax.xml.transform.Result;
@@ -98,6 +100,23 @@ public class Exam implements SqlEntity {
          * Exam is unpublished
          */
         UNPUBLISHED
+    }
+    
+    public Vector<Question> getTopQuestions(int size) {
+        if(!isFilled) {
+            fillData();
+        }
+        Vector<Question> topQuestions = new Vector<Question>();
+        for(Model model : models) {
+            for(Question question : model.getQuestions()) {
+                topQuestions.add(question);
+                Collections.sort(topQuestions);
+                if(topQuestions.size() > size) {
+                    topQuestions.remove(0);
+                }
+            }
+        }
+        return topQuestions;
     }
     
     public static int getMaxQuestion() {

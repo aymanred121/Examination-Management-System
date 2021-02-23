@@ -84,7 +84,7 @@ public class ViewModels extends Page{
             showQuestionButton.setBounds(630, 25+delta , 130, 30);
             showQuestionButton.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
-                    new ViewQuestion(instructor, question, model).setVisible(true);
+                    new ViewQuestion(instructor, question, model, false).setVisible(true);
                     dispose();
                 }
             });

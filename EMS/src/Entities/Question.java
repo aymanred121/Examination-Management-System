@@ -15,9 +15,10 @@ import java.util.Vector;
  *
  * @author bizarre
  */
-public class Question implements SqlEntity {
+public class Question implements SqlEntity, Comparable {
 
-    private int id, totalFrequency, correctFrequency, examId, modelNumber, classId;
+    private final int id;
+    private int totalFrequency, correctFrequency, examId, modelNumber, classId;
     private char correctChoice;
     private boolean isFilled;
     private String statement;
@@ -44,11 +45,13 @@ public class Question implements SqlEntity {
         isFilled = true;
         Connection myConnection = SqlConnection.getConnection();
         try {
-            PreparedStatement myStatement = myConnection.prepareStatement("select STATEMENT from QUESTION where QUESTIONID = ?");
+            PreparedStatement myStatement = myConnection.prepareStatement("select STATEMENT, MODELNUMBER, EXAMID from QUESTION where QUESTIONID = ?");
             myStatement.setInt(1, id);
             ResultSet myResultSet = myStatement.executeQuery();
             if (myResultSet.next()) {
                 statement = new String(myResultSet.getString(1));
+                modelNumber = myResultSet.getInt(2);
+                examId = myResultSet.getInt(3);
             }
             PreparedStatement correctChoicesStatement = myConnection.prepareStatement("select CORRECTCHOICENUMBER from CORRECTCHOICE where QUESTIONID = ?");
             correctChoicesStatement.setInt(1, id);
@@ -162,8 +165,6 @@ public class Question implements SqlEntity {
     public void setStatement(String statement) {
         this.statement = statement;
     }
-
-    
     
     public int getModelNumber() {
         if(!isFilled) {
@@ -174,6 +175,32 @@ public class Question implements SqlEntity {
 
     public int getId() {
         return id;
+    }
+    
+    public double getSolvingRate() {
+        if(!isFilled) {
+            fillData();
+        }
+        if(totalFrequency == 0) {
+            return 0;
+        } else {
+            return (double) correctFrequency / totalFrequency;
+        }
+        
+    }
+
+    @Override
+    public int compareTo(Object t) {
+        
+        Question otherQuestion = (Question) t;
+        if(getSolvingRate() < otherQuestion.getSolvingRate()) {
+            return 1;
+        } else if(getSolvingRate() > otherQuestion.getSolvingRate()) {
+            return -1;
+        } else {
+            return 0;
+        }
+        
     }
 
 }
