@@ -1,6 +1,7 @@
 package GUI;
 
 import Entities.*;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -18,21 +19,22 @@ import java.time.*;
  * - some of the data is validated in the process of showing the combobox-es lists and others
  * validated after being inserted - and calls Entities.Exam.add()
  *
- * @author Yusuf Nasser, Ayman Hassan, Youssef Nader, Steven Sameh, Ziad Khobeiz
- * @version 1.0
+ * @author Yusuf Nasser, Youssef Nader, Ayman Hassan, Steven Sameh, Ziad Khobeiz
+ * @version 1.1
  */
 
 public class AddExam extends Page {
     private Instructor instructor;
-    private Exam newExam;
+    private Exam newExam, editedExam;
     private JComboBox<Integer> yearComboBox, monthComboBox, dayComboBox,
             hourComboBox, minuteComboBox, modelComboBox, durationComboBox;
     private DefaultListCellRenderer listRenderer;
     private Vector<Integer> months, days, hours, minutes;
     private int currentYear, currentMonth, currentDay, currentHour, currentMinute, examStartHour,
             examStartMinute, examDurationTime, examStartYear, examStartMonth, examStartDay, examModels;
-    private JButton addExamButton;
+    private JButton addExamButton, saveChangesButton;
     private JTextField enterExamNameField;
+    private String examName;
     private LocalDateTime examStartDate, examEndDate;
     // difference between X & Y positions for label and combobox
     final static private int deltaXLabelCombo = 15, deltaYLabelCombo = 3;
@@ -61,6 +63,46 @@ public class AddExam extends Page {
             dispose();
         });
         showExamDataInput();
+        getBackButton().setVisible(true);
+
+        // For testing purposes
+        // setDefaultCloseOperation(EXIT_ON_CLOSE);
+
+        // Setting the size for the AddExam Page
+        setSize(new java.awt.Dimension(800, 600));
+
+        /*
+          Remove scrollbar from the side of the panel
+          Disabling the Horizontal and Vertical scroll bar
+         */
+        getJScrollPane1().setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+        getJScrollPane1().setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+    }
+
+    /**
+     * It constructs a new page in which the logged-in instructor can
+     * edit the exam starting date and time so that they would be valid
+     *
+     * @param instructor The logged-in instructor instance
+     * @param exam       The current exam to be edited
+     */
+
+    public AddExam(Instructor instructor, Exam exam) {
+        // Setting the member variables
+        this.instructor = instructor;
+        this.editedExam = exam;
+
+        // Setting the title label and its properties
+        String titleLabel = exam.getExamClass().getCourse().getName() + " Exam";
+        getTitleLabel().setText(titleLabel);
+        getTitleLabel().setBounds(500, 500, 100, 100);
+
+        // Adding an action listener for the back button in the superclass to go to the ViewExams page
+        getBackButton().addActionListener(e -> {
+            new ViewModels(instructor, exam.getModels().firstElement()).setVisible(true);
+            dispose();
+        });
+        showExamTimeInput();
         getBackButton().setVisible(true);
 
         // For testing purposes
@@ -122,7 +164,7 @@ public class AddExam extends Page {
 
         // Initializing a ComboBox to hold years in range CURRENT_YEAR : Exam.getYearLimit() and setting its properties
         yearComboBox = new JComboBox<>();
-        yearComboBox.setBounds(baseXPosition + 210  + deltaXLabelCombo, baseYPosition, 70, 30);
+        yearComboBox.setBounds(baseXPosition + 210 + deltaXLabelCombo, baseYPosition, 70, 30);
 
         // Creating years vector to store the years in the valid range.
         Vector<Integer> years = new Vector<>();
@@ -442,6 +484,20 @@ public class AddExam extends Page {
     }
 
     /**
+     * This method adds the save changes button to the panel
+     * It does that by using an instance of javax.swing.JButton
+     */
+
+    private void showSaveChangesButton() {
+        // Initializing the saveChangesButton and setting its properties
+        saveChangesButton = new JButton("Save Changes");
+        saveChangesButton.setBounds(530, 350, 170, 50);
+        saveChangesButton.setFont(new java.awt.Font("Tahoma", Font.BOLD, 16));
+        saveChangesButton.setVisible(true);
+        getPanel().add(saveChangesButton);
+    }
+
+    /**
      * This method retrieves the exam basic data from the GUI combobox-es
      * and store them in the member variables and generate the exam start
      * and end date preparing to insert the data in the database.
@@ -455,7 +511,32 @@ public class AddExam extends Page {
         examStartMonth = (int) monthComboBox.getSelectedItem();
         examStartDay = (int) dayComboBox.getSelectedItem();
         examModels = (int) modelComboBox.getSelectedItem();
+        examName = enterExamNameField.getText();
 
+        examStartDate = LocalDateTime.of(examStartYear, examStartMonth, examStartDay, examStartHour, examStartMinute);
+        examEndDate = examStartDate.plusMinutes(examDurationTime);
+    }
+
+    /**
+     * This method retrieves the exam edited time and date from their GUI combobox-es
+     * and store them in the member variables, set the other member variables to the unedited data
+     * generate the exam start and end date preparing to insert the data in the database.
+     */
+
+    private void retrieveExamData() {
+        // Retrieving the edited data from the GUI
+        examStartHour = (int) hourComboBox.getSelectedItem();
+        examStartMinute = (int) minuteComboBox.getSelectedItem();
+        examStartYear = (int) yearComboBox.getSelectedItem();
+        examStartMonth = (int) monthComboBox.getSelectedItem();
+        examStartDay = (int) dayComboBox.getSelectedItem();
+
+        // Retrieving the unedited data
+        examDurationTime = (int) editedExam.getDuration().toMinutes();
+        examModels = editedExam.getModels().size();
+        examName = editedExam.getName();
+
+        // Setting the new start and end date and time
         examStartDate = LocalDateTime.of(examStartYear, examStartMonth, examStartDay, examStartHour, examStartMinute);
         examEndDate = examStartDate.plusMinutes(examDurationTime);
     }
@@ -463,6 +544,7 @@ public class AddExam extends Page {
     /**
      * This method sets all exam basic data by calling Entities.Exam setters
      * and calls Entities.Exam.add() to add a new exam to the data base and its models
+     *
      * @param exam The new exam instance to be filled with its basic data
      */
 
@@ -470,17 +552,34 @@ public class AddExam extends Page {
         exam.setStartTime(examStartDate);
         exam.setEndTime(examEndDate);
         exam.setDuration(Duration.ofMinutes(examDurationTime));
-        exam.setName(enterExamNameField.getText());
+        exam.setName(examName);
         exam.setNumberOfModels(examModels);
         exam.setIsPublished(false); // TB Changed later after editing the models and adding questions to them
         exam.add();
     }
 
     /**
+     * This method updates all exam basic data by calling Entities.Exam setters
+     * and calls Entities.Exam.update() to update the exam after editing it
+     *
+     * @param exam The new exam instance to be Updated to the edited data
+     */
+
+    private void updateExamBasicData(Exam exam) {
+        exam.setStartTime(examStartDate);
+        exam.setEndTime(examEndDate);
+        exam.setDuration(Duration.ofMinutes(examDurationTime));
+        exam.setName(examName);
+        exam.setNumberOfModels(examModels);
+        exam.setIsPublished(false); // TB Changed later after editing the models and adding questions to them
+        exam.update();
+    }
+
+    /**
      * This method calls the GUI portions methods and draw them on the JFrame.
      * It sets the current date, Initialize the listRenderer member variable to
-     * be used in multiple combobox-es, Creates and Initialize the PageActionListener
-     * and PageMouseListener instances and add all GUI components to both listeners.
+     * be used in multiple combobox-es, Creates and Initialize the PageActionListener and PageMouseListener
+     * instances and add all GUI components to both listeners.
      */
 
     private void showExamDataInput() {
@@ -524,6 +623,38 @@ public class AddExam extends Page {
         minuteComboBox.addMouseListener(mouseListener);
         durationComboBox.addMouseListener(mouseListener);
         modelComboBox.addMouseListener(mouseListener);
+    }
+
+    /**
+     * This method calls the GUI portions methods and draw them on the JFrame.
+     * It sets the current date, Initialize the listRenderer member variable to
+     * be used in multiple combobox-es, Creates and Initialize the PageActionListener and PageMouseListener
+     * instances and add all GUI components to both listeners.
+     */
+
+    private void showExamTimeInput() {
+        // Sets the current date and time
+        setCurrentDate();
+
+        // Setting the Alignment of the items in the list
+        listRenderer = new DefaultListCellRenderer();
+        listRenderer.setHorizontalAlignment(DefaultListCellRenderer.CENTER);
+
+        // Showing the page portions one by one by calling its dedicated method
+        showDatePortion();
+        showTimePortion();
+        showSaveChangesButton();
+
+        // Creating an action listener instance to track whatever changes might occur while running
+        PageActionListener listener = new PageActionListener();
+
+        // Adding the Action Listener to the combobox-es
+        yearComboBox.addActionListener(listener);
+        monthComboBox.addActionListener(listener);
+        dayComboBox.addActionListener(listener);
+        hourComboBox.addActionListener(listener);
+        minuteComboBox.addActionListener(listener);
+        saveChangesButton.addActionListener(listener);
     }
 
     /**
@@ -713,6 +844,7 @@ public class AddExam extends Page {
      * that by checking the color of the text returned as if it's black that
      * means the user have write down something and replaced the gray place
      * holder AND checking its size after trimming all white spaces.
+     *
      * @return true if the foreground color is black and not empty; false otherwise.
      */
 
@@ -729,18 +861,16 @@ public class AddExam extends Page {
      * This method shows the instructor the exam basic data entered and
      * asks whether the instructor wants to submit it or edit it.
      * It does that via showConfirmDialog() that only take Yes or No as an answer
+     *
      * @return true if the instructor is sure about the exam data; false otherwise.
      */
 
     boolean userIsSure() {
-        // retrieve exam basic data from the GUI to show it to the instructor before submission.
-        retrieveDataFromGUI();
-
         // Generating the message from the exam basic data
-        String message = "Exam name: " + enterExamNameField.getText();
+        String message = "Exam name: " + examName;
         message += "\nDuration: " + examDurationTime + " min";
         message += ("\nStart time: " + examStartHour + " : " + examStartMinute);
-        message += ("\nDate: " + examStartDay + " - " + examStartMonth + " - " + examStartYear );
+        message += ("\nDate: " + examStartDay + " - " + examStartMonth + " - " + examStartYear);
         message += ("\nNumber of models: " + examModels + "\n");
 
         // Showing the data to the instructor and returning the answer.
@@ -750,6 +880,7 @@ public class AddExam extends Page {
     /**
      * This method checks if a year is leap or not, It does that via
      * several if conditions.
+     *
      * @param year the year in question
      * @return true if the year is a leap year; false otherwise;
      */
@@ -769,8 +900,9 @@ public class AddExam extends Page {
     /**
      * It checks which month and returns its fixed limit and if it's February,
      * checks for leap year as well.
+     *
      * @param month the month in question
-     * @param year the year in question
+     * @param year  the year in question
      * @return how many days in the month and the year in question
      */
 
@@ -796,6 +928,7 @@ public class AddExam extends Page {
     /**
      * An Implementation for the ActionListener class used to override
      * actionPerformed() and acting upon every event occurring while running.
+     *
      * @author Yusuf Nasser
      */
 
@@ -829,10 +962,19 @@ public class AddExam extends Page {
             } else if (event.getSource() == addExamButton) {
                 if (!isNameEntered()) {
                     JOptionPane.showMessageDialog(null, "Please Enter a Valid Name");
+                } else {
+                    retrieveDataFromGUI();
+                    if (userIsSure()) {
+                        setExamBasicData(newExam);
+                        new ViewModels(instructor, newExam.getModels().firstElement()).setVisible(true);
+                        dispose();
+                    }
                 }
-                else if (userIsSure()) {
-                    setExamBasicData(newExam);
-                    new ViewModels(instructor, newExam.getModels().firstElement()).setVisible(true);
+            } else if (event.getSource() == saveChangesButton) {
+                retrieveExamData();
+                if (userIsSure()) {
+                    updateExamBasicData(editedExam);
+                    new ViewModels(instructor, editedExam.getModels().firstElement()).setVisible(true);
                     dispose();
                 }
             }
@@ -843,26 +985,24 @@ public class AddExam extends Page {
      * An Implementation for the MouseListener class used to override
      * mousePressed() and acting upon every event mouse press while running.
      * It is used to support the implementation of creating a place holder in JTextField.
+     *
      * @author Yusuf Nasser
      */
 
     private class PageMouseListener implements MouseListener {
         @Override
-        public void mouseClicked(MouseEvent e) {}
+        public void mouseClicked(MouseEvent e) {
+        }
 
         @Override
         public void mousePressed(MouseEvent e) {
-            if (e.getSource() == enterExamNameField)
-            {
-                if (enterExamNameField.getText().equals("Enter exam name"))
-                {
+            if (e.getSource() == enterExamNameField) {
+                if (enterExamNameField.getText().equals("Enter exam name")) {
                     enterExamNameField.setText("");
                     enterExamNameField.setForeground(Color.black);
                 }
-            }
-            else if (e.getSource() != enterExamNameField) {
-                if (enterExamNameField.getText().isEmpty())
-                {
+            } else if (e.getSource() != enterExamNameField) {
+                if (enterExamNameField.getText().isEmpty()) {
                     enterExamNameField.setForeground(Color.gray);
                     enterExamNameField.setText("Enter exam name");
                     enterExamNameField.transferFocus(); // so that the cursor would move away from the textField
@@ -871,17 +1011,21 @@ public class AddExam extends Page {
         }
 
         @Override
-        public void mouseReleased(MouseEvent e) {}
+        public void mouseReleased(MouseEvent e) {
+        }
 
         @Override
-        public void mouseEntered(MouseEvent e) {}
+        public void mouseEntered(MouseEvent e) {
+        }
 
         @Override
-        public void mouseExited(MouseEvent e) {}
+        public void mouseExited(MouseEvent e) {
+        }
     }
 
     /**
      * This method is used for running and testing AddExam.java while in development
+     *
      * @param args arguments that can be passed in running the program
      */
 

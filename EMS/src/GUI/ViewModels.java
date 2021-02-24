@@ -8,6 +8,8 @@ import Entities.*;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.LocalDateTime;
+import java.util.Calendar;
 import java.util.Vector;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -107,7 +109,11 @@ public class ViewModels extends Page{
             getPanel().add(publishExamButton);
             publishExamButton.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
-                    if(exam.isReadyToPublish()) {
+                    if (exam.getStartTime().isBefore(LocalDateTime.now())) {
+                        JOptionPane.showMessageDialog(null, "The exam start time is Invalid, You will be directed to Edit it to a new valid date.");
+                        new AddExam(instructor, exam).setVisible(true);
+                        dispose();
+                    } else if(exam.isReadyToPublish()) {
                         showAlertMessage("The exam has been published successfully");
                         exam.publish();
                         new ViewExams((User) new Instructor(instructor.getUsername()), new Entities.Class(exam.getExamClass().getId(), false)).setVisible(true);

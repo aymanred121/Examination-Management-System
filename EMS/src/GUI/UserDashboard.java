@@ -8,6 +8,7 @@ package GUI;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Vector;
+import com.sun.xml.internal.ws.util.StringUtils;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import Entities.*;
@@ -45,7 +46,10 @@ public class UserDashboard extends Page{
     * It modifies the Title Label to greet the user
     */
     private void greetUser() {
-        getTitleLabel().setText("Hello " + user.getFirstName());
+        // Capitalizing first letter of userName
+        String userName = user.getFirstName();
+        userName = StringUtils.capitalize(userName);
+        getTitleLabel().setText("Hello " + userName);
     }
     
     /**
@@ -67,7 +71,7 @@ public class UserDashboard extends Page{
         // It defines the spaces between the names of the courses  
         int delta = 0;
         for (Entities.Class currentClass : classes) {
-            // To reterive the names of the courses that the current user has
+            // To retrieve the names of the courses that the current user has
             courseName.add(new JLabel());
             courseName.lastElement().setText(currentClass.getCourse().getName());
             courseName.lastElement().setFont(new java.awt.Font("Tahoma", 1, 17));
@@ -103,7 +107,7 @@ public class UserDashboard extends Page{
 
     }
     
-    public static void main(String args[]) {
+    public static void main(String[] args) {
          new UserDashboard(User.UserType.INSTRUCTOR, "omarhassan").setVisible(true);
     }
     
