@@ -13,20 +13,14 @@ import java.sql.*;
  */
 public abstract class User{
     
-    private final String username;
-    private String mobileNumber, email, firstName, middleName, lastName, birthdate;
+    private String username;
+    private String mobileNumber, email, firstName, middleName, lastName , password;
+    private Date birthdate;
     protected boolean isFilled, isUserFilled;
-    public User(String username, String mobileNumber, String email, String firstName, String middleName, 
-            String lastName, String birthdate) {
-        this.username = username;
-        this.mobileNumber = mobileNumber;
-        this.email = email;
-        this.firstName = firstName;
-        this.middleName = middleName;
-        this.lastName = lastName;
-        this.birthdate = birthdate;
-    }
     
+    public User()
+    {
+    }
     /**
      * It initializes the user with the final data. 
      * @param username The username of the user
@@ -34,7 +28,6 @@ public abstract class User{
     public User(String username) {
         this.username = username;
     }
-    
     /**
      * Represents the type of user
      */
@@ -60,7 +53,7 @@ public abstract class User{
                 firstName = myResultSet.getString(1);
                 middleName = myResultSet.getString(2);
                 lastName = myResultSet.getString(3);
-                birthdate = myResultSet.getString(4);
+                birthdate = myResultSet.getDate(4);
                 mobileNumber = myResultSet.getString(5);
                 email = myResultSet.getString(6);
             } 
@@ -71,7 +64,21 @@ public abstract class User{
     }
     
     public void addUser() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        Connection myConnection = SqlConnection.getConnection();
+        try {
+            PreparedStatement myStatement = myConnection.prepareStatement("insert into UserData values (?,?,?,?,?,?,?,?)");
+            myStatement.setString(1, username);
+            myStatement.setString(2, firstName);
+            myStatement.setString(3, middleName);
+            myStatement.setString(4, lastName);
+            myStatement.setDate(5, birthdate);
+            myStatement.setString(6, mobileNumber);
+            myStatement.setString(7,email);
+            myStatement.setString(8,password);
+            myStatement.executeQuery();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
     }
 
     public void updateUser() {
@@ -170,6 +177,61 @@ public abstract class User{
             System.out.println(e);
         }
         return isValid;
+    }
+     /**
+     * @author Steven Sameh and Abdel-Aziz Mostafa
+     * Checks that the username exists in the database
+     * @param username The username of the user trying to add in database
+     * @return Boolean This returns whether the username exist in the database
+     */
+    public static boolean isUsernameExisted( String username){
+        boolean isExisted = false;
+        Connection myConnection = SqlConnection.getConnection();
+        try{
+            PreparedStatement SQLstatement;
+            SQLstatement = myConnection.prepareStatement("select count(*) from userdata where lower(username) = ?");
+            SQLstatement.setString(1, username);
+            ResultSet myResultSet = SQLstatement.executeQuery();
+            if(myResultSet.next() && myResultSet.getInt(1) >  0) {
+                isExisted = true;
+            }
+            myConnection.close();
+        } catch(Exception e) {
+            System.out.println(e);
+        }
+        return isExisted;
+    }
+
+    public void setMobileNumber(String mobileNumber) {
+        this.mobileNumber = mobileNumber;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public void setMiddleName(String middleName) {
+        this.middleName = middleName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setBirthdate(Date birthdate) {
+        this.birthdate = birthdate;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
     
 }

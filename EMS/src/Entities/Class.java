@@ -3,6 +3,7 @@ package Entities;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Timestamp;
 import java.util.*;
 
 /**
@@ -22,12 +23,18 @@ public class Class implements SqlEntity {
     private Vector<Topic> topics;
     private Vector<Exam> exams;
     private boolean isFilled;
-
+    
     public Class(int id, boolean isStudentSession) {
         this.isStudentSession = isStudentSession;
         this.id = id;
     }
 
+    public Class(int id, Course course) {
+        this.id = id;
+        this.course = course;
+        this.isStudentSession = false;
+    }
+    
     public int getId() {
         if (!isFilled) {
             fillData();
@@ -102,7 +109,15 @@ public class Class implements SqlEntity {
 
     @Override
     public void add() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Connection myConnection = SqlConnection.getConnection();
+        try {
+            PreparedStatement myStatement = myConnection.prepareStatement("insert into class values (?,?)");
+            myStatement.setInt(1, id);
+            myStatement.setString(2, course.getCourseCode());
+            myStatement.executeQuery();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
     }
 
     @Override
@@ -131,5 +146,58 @@ public class Class implements SqlEntity {
         }
         return course;
     }
-
+    public void addInstructor(String username)
+    {
+        Connection myConnection = SqlConnection.getConnection();
+        try {
+            PreparedStatement myStatement = myConnection.prepareStatement("insert into instructorof values (?,?)");
+            myStatement.setInt(1,id);
+            myStatement.setString(2, username);
+            myStatement.executeQuery();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+    /**
+     * @author Steven Sameh and Abdel-Aziz Mostafa
+     * Checks that the classId exists in the database
+     * @param id The id of the class 
+     * @return Boolean This returns whether the classId exist in the database
+     */
+    public static boolean isClassIdExisted( int classId){
+        boolean isExisted = false;
+        Connection myConnection = SqlConnection.getConnection();
+        try{
+            PreparedStatement SQLstatement;
+            SQLstatement = myConnection.prepareStatement("select count(*) from class where id = ?");
+            SQLstatement.setInt(1, classId);
+            ResultSet myResultSet = SQLstatement.executeQuery();
+            if(myResultSet.next() && myResultSet.getInt(1) >  0) {
+                isExisted = true;
+            }
+            myConnection.close();
+        } catch(Exception e) {
+            System.out.println(e);
+        }
+        return isExisted;
+    }
+    /**
+     * Assigns an instructor to class 
+     * @param username the username of the instructor trying to assign to class
+     * @param classId  the classId of the class 
+     */
+    public static void assignInstructor( String username , int classId)
+    {
+        Connection myConnection = SqlConnection.getConnection();
+        try{
+            PreparedStatement SQLstatement;
+            SQLstatement = myConnection.prepareStatement("insert into instructorof values(?,?)");
+            SQLstatement.setString(2, username);
+            SQLstatement.setInt(1, classId);
+            SQLstatement.executeQuery();
+            myConnection.close();
+        } catch(Exception e) {
+            System.out.println(e);
+        }
+    }
 }

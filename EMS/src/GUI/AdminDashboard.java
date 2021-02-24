@@ -5,20 +5,19 @@
  */
 package GUI;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
 /**
  *
- * @author yn653
+ * @author AbdelAziz Mostafa
  */
 public class AdminDashboard extends javax.swing.JFrame {
-
+    Entities.Admin admin;
     /**
      * Creates new form AdminDashboard
      */
-    public AdminDashboard() {
+    public AdminDashboard(String username) {
+        admin = new Entities.Admin(username);
         initComponents();
+        title.setText("Hello " + admin.getFirstName() );
     }
 
     /**
@@ -31,42 +30,84 @@ public class AdminDashboard extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        logoutButton = new javax.swing.JButton();
-        greetingAdmin = new javax.swing.JLabel();
+        LogoutButton = new javax.swing.JButton();
+        title = new javax.swing.JLabel();
+        addNewInstructor = new javax.swing.JButton();
+        assignInctructoToClass = new javax.swing.JButton();
+        addNewClass = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(134, 171, 161));
 
-        logoutButton.setText("Logout");
-        logoutButton.addActionListener(new java.awt.event.ActionListener() {
+        LogoutButton.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
+        LogoutButton.setText("Logout");
+        LogoutButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                logoutButtonActionPerformed(evt);
+                LogoutButtonActionPerformed(evt);
             }
         });
 
-        greetingAdmin.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-        greetingAdmin.setText("Hello");
+        title.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        title.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        title.setText("Title");
+        title.setFocusTraversalPolicyProvider(true);
+
+        addNewInstructor.setText("Add new instructor");
+        addNewInstructor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addNewInstructorActionPerformed(evt);
+            }
+        });
+
+        assignInctructoToClass.setText("Assign instructor to class ");
+        assignInctructoToClass.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                assignInctructoToClassActionPerformed(evt);
+            }
+        });
+
+        addNewClass.setText("Add new Class ");
+        addNewClass.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addNewClassActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(26, 26, 26)
-                .addComponent(greetingAdmin)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 616, Short.MAX_VALUE)
-                .addComponent(logoutButton)
-                .addGap(26, 26, 26))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(title)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(LogoutButton))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(143, 143, 143)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(addNewInstructor, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(assignInctructoToClass, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(addNewClass, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 165, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(27, 27, 27)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(logoutButton)
-                    .addComponent(greetingAdmin))
-                .addContainerGap(621, Short.MAX_VALUE))
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(title)
+                    .addComponent(LogoutButton))
+                .addGap(64, 64, 64)
+                .addComponent(addNewInstructor)
+                .addGap(46, 46, 46)
+                .addComponent(assignInctructoToClass)
+                .addGap(51, 51, 51)
+                .addComponent(addNewClass)
+                .addContainerGap(114, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -83,11 +124,24 @@ public class AdminDashboard extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void logoutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutButtonActionPerformed
-        // TODO add your handling code here:
-        new Login();
+    private void LogoutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LogoutButtonActionPerformed
+        new Login().setVisible(true);
         dispose();
-    }//GEN-LAST:event_logoutButtonActionPerformed
+    }//GEN-LAST:event_LogoutButtonActionPerformed
+
+    private void addNewInstructorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addNewInstructorActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_addNewInstructorActionPerformed
+
+    private void addNewClassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addNewClassActionPerformed
+        new AddNewClass(admin).setVisible(true);
+        dispose();
+    }//GEN-LAST:event_addNewClassActionPerformed
+
+    private void assignInctructoToClassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_assignInctructoToClassActionPerformed
+        new AssignInstrcutorToClass(admin).setVisible(true);
+        dispose();
+    }//GEN-LAST:event_assignInctructoToClassActionPerformed
 
     /**
      * @param args the command line arguments
@@ -119,14 +173,17 @@ public class AdminDashboard extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AdminDashboard().setVisible(true);
+                new AdminDashboard("admin").setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel greetingAdmin;
+    private javax.swing.JButton LogoutButton;
+    private javax.swing.JButton addNewClass;
+    private javax.swing.JButton addNewInstructor;
+    private javax.swing.JButton assignInctructoToClass;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JButton logoutButton;
+    private javax.swing.JLabel title;
     // End of variables declaration//GEN-END:variables
 }
