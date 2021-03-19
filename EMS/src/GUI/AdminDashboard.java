@@ -130,7 +130,8 @@ public class AdminDashboard extends javax.swing.JFrame {
     }//GEN-LAST:event_LogoutButtonActionPerformed
 
     private void addNewInstructorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addNewInstructorActionPerformed
-        // TODO add your handling code here:
+        new AddNewInstructor(admin).setVisible(true);
+        dispose();
     }//GEN-LAST:event_addNewInstructorActionPerformed
 
     private void addNewClassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addNewClassActionPerformed

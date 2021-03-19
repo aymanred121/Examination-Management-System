@@ -14,11 +14,14 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -40,6 +43,11 @@ public class Instructor extends User implements SqlEntity{
     public Instructor(String username) {
         super(username);
     }
+
+    public Instructor(String username, String mobileNumber, String email, String firstName, String middleName, String lastName, LocalDate birthdate, String password) {
+        super(username, mobileNumber, email, firstName, middleName, lastName, birthdate, password);
+    }
+    
     /**
      * It retrieves the classes of the instructor from the database
      */
@@ -73,12 +81,9 @@ public class Instructor extends User implements SqlEntity{
         } catch (Exception e) {
             System.out.println(e);
         }
-        for ( Entities.Class myClass : classes)
-        {
-            myClass.addInstructor(super.getUsername());
-        }
     }
 
+    
     @Override
     public void update() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -119,5 +124,9 @@ public class Instructor extends User implements SqlEntity{
     public Vector<Class> getClasses() {
         if(!isFilled) fillData();
         return classes;
+    }
+    
+    public static void main(String args[]) {
+           new Admin("admin");
     }
 }

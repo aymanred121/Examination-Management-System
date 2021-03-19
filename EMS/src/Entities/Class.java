@@ -146,18 +146,6 @@ public class Class implements SqlEntity {
         }
         return course;
     }
-    public void addInstructor(String username)
-    {
-        Connection myConnection = SqlConnection.getConnection();
-        try {
-            PreparedStatement myStatement = myConnection.prepareStatement("insert into instructorof values (?,?)");
-            myStatement.setInt(1,id);
-            myStatement.setString(2, username);
-            myStatement.executeQuery();
-        } catch (Exception e) {
-            System.out.println(e);
-        }
-    }
     /**
      * @author Steven Sameh and Abdel-Aziz Mostafa
      * Checks that the classId exists in the database

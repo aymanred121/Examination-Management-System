@@ -6,6 +6,8 @@
 package Entities;
 
 import java.sql.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /**
  *
@@ -15,7 +17,7 @@ public abstract class User{
     
     private String username;
     private String mobileNumber, email, firstName, middleName, lastName , password;
-    private Date birthdate;
+    private LocalDate birthdate;
     protected boolean isFilled, isUserFilled;
     
     public User()
@@ -28,6 +30,18 @@ public abstract class User{
     public User(String username) {
         this.username = username;
     }
+
+    public User(String username, String mobileNumber, String email, String firstName, String middleName, String lastName, LocalDate birthdate, String password) {
+        this.username = username;
+        this.mobileNumber = mobileNumber;
+        this.email = email;
+        this.firstName = firstName;
+        this.middleName = middleName;
+        this.lastName = lastName;
+        this.birthdate = birthdate;
+        this.password = password;
+    }
+    
     /**
      * Represents the type of user
      */
@@ -53,7 +67,7 @@ public abstract class User{
                 firstName = myResultSet.getString(1);
                 middleName = myResultSet.getString(2);
                 lastName = myResultSet.getString(3);
-                birthdate = myResultSet.getDate(4);
+                birthdate = myResultSet.getDate(4).toLocalDate();
                 mobileNumber = myResultSet.getString(5);
                 email = myResultSet.getString(6);
             } 
@@ -71,7 +85,7 @@ public abstract class User{
             myStatement.setString(2, firstName);
             myStatement.setString(3, middleName);
             myStatement.setString(4, lastName);
-            myStatement.setDate(5, birthdate);
+            myStatement.setDate(5, Date.valueOf(birthdate));
             myStatement.setString(6, mobileNumber);
             myStatement.setString(7,email);
             myStatement.setString(8,password);
@@ -226,7 +240,7 @@ public abstract class User{
         this.password = password;
     }
 
-    public void setBirthdate(Date birthdate) {
+    public void setBirthdate(LocalDate birthdate) {
         this.birthdate = birthdate;
     }
 
