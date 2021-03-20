@@ -414,14 +414,14 @@ public class AddExam extends Page {
 
         /*
          * PlaceHolder LOGIC:
-          * Since we're using JAVA .. The most beautiful language .. There is no support for a placeholder
-          * So what would we do? we go around it ..
+          * Since we're using JAVA .. There is no support for a placeholder
+          * So we have to go around it somehow .. here is how
 
             1 - Set the placeHolding text to the textField
 
             2 - Give it a gray color
 
-            .. Hold your breath .. here is the real deal ..
+            ....
 
             3 - Implement MouseListener in a newly created class PageMouseListener to override mousePressed
 
@@ -435,29 +435,21 @@ public class AddExam extends Page {
 
                 b - Give it a black color
 
-             TA DAA .. Nice story, right? U can go to sleep now!
+             ....
 
              ******************
 
-             As you know .. A lot of great stories have sequels
-
-             So After we finished the first part .. we found out that after the user exit the textField without
-               changing anything, the placeholder is gone which is a tragedy .. because no place should have no holder
-               my dear friends
-
-             So What do we do again?
+             we found out that after the user exit the textField without
+             changing anything, the placeholder is gone.
 
               1 - Add another condition to mousePressed() so that whenever the user press anywhere outside
                     the textField without changing any thing, we would return our placeholder to its rightful place.
 
-              We hoped that THAT would be the end of it, but If it ain't for JAVA ..
+              We saw that the cursor stays in the textField which is a bug ..
 
-              We saw that the cursor stays in the textField which is a bug .. but don't worry .. We fixed it!
+              2 - We Added - enterExamNameField.transferFocus();
 
-              2 - We Added - enterExamNameField.transferFocus(); - I know it's not a sexy ending but it took us a lot
-                   to find it ..
-
-              Hope you liked our movie .. Yusuf Nasser and Youssef Nader
+              .. Yusuf Nasser and Youssef Nader
          */
 
         // Initializing the textField and giving it an initial place holding text in GRAY
