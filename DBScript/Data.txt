@@ -426,26 +426,26 @@ insert into  question (questionId, expectedDifficulty, topicName, statement)
 values (19,1,'Enhanced Entity-Relationship Modeling','Count function in SQL returns the number of');
 insert into  question (questionId, expectedDifficulty, topicName, statement)
 values (20,2,'Enhanced Entity-Relationship Modeling','The statement in SQL which allows to change the definition of a table is');
-insert into  question (questionId, expectedDifficulty, topicName, statement)
-values (21,2,'Arrays','The address of a variable temp of type float is');
-insert into  question (questionId, expectedDifficulty, topicName, statement)
-values (22,4,'Arrays','What is the output of the following code char symbol[3]={‘a’,‘b’,‘c’}; for (int index=0; index<3; index++) cout << symbol [index];');
-insert into  question (questionId, expectedDifficulty, topicName, statement)
-values (23,3,'Arrays','In C++, dynamic memory allocation is accomplished with the operator ____');
-insert into  question (questionId, expectedDifficulty, topicName, statement)
-values (24,1,'Arrays','The break statement causes an exit');
-insert into  question (questionId, expectedDifficulty, topicName, statement)
-values (25,2,'Arrays','You can read input that consists of multiple lines of text using');
-insert into  question (questionId, expectedDifficulty, topicName, statement)
-values (26,3,'Pointers','Which statement gets affected when i++ is changed to ++i');
-insert into  question (questionId, expectedDifficulty, topicName, statement)
-values (27,4,'Pointers','If the variable count exceeds 100, a single statement that prints “Too many” is');
-insert into  question (questionId, expectedDifficulty, topicName, statement)
-values (28,5,'Pointers','To perform stream I/O with disk files in C++, you should');
-insert into  question (questionId, expectedDifficulty, topicName, statement)
-values (29,6,'Pointers','Identify the operator that is NOT used with pointers');
-insert into  question (questionId, expectedDifficulty, topicName, statement)
-values (30,7,'Pointers','Consider the following statements char *ptr; ptr = “hello”; cout << *ptr; What will be printed?');
+insert into  question (questionId, expectedDifficulty, topicName, examId, modelNumber, classId, statement)
+values (21,2,'Arrays', 1, 1, 1, 'The address of a variable temp of type float is');
+insert into  question (questionId, expectedDifficulty, topicName, examId, modelNumber, classId, statement)
+values (22,4,'Arrays', 1, 1, 1,'What is the output of the following code char symbol[3]={‘a’,‘b’,‘c’}; for (int index=0; index<3; index++) cout << symbol [index];');
+insert into  question (questionId, expectedDifficulty, topicName, examId, modelNumber, classId, statement)
+values (23,3,'Arrays', 1, 1, 1,'In C++, dynamic memory allocation is accomplished with the operator ____');
+insert into  question (questionId, expectedDifficulty, topicName, examId, modelNumber, classId, statement)
+values (24,1,'Arrays', 1, 1, 1,'The break statement causes an exit');
+insert into  question (questionId, expectedDifficulty, topicName, examId, modelNumber, classId, statement)
+values (25,2,'Arrays', 1, 1, 1,'You can read input that consists of multiple lines of text using');
+insert into  question (questionId, expectedDifficulty, topicName, examId, modelNumber, classId, statement)
+values (26,3,'Pointers', 1, 1, 1,'Which statement gets affected when i++ is changed to ++i');
+insert into  question (questionId, expectedDifficulty, topicName, examId, modelNumber, classId, statement)
+values (27,4,'Pointers', 1, 1, 1,'If the variable count exceeds 100, a single statement that prints “Too many” is');
+insert into  question (questionId, expectedDifficulty, topicName, examId, modelNumber, classId, statement)
+values (28,5,'Pointers', 1, 1, 1,'To perform stream I/O with disk files in C++, you should');
+insert into  question (questionId, expectedDifficulty, topicName, examId, modelNumber, classId, statement)
+values (29,6,'Pointers', 1, 1, 1,'Identify the operator that is NOT used with pointers');
+insert into  question (questionId, expectedDifficulty, topicName, examId, modelNumber, classId, statement)
+values (30,7,'Pointers', 1, 1, 1,'Consider the following statements char *ptr; ptr = “hello”; cout << *ptr; What will be printed?');
 insert into  question (questionId, expectedDifficulty, topicName, statement)
 values (31,1,'Inheritance','Mechanism of deriving a class from another derived class is known as____');
 insert into  question (questionId, expectedDifficulty, topicName, statement)

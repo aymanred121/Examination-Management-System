@@ -43,7 +43,7 @@ public class Exam implements SqlEntity {
     final static private int MAX_QUESTION = 50, MODEL_NUMBER_LIMIT = 5, YEAR_LIMIT = 2051,
             MONTH_LIMIT = 12, HOUR_LIMIT = 24, MINUTES_LIMIT = 60, EXAM_DURATION_LIMIT = 180;
     
-    private int id , numberOfModels;
+    private int id , numberOfModels, totalMark;
     private Class examClass;
     private String instructorName;
     private String name;
@@ -52,8 +52,7 @@ public class Exam implements SqlEntity {
     private Duration duration;
     private boolean isFilled;
     private boolean isPublished;
-    
-    
+
     /*
      * This constructor initializes all the final attributes of the class
     */
@@ -253,7 +252,9 @@ public class Exam implements SqlEntity {
         return examClass;
     }
 
-   
+    public int getTotalMark() {
+        return this.models.firstElement().getQuestions().size();
+    }
 
     public String getInstructorName() {
         if(!isFilled) {

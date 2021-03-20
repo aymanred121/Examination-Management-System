@@ -18,8 +18,9 @@ import java.util.Vector;
 public class Model implements SqlEntity {
     
     private final int examID, modelNumber;
+    private int studentMark;
     private Vector<Question> questions;
-    private String modelAnswer;
+    private String studentAnswer = "", modelAnswer = "";
     private boolean isFilled;
 
     public Model(int examID, int modelNumber) {
@@ -58,6 +59,33 @@ public class Model implements SqlEntity {
         return examID;
     }
 
+    public int getModelNumber() {
+        return modelNumber;
+    }
+
+    /**
+     * compares the student Answers to the modelAnswer and set the score
+     * @return studentMark student score in the taken exam model
+     */
+
+    private int getStudentMark() {
+        return 0;
+    }
+
+    /**
+     * generates the modelAnswer by storing the correct choices in a string TB used in the grading process
+     */
+
+    public void generateModelAnswer() {
+        for (Question question : questions) {
+            this.modelAnswer += question.getCorrectChoice();
+        }
+    }
+
+    public String getModelAnswer() {
+        return modelAnswer;
+    }
+
     @Override
     public void add() {
         Connection myConnection = SqlConnection.getConnection();
@@ -65,12 +93,12 @@ public class Model implements SqlEntity {
             PreparedStatement myStatement = myConnection.prepareStatement("insert into exammodel values (?,?)");
             myStatement.setInt(1, examID);
             myStatement.setInt(2, modelNumber);
-            myStatement.executeQuery();            
+            myStatement.executeQuery();
         } catch (Exception e) {
             System.out.println(e);
         }
-    }   
-    
+    }
+
     @Override
     public void update() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -81,8 +109,4 @@ public class Model implements SqlEntity {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    public int getModelNumber() {
-        return modelNumber;
-    }
-    
 }
