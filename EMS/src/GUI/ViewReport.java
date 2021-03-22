@@ -24,9 +24,9 @@ import javax.swing.JTextField;
  */
 public class ViewReport extends javax.swing.JFrame {
 
-    Instructor instructor;
-    Exam exam;
-    java.awt.Font myFont = new java.awt.Font("Tahoma", Font.LAYOUT_LEFT_TO_RIGHT, 11);
+    private Instructor instructor;
+    private Exam exam;
+    private java.awt.Font myFont = new java.awt.Font("Tahoma", Font.LAYOUT_LEFT_TO_RIGHT, 11);
     
     /**
      * Creates new form Report
@@ -58,7 +58,7 @@ public class ViewReport extends javax.swing.JFrame {
             questionStatement.setBounds(50, 25+delta, 550, 30);
             questionStatement.setFont(myFont);
             panel.add(questionStatement);
-            JButton showQuestionButton = new JButton("Show Question");
+            JButton showQuestionButton = new JButton("Question");
             showQuestionButton.setFont(myFont);
             showQuestionButton.setBounds(630, 25+delta , 130, 30);
             showQuestionButton.addActionListener(new ActionListener() {
