@@ -98,7 +98,7 @@ public class BarChar extends JFrame {
         //testing area
     public static void main(String[] args) throws Exception {
         BarChar bar=new BarChar("just a title");
-        bar.pack();
+        //bar.pack();
         RefineryUtilities.centerFrameOnScreen(bar);
         bar.setVisible(true);
         bar.setDefaultCloseOperation(EXIT_ON_CLOSE);

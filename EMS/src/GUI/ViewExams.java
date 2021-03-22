@@ -7,6 +7,7 @@ package GUI;
 
 import Entities.Exam;
 import Entities.Instructor;
+import Entities.Question;
 import Entities.User;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -87,6 +88,19 @@ public class ViewExams extends Page {
                     }
                 });
                 getPanel().add(modelsButton);
+
+                //Show Qeustion rank
+                JButton showQuestionRank = new JButton();
+                showQuestionRank.setText("Show Qeustion rank");
+                showQuestionRank.setFont(myFont);
+                showQuestionRank.setBounds(380 - 200, 65 + delta, 150, 30);
+                showQuestionRank.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        new ViewModels(exam,exam.getModels().elementAt(0),(Instructor)user).setVisible(true);
+                        dispose();
+                    }
+                });
+                getPanel().add(showQuestionRank);
                 if (examStatus == Exam.Status.FINISHED) {
                     modelsButton.setBounds(380, 65 + delta, 150, 30);
                     JButton reportButton = new JButton();

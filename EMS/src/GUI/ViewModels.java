@@ -38,6 +38,21 @@ public class ViewModels extends Page{
         showQuestion();
         showTopBarElements();
     }
+    //to show question rank
+    public ViewModels (Exam exam,Model model,Instructor instructor){
+        this.model=model;
+        this.exam=exam;
+        this.instructor=instructor;
+        getBackButton().addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                new ViewExams((User) instructor,exam.getExamClass()).setVisible(true);
+                dispose();
+            }});
+
+        showTopQuestion();
+        showTopBarElements();
+
+    }
     
     private void showTopBarElements() {
         getTitleLabel().setText("Model " + model.getModelNumber() + '/' + exam.getModels().size());
@@ -127,4 +142,76 @@ public class ViewModels extends Page{
             });
         }
     }
+    private void showTopQuestion(){
+        Vector<Question> questions = model.getQuestions();
+        int delta = 0 , currentIndex = 0;
+        for(int i=0;i<questions.size()-1;i++)
+        {
+            Question temp;
+            if(questions.elementAt(i).compareTo(questions.elementAt(i+1))==-1)
+            {
+                temp=questions.elementAt(i+1);
+                questions.set(i+1,questions.elementAt(i));
+                questions.set(i,temp);
+                i=-1;
+            }
+        }
+        for ( Question question : questions)
+        {
+            JLabel questionNumber = new JLabel("Q" + (currentIndex+1) + ": ");
+            questionNumber.setBounds(20, delta, 300, 80);
+            questionNumber.setFont(myFont);
+            getPanel().add(questionNumber);
+            JTextField questionStatement = new JTextField(question.getStatement());
+            questionStatement.setEditable(false);
+            questionStatement.setBounds(50, 25+delta, 550, 30);
+            questionStatement.setFont(myFont);
+            getPanel().add(questionStatement);
+            JButton  showQuestionButton = new JButton("Show Question");
+            showQuestionButton.setFont(myFont);
+            showQuestionButton.setBounds(630, 25+delta , 130, 30);
+            showQuestionButton.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    new ViewQuestion(instructor, question, model, false).setVisible(true);
+                    dispose();
+                }
+            });
+            getPanel().add(showQuestionButton);
+            currentIndex++;
+            delta += 45;
+        }
+        if(exam.getStatus() == Exam.Status.UNPUBLISHED) {
+            JButton addQuestionButton = new JButton("Add Question");
+            addQuestionButton.setBounds(490 ,50 + delta, 130, 30);
+            getPanel().add(addQuestionButton);
+            addQuestionButton.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    new ViewQuestion(instructor, model).setVisible(true);
+                    dispose();
+                }
+            });
+            JButton publishExamButton = new JButton("Publish Exam");
+            publishExamButton.setBounds(630 ,50 + delta, 130, 30);
+            getPanel().add(publishExamButton);
+            publishExamButton.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    if (exam.getStartTime().isBefore(LocalDateTime.now())) {
+                        JOptionPane.showMessageDialog(null, "The exam start time is Invalid, You will be directed to Edit it to a new valid date.");
+                        new AddExam(instructor, exam).setVisible(true);
+                        dispose();
+                    } else if(exam.isReadyToPublish()) {
+                        showAlertMessage("The exam has been published successfully");
+                        exam.publish();
+                        new ViewExams((User) new Instructor(instructor.getUsername()), new Entities.Class(exam.getExamClass().getId(), false)).setVisible(true);
+                        dispose();
+                    } else {
+                        showAlertMessage("The exam cannot be published. Please make sure that:\n"
+                                + "1- All the models have the same number of questions.\n"
+                                + "2- There is at least one question in each model.");
+                    }
+                }
+            });
+        }
+    }
+
 }
