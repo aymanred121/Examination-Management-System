@@ -17,18 +17,22 @@ import javax.swing.DefaultListCellRenderer;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  *
  * @author Steven Sameh
  */
 public class AddNewInstructor extends javax.swing.JFrame {
-    
+
     Admin admin;
     final static private int deltaXLabelCombo = 15, deltaYLabelCombo = 3;
     private JComboBox<Integer> yearComboBox, monthComboBox, dayComboBox;
     private DefaultListCellRenderer listRenderer;
     private Vector<Integer> months, days;
+    private Pattern pattern;
+    private Matcher matcher;
     /**
      * Creates new form AddNewInstructor
      */
@@ -38,7 +42,7 @@ public class AddNewInstructor extends javax.swing.JFrame {
         // Setting the Alignment of the items in the list
         listRenderer = new DefaultListCellRenderer();
         listRenderer.setHorizontalAlignment(DefaultListCellRenderer.CENTER);
-        showDatePortion();        
+        showDatePortion();
     }
 
     /**
@@ -68,7 +72,7 @@ public class AddNewInstructor extends javax.swing.JFrame {
         emailTextfield = new javax.swing.JTextField();
         lastNameTextfield = new javax.swing.JTextField();
         firstNameTextfield = new javax.swing.JTextField();
-        passwordTextfield = new javax.swing.JTextField();
+        passwordTextfield = new javax.swing.JPasswordField();
         mobileNumberTextfield = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -123,6 +127,7 @@ public class AddNewInstructor extends javax.swing.JFrame {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 addButtonActionPerformed(evt);
             }
+
         });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -262,11 +267,24 @@ public class AddNewInstructor extends javax.swing.JFrame {
                 || isAllWhiteSpaces(emailTextfield.getText())
                 || isAllWhiteSpaces(mobileNumberTextfield.getText()) || isAllWhiteSpaces(passwordTextfield.getText())){
             JOptionPane.showMessageDialog(null, "You should fill out all text fields", "Error", JOptionPane.ERROR_MESSAGE);
-            return ; 
+            return ;
         }else if(User.isUsernameExisted(UsernameTextfield.getText())){
             JOptionPane.showMessageDialog(null, "This username is already in use", "Error", JOptionPane.ERROR_MESSAGE);
             return ;
+        }else if(!mobileNumberValidation()){
+            JOptionPane.showMessageDialog(null, "This mobile number is invlaid.", "Error", JOptionPane.ERROR_MESSAGE);
+            return ;
+        }else if(!passwordValidation()){
+            JOptionPane.showMessageDialog(null, "The Password should contain: at least 8 characters and numbers, one special character, one Uppercase Letter and one Lowercase Letter.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }else if(!emailValidation()){
+            JOptionPane.showMessageDialog(null, "This Email is invalid.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }else if(!nameValidation()){
+            JOptionPane.showMessageDialog(null, "Numbers and special character are not allowed in name fields.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
         }
+
         int year = (int) yearComboBox.getSelectedItem();
         int month = (int) monthComboBox.getSelectedItem();
         int day = (int) dayComboBox.getSelectedItem();
@@ -275,8 +293,37 @@ public class AddNewInstructor extends javax.swing.JFrame {
         Instructor newInstructor = new Instructor(UsernameTextfield.getText(), mobileNumberTextfield.getText(), emailTextfield.getText(),
                 firstNameTextfield.getText(), middleNameTextfield.getText(), lastNameTextfield.getText(), instructorBirthDate, passwordTextfield.getText());
         newInstructor.add();
-        JOptionPane.showMessageDialog(null, "Add Instructor successfully", "", JOptionPane.INFORMATION_MESSAGE);           
+        JOptionPane.showMessageDialog(null, "Add Instructor successfully", "", JOptionPane.INFORMATION_MESSAGE);
+        new AdminDashboard(admin.getUsername()).setVisible(true); ;
+        dispose();
     }//GEN-LAST:event_addButtonActionPerformed
+
+    private boolean nameValidation() {
+        pattern = Pattern.compile("^[a-zA-Z]{3,99}$");
+        matcher = pattern.matcher(firstNameTextfield.getText()+middleNameTextfield.getText()+lastNameTextfield.getText());
+        return matcher.find();
+    }
+
+    private boolean passwordValidation() {
+        pattern = Pattern.compile("^(?=.*\\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[^\\w\\d\\s:])([^\\s]){8,123}$");
+        matcher = pattern.matcher(passwordTextfield.getText());
+        return matcher.find();
+    }
+    private boolean emailValidation(){
+        pattern = Pattern.compile("^((?!\\.)[\\w_.]*[^.])(@\\w+)(\\.\\w+(\\.\\w+)?[^.\\W])$");
+        matcher = pattern.matcher(emailTextfield.getText());
+        return matcher.find();
+    }
+
+    private boolean mobileNumberValidation() {
+        try {
+            Long.parseLong(mobileNumberTextfield.getText());
+            return true;
+        }catch(Exception e){
+            return false;
+        }
+    }
+
     private boolean isAllWhiteSpaces(String data){
         int whiteSpaceFreq = 0;
         for(char c : data.toCharArray())
@@ -286,8 +333,8 @@ public class AddNewInstructor extends javax.swing.JFrame {
         }
         return whiteSpaceFreq == data.length();
     }
-    
-    
+
+
     private void showDatePortion() {
         // A base X and Y positions so that changing multiple component at once would be easily done.
         int baseXPosition = -3;
@@ -369,7 +416,7 @@ public class AddNewInstructor extends javax.swing.JFrame {
 
         // adding the dayComboBox to the panel
         jPanel1.add(dayComboBox);
-        
+
         // Creating an action listener instance to track whatever changes might occur while running
         PageActionListener listener = new PageActionListener();
 
@@ -378,8 +425,8 @@ public class AddNewInstructor extends javax.swing.JFrame {
         monthComboBox.addActionListener(listener);
 
     }
-    
-    
+
+
     boolean leapYear(int year) {
         if (year % 4 == 0) {
             if (year % 100 == 0) {
@@ -420,6 +467,12 @@ public class AddNewInstructor extends javax.swing.JFrame {
         return 31;
     }
 
+
+    @Override
+    public void setResizable(boolean resizable) {
+        super.setResizable(resizable);
+    }
+
     /**
      * This method refreshes the day list so that every day available
      * to the instructor to choose is a valid day.
@@ -443,7 +496,7 @@ public class AddNewInstructor extends javax.swing.JFrame {
 
         // Adding days vector to the combobox list of items.
         dayComboBox.setModel(new DefaultComboBoxModel<>(days));
-   
+
         // Getting the current month to avoid erasing the user's selection if not necessary
         if (selectedDay > dayLimit) selectedDay = dayLimit;
             dayComboBox.setSelectedItem(selectedDay);
@@ -464,7 +517,7 @@ public class AddNewInstructor extends javax.swing.JFrame {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
@@ -510,7 +563,7 @@ public class AddNewInstructor extends javax.swing.JFrame {
     private javax.swing.JLabel mobileNumber;
     private javax.swing.JTextField mobileNumberTextfield;
     private javax.swing.JLabel password;
-    private javax.swing.JTextField passwordTextfield;
+    private javax.swing.JPasswordField passwordTextfield;
     private javax.swing.JLabel title;
     private javax.swing.JLabel username;
     // End of variables declaration//GEN-END:variables
