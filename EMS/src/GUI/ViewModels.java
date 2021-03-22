@@ -41,7 +41,7 @@ public class ViewModels extends Page{
     }
     
     private void showTopBarElements() {
-        int baseXPosition = 160, baseYPosition = 45;
+        int baseXPosition = 160, baseYPosition = 42;
 
         getTitleLabel().setText("Model " + model.getModelNumber() + '/' + exam.getModels().size());
 

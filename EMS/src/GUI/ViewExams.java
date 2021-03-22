@@ -5,8 +5,10 @@
  */
 package GUI;
 
+import Entities.Class;
 import Entities.Exam;
 import Entities.Instructor;
+import Entities.Student;
 import Entities.User;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -17,9 +19,13 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 
 /**
+ * An extended version of GUI.Page that is used to create a view current exams for
+ * the logged-in instructor in a specific class of his/her choice.
  *
- * @author ZiadK
+ * @author Yusuf Nasser, Youssef Nader, Steven Sameh, Ziad Khobeiz
+ * @version 1.0
  */
+
 public class ViewExams extends Page {
     
     User user;
@@ -32,6 +38,7 @@ public class ViewExams extends Page {
      * @param user The user object
      * @param userClass The current class to display its exams
      */
+
     public ViewExams(User user, Entities.Class userClass) {
         this.user = user;
         this.userClass = userClass;
@@ -57,6 +64,7 @@ public class ViewExams extends Page {
      * between the exams
      * @return int This returns the new delta (current y-coordinate to draw)
      */
+
     private int showExams(Vector<Exam> exams, Exam.Status examStatus, int delta) {
 
         // Putting the name of the current examStatus (which is an enum) in the string examName (e.g. for the status RUNNING, it puts "Running" in the examName)
@@ -101,7 +109,7 @@ public class ViewExams extends Page {
                     });
                     getPanel().add(reportButton);
                 }
-            } else {
+            } else { // STUDENT CASE
                 if (exam.getStatus() == Exam.Status.RUNNING) {
                     JButton enterButton = new JButton();
                     enterButton.setText("Enter");
@@ -109,11 +117,36 @@ public class ViewExams extends Page {
                     enterButton.setBounds(380 + 87, 65 + delta, 150, 30);
                     enterButton.addActionListener(new ActionListener() {
                         public void actionPerformed(ActionEvent e) {
-                            // new Login();
+                            int studentModelIndex = exam.getStudentModelIndex(user.getUsername());
+                            new TakeExam((Student) user, exam.getModels().elementAt(studentModelIndex)).setVisible(true);
                             dispose();
                         }
                     });
                     getPanel().add(enterButton);
+                }
+                else if (exam.getStatus() == Exam.Status.FINISHED) {
+
+                    // Showing the student his marks in finished Exams
+
+                    JLabel markLabel = new JLabel("Mark: ");
+                    markLabel.setBounds(380 + 87, 65 + delta, 150, 30);
+                    markLabel.setFont(myFont);
+
+                    // retrieving and rendering the student mark in the exam to a JLabel
+                    int studentModelIndex = exam.getStudentModelIndex(user.getUsername());
+                    JLabel studentMarkLabel = new JLabel(String.valueOf(exam.getModels().elementAt(studentModelIndex).getStudentMark()));
+                    studentMarkLabel.setBounds(380 + 150, 65 + delta, 150, 30);
+                    studentMarkLabel.setFont(myFont);
+
+                    // retrieving and rendering the total mark of the exam to a JLabel
+                    int examTotalMark = exam.getTotalMark();
+                    JLabel examTotalMarkLabel = new JLabel(" / " + String.valueOf(examTotalMark));
+                    examTotalMarkLabel.setBounds(380 + 175, 65 + delta, 150, 30);
+                    examTotalMarkLabel.setFont(myFont);
+
+                    getPanel().add(markLabel);
+                    getPanel().add(studentMarkLabel);
+                    getPanel().add(examTotalMarkLabel);
                 }
             }
             delta += 50;
@@ -143,6 +176,7 @@ public class ViewExams extends Page {
      * 3- Finished exams (for instructors)
      * 4- Unpublished Exams (for instructors).
      */
+
     private void showExams() {
         getTitleLabel().setText(userClass.getCourse().getName() + " exams:");
         Vector<Exam> exams = userClass.getExams();
@@ -170,18 +204,20 @@ public class ViewExams extends Page {
         int delta = 0;
         delta = showExams(runningExams, Exam.Status.RUNNING, delta);
         delta = showExams(upcomingExams, Exam.Status.UPCOMING, delta);
+        delta = showExams(finishedExams, Exam.Status.FINISHED, delta);
         if (userType == User.UserType.INSTRUCTOR) {
-            delta = showExams(finishedExams, Exam.Status.FINISHED, delta);
             delta = showExams(unpublishedExams, Exam.Status.UNPUBLISHED, delta);
             showAddExamButton(delta);
         }
 
     }
+
     /**
      * It displays addNewExam Button 
      * @param delta The starting y-coordinate for drawing to keep distances
      */
-     private void showAddExamButton(int delta){
+
+    private void showAddExamButton(int delta){
         JButton addNewExam = new JButton("Add New Exam");
         addNewExam.setBounds(600, 20, 180, 30);
         addNewExam.setFont(myFont);

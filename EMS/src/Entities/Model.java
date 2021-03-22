@@ -8,7 +8,6 @@ package Entities;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.time.Duration;
 import java.util.Vector;
 
 /**
@@ -20,31 +19,14 @@ public class Model implements SqlEntity {
     private final int examID, modelNumber;
     private int studentMark;
     private Vector<Question> questions;
-    private String studentAnswer = "", modelAnswer = "";
+    private String studentAnswer, modelAnswer;
     private boolean isFilled;
 
     public Model(int examID, int modelNumber) {
+        studentAnswer = new String();
+        modelAnswer = new String();
         this.examID = examID;
         this.modelNumber = modelNumber;
-    }
-
-    @Override
-    public void fillData() {
-        isFilled = true;
-        Connection myConnection = SqlConnection.getConnection();
-        try {
-            PreparedStatement myStatement = myConnection.prepareStatement("select QUESTIONID from QUESTION where EXAMID = ? AND MODELNUMBER = ?");
-            myStatement.setInt(1, examID);
-            myStatement.setInt(2, modelNumber);
-            ResultSet myResultSet = myStatement.executeQuery();
-            questions = new Vector<Question>();
-            while (myResultSet.next()) {
-                questions.add(new Question(myResultSet.getInt(1)));
-            }
-            myConnection.close();
-        } catch (Exception e) {
-            System.out.println(e);
-        }
     }
 
     public Vector<Question> getQuestions() {
@@ -68,8 +50,14 @@ public class Model implements SqlEntity {
      * @return studentMark student score in the taken exam model
      */
 
-    private int getStudentMark() {
-        return 0;
+    public int getStudentMark() {
+        generateModelAnswer();
+        for (int i = 0; i < modelAnswer.length(); i++)
+        {
+            if (modelAnswer.charAt(i) == studentAnswer.charAt(i))
+                studentMark++;
+        }
+        return studentMark;
     }
 
     /**
@@ -82,8 +70,40 @@ public class Model implements SqlEntity {
         }
     }
 
-    public String getModelAnswer() {
-        return modelAnswer;
+    /**
+     * it fills all the data of the current Exam Model by executing multiple SQL statements
+     */
+
+    @Override
+    public void fillData() {
+        isFilled = true;
+        Connection myConnection = SqlConnection.getConnection();
+        try {
+            PreparedStatement myStatement = myConnection.prepareStatement("select QUESTIONID from QUESTION where EXAMID = ? AND MODELNUMBER = ?");
+            myStatement.setInt(1, examID);
+            myStatement.setInt(2, modelNumber);
+            ResultSet myResultSet = myStatement.executeQuery();
+            questions = new Vector<Question>();
+            while (myResultSet.next()) {
+                questions.add(new Question(myResultSet.getInt(1)));
+            }
+
+            // Retrieving student answers from SOLVE TABLE and building studentAnswer string
+
+            for (Question question : questions) {
+                PreparedStatement retrieveStudentAnswerStatement = myConnection.prepareStatement("select STUDENTCHOICE from SOLVE where QUESTIONID = ?");
+                retrieveStudentAnswerStatement.setInt(1, question.getId());
+                ResultSet studentChoiceSet = retrieveStudentAnswerStatement.executeQuery();
+
+                while (studentChoiceSet.next()) {
+                    studentAnswer += studentChoiceSet.getString(1);
+                }
+            }
+
+            myConnection.close();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
     }
 
     @Override

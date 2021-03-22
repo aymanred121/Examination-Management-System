@@ -13,6 +13,7 @@ import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.Enumeration;
 import java.util.TimeZone;
 import java.util.Vector;
 import javax.swing.*;
@@ -32,18 +33,24 @@ public class TakeExam extends Page {
     private Student student;
     private Model model;
     private Exam exam;
+    private String studentSelection;
+    char[] studentAnswer;
     private int remainingTime, currentQuestionIndex = 0;
     private final Font font = new java.awt.Font("Tahoma", Font.BOLD, 24),
             smallFont = new java.awt.Font("Tahoma", Font.PLAIN, 18);
     private JLabel remainingTimeLabel;
     private JButton nextButton, backButton, finishButton;
     private PageActionListener listener;
+    ButtonGroup buttonGroup;
+    Vector<JRadioButton> buttons;
 
     public TakeExam(Student student, Model model) {
         this.student = student;
         this.model = model;
         this.exam = new Exam(model.getExamID());
         listener = new PageActionListener();
+        studentAnswer = new char[exam.getTotalMark()];
+
         displayTopBar();
         displayPanel();
     }
@@ -145,10 +152,10 @@ public class TakeExam extends Page {
          */
 
         Vector<QuestionChoice> questionChoices = question.getChoices();
-        ButtonGroup buttonGroup = new ButtonGroup();
-        Vector<JRadioButton> buttons = new Vector<>();
+        buttonGroup = new ButtonGroup();
+        buttons = new Vector<>();
 
-        int choiceIndex = 0, offset = 150;
+        int choiceIndex = 0, offset = 135;
         for(QuestionChoice choice : questionChoices) {
             buttons.add(new JRadioButton(String.valueOf((char) ('a' + choiceIndex)))); choiceIndex++;
             buttons.lastElement().setBounds(670, 46 + offset, 50, 50);
@@ -161,7 +168,7 @@ public class TakeExam extends Page {
             choiceTextArea.setFont(smallFont);
             choiceTextArea.setLineWrap(true);
             choiceTextArea.setEditable(false);
-            choiceTextArea.setBounds(50, 60 + offset, 600, 20);
+            choiceTextArea.setBounds(50, 60 + offset, 600, 35);
             getPanel().add(choiceTextArea);
             offset += 70;
         }
@@ -171,6 +178,61 @@ public class TakeExam extends Page {
         getPanel().removeAll();
         getPanel().revalidate();
         getPanel().repaint();
+    }
+
+    private void setQuestionSelection() {
+        studentSelection = "";
+        studentSelection += Character.toLowerCase(studentAnswer[currentQuestionIndex]);
+
+        switch(studentSelection.charAt(0)) {
+            case 'a':
+                buttonGroup.setSelected(buttons.elementAt(0).getModel(), true);
+                break;
+            case 'b':
+                buttonGroup.setSelected(buttons.elementAt(1).getModel(), true);
+                break;
+            case 'c':
+                buttonGroup.setSelected(buttons.elementAt(2).getModel(), true);
+                break;
+            case 'd':
+                buttonGroup.setSelected(buttons.elementAt(3).getModel(), true);
+                break;
+        }
+    }
+
+    private void getStudentChoice() {
+        studentSelection = "";
+        for (Enumeration<AbstractButton> buttonsEnum = buttonGroup.getElements(); buttonsEnum.hasMoreElements();) {
+            AbstractButton button = buttonsEnum.nextElement();
+            if (button.isSelected()) {
+                studentSelection = button.getText();
+            }
+        }
+
+        if (!studentSelection.isEmpty()) {
+            studentAnswer[currentQuestionIndex] = Character.toLowerCase(studentSelection.charAt(0));
+        }
+    }
+
+    /**
+     * It asks whether the student wants to submit the answers or edit them.
+     * It does that via showConfirmDialog() that only take Yes or No as an answer
+     *
+     * @return true if the student is sure about the answer; false otherwise.
+     */
+
+    boolean userIsSure() {
+        String message = "Are you sure to submit ?";
+        return JOptionPane.showConfirmDialog(null, message, "Submit", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION;
+    }
+
+    private void submitAnswers() {
+        Vector<Question> questions = model.getQuestions();
+        for (int i = 0; i < exam.getTotalMark(); i++) {
+            int questionId = questions.elementAt(i).getId();
+            StudentChoice studentChoice = new StudentChoice(questionId, studentAnswer[i], student.getUsername());
+            studentChoice.add();
+        }
     }
 
     /**
@@ -184,15 +246,19 @@ public class TakeExam extends Page {
         @Override
         public void actionPerformed(ActionEvent event) {
             if (event.getSource() == backButton) {
+                getStudentChoice();
                 currentQuestionIndex--;
                 refreshPanel();
                 displayPanel();
+                setQuestionSelection();
             } else if (event.getSource() == nextButton) {
+                getStudentChoice();
                 currentQuestionIndex++;
                 refreshPanel();
                 displayPanel();
-            } else if (event.getSource() == finishButton) {
-                // Submit exam and go to the dashboard
+                setQuestionSelection();
+            } else if (event.getSource() == finishButton && userIsSure()) {
+                submitAnswers();
                 dispose();
             }
         }

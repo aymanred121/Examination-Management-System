@@ -135,10 +135,8 @@ public class Exam implements SqlEntity {
     public static int getExamDurationLimit() { return EXAM_DURATION_LIMIT; }
 
     /**
-     * Ayman Hassan, Ziad Khobeiz
-     * finished fillData function
      * retrieve all the Exam data from the Database
-     * 
+     * @author Ayman Hassan, Ziad Khobeiz
      */
     @Override
     public void fillData() {
@@ -253,6 +251,9 @@ public class Exam implements SqlEntity {
     }
 
     public int getTotalMark() {
+        if (!isFilled) {
+            fillData();
+        }
         return this.models.firstElement().getQuestions().size();
     }
 
@@ -261,6 +262,18 @@ public class Exam implements SqlEntity {
             fillData();
         }
         return instructorName;
+    }
+
+    /**
+     * returns the studentModelIndex by calculating the outcome of a predefined equation
+     * @param username the username of the student
+     * @return the calculated studentModelIndex - 1 as indexing starts from 0
+     */
+
+    public int getStudentModelIndex(String username) {
+        int studentsPerModel = (int) Math.ceil((float) examClass.getStudentsCount() / (float) models.size());
+        int studentModel = (int) Math.ceil((float) examClass.getStudentPosition(username) / (float) studentsPerModel);
+        return studentModel - 1;
     }
 
     public LocalDateTime getStartTime() {
