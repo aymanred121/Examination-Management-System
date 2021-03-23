@@ -7,6 +7,15 @@ package GUI;
 
 import Entities.*;
 
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author yn653
@@ -50,6 +59,7 @@ public class Login extends javax.swing.JFrame {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 loginButtonActionPerformed(evt);
             }
+
         });
 
         usernameLabel.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
@@ -57,16 +67,17 @@ public class Login extends javax.swing.JFrame {
 
         passwordLabel.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         passwordLabel.setText("Password");
-
         usernameTextfield.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 usernameTextfieldActionPerformed(evt);
+                loginButtonActionPerformed(evt);
             }
         });
 
         passwordTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 passwordTextFieldActionPerformed(evt);
+                loginButtonActionPerformed(evt);
             }
         });
 
@@ -123,8 +134,15 @@ public class Login extends javax.swing.JFrame {
     private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
         
         String username = usernameTextfield.getText();
-        
-        if(User.isValidUser(username, passwordTextField.getText())) {
+
+        if(username.trim().isEmpty()){
+            JOptionPane.showMessageDialog(null, "Please enter the username.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }else if(passwordTextField.getText().trim().isEmpty()){
+            JOptionPane.showMessageDialog(null, "Please enter the password.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+
+        }else if(User.isValidUser(username, passwordTextField.getText())) {
            
            User.UserType userType = User.getUserType(username);
            setVisible(false);
@@ -138,7 +156,10 @@ public class Login extends javax.swing.JFrame {
                    new UserDashboard(userType, username).setVisible(true);
            }
 
-       }
+       }else if(!User.isValidUser(username, passwordTextField.getText())){
+            JOptionPane.showMessageDialog(null, "The username or password are incorrect.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
         
     }//GEN-LAST:event_loginButtonActionPerformed
 
@@ -150,6 +171,7 @@ public class Login extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_passwordTextFieldActionPerformed
 
+
     /**
      * @param args the command line arguments
      */
@@ -160,26 +182,26 @@ public class Login extends javax.swing.JFrame {
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          */
         try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+            for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (UnsupportedLookAndFeelException ex) {
+            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
         }
         //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
+        EventQueue.invokeLater(new Runnable() {
             public void run() {        
                 
                 new Login().setVisible(true);
@@ -189,11 +211,11 @@ public class Login extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JButton loginButton;
-    private javax.swing.JLabel passwordLabel;
-    private javax.swing.JPasswordField passwordTextField;
-    private javax.swing.JLabel usernameLabel;
-    private javax.swing.JTextField usernameTextfield;
+    private JPanel jPanel1;
+    private JButton loginButton;
+    private JLabel passwordLabel;
+    private JPasswordField passwordTextField;
+    private JLabel usernameLabel;
+    private JTextField usernameTextfield;
     // End of variables declaration//GEN-END:variables
 }
