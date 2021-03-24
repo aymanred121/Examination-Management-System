@@ -5,14 +5,14 @@
  */
 package GUI;
 
+import Entities.*;
 import Entities.Class;
-import Entities.Exam;
-import Entities.Instructor;
-import Entities.Student;
-import Entities.User;
+import javafx.util.Pair;
+
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Vector;
 import javax.swing.JButton;
@@ -32,6 +32,7 @@ public class ViewExams extends Page {
     Entities.Class userClass;
     User.UserType userType;
     java.awt.Font myFont = new java.awt.Font("Tahoma", Font.BOLD, 17);
+    Histogram histogram;
 
     /**
      * It constructs a new ViewExams page for a certain user in a specific class
@@ -75,7 +76,6 @@ public class ViewExams extends Page {
         ExamsLabel.setBounds(20, delta, 300, 80);
         ExamsLabel.setFont(titleFont);
         getPanel().add(ExamsLabel);
-
         for (Exam exam : exams) {
 
             JLabel examNameLabel = new JLabel();
@@ -210,6 +210,15 @@ public class ViewExams extends Page {
             showAddExamButton(delta);
         }
 
+    }
+    /*show bar chart of the student grade*/
+    private void getHisogramData(Exam exam){
+        int studentCount = exam.getStudentCount();
+        double[] studentMarksData= new double[studentCount];
+        for(int i=0;i<studentCount;i++){
+            studentMarksData[i] = exam.getModels().elementAt(i).getStudentMark();
+        }
+        histogram=new Histogram(studentMarksData);
     }
 
     /**

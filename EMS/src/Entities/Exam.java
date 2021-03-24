@@ -275,6 +275,9 @@ public class Exam implements SqlEntity {
         int studentModel = (int) Math.ceil((float) examClass.getStudentPosition(username) / (float) studentsPerModel);
         return studentModel - 1;
     }
+    public int getStudentCount(){
+        return examClass.getStudentsCount();
+    }
 
     public LocalDateTime getStartTime() {
         if(!isFilled) {
