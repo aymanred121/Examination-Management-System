@@ -14,11 +14,14 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -29,11 +32,8 @@ import java.util.stream.Stream;
 public class Instructor extends User implements SqlEntity{
 
     Vector<Class> classes;
-
-    public Instructor(String username, String mobileNumber, String email, String firstName, String middleName,
-            String lastName, String birthdate) {
-        super(username, mobileNumber, email, firstName, middleName, lastName, birthdate);
-    }
+    
+    
 
     /**
      * It initializes the instructor with the final data.
@@ -44,6 +44,10 @@ public class Instructor extends User implements SqlEntity{
         super(username);
     }
 
+    public Instructor(String username, String mobileNumber, String email, String firstName, String middleName, String lastName, LocalDate birthdate, String password) {
+        super(username, mobileNumber, email, firstName, middleName, lastName, birthdate, password);
+    }
+    
     /**
      * It retrieves the classes of the instructor from the database
      */
@@ -67,9 +71,19 @@ public class Instructor extends User implements SqlEntity{
 
     @Override
     public void add() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        super.addUser();
+        Connection myConnection = SqlConnection.getConnection();
+        try {
+            PreparedStatement myStatement = myConnection.prepareStatement("insert into instructor values(?)");
+            myStatement.setString(1, super.getUsername());
+            myStatement.executeQuery();
+            myConnection.close();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
     }
 
+    
     @Override
     public void update() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -111,20 +125,8 @@ public class Instructor extends User implements SqlEntity{
         if(!isFilled) fillData();
         return classes;
     }
-
-    public static void main(String[] args) {
-        Instructor i = new Instructor("ibrahamhassan", "null", "a", "a", "a", "a", "a");
-        ResultSet re = i.queryCourses("ibrahamhassan");
-        try {
-            while (re.next()) {
-                System.out.println(re.getRowId(1));
-                System.out.println(re.getRowId(2));
-            }
-            
-        } catch (Exception e) {
-            System.out.println(e);
-        }
-
+    
+    public static void main(String args[]) {
+           new Admin("admin");
     }
-
 }

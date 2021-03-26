@@ -130,12 +130,14 @@ public class Login extends javax.swing.JFrame {
            setVisible(false);
             
            switch(userType) {
-//               
-//               case ADMIN:
-//                   
-//                   break;
+               
+               case ADMIN:
+                   new AdminDashboard(username).setVisible(true);
+                   dispose();
+                   break;
                default:
                    new UserDashboard(userType, username).setVisible(true);
+                   dispose();
            }
 
        }

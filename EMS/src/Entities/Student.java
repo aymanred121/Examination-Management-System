@@ -18,11 +18,7 @@ public class Student extends User implements SqlEntity{
     
     private int id;
     Vector<Class> myClasses;
-    public Student(int id, String username, String mobileNumber, String email, String firstName, String middleName, 
-            String lastName, String birthdate) {
-        super(username, mobileNumber, email, firstName, middleName, lastName, birthdate);
-        this.id = id;
-    }
+    
     
     public Student(String username) {
         super(username);
