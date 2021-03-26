@@ -14,24 +14,20 @@ import java.util.Vector;
  *
  * @author bizarre
  */
+
 public class Model implements SqlEntity {
     
     private final int examID, modelNumber;
-    private int studentMark;
     private Vector<Question> questions;
-    private String studentAnswer, modelAnswer;
     private boolean isFilled;
 
     public Model(int examID, int modelNumber) {
-        studentAnswer = new String();
-        modelAnswer = new String();
         this.examID = examID;
         this.modelNumber = modelNumber;
     }
 
     public Vector<Question> getQuestions() {
-       if (!isFilled)
-       {
+       if (!isFilled) {
            fillData();
        }
         return questions;
@@ -46,28 +42,21 @@ public class Model implements SqlEntity {
     }
 
     /**
-     * compares the student Answers to the modelAnswer and set the score
-     * @return studentMark student score in the taken exam model
-     */
-
-    public int getStudentMark() {
-        generateModelAnswer();
-        for (int i = 0; i < modelAnswer.length(); i++)
-        {
-            if (modelAnswer.charAt(i) == studentAnswer.charAt(i))
-                studentMark++;
-        }
-        return studentMark;
-    }
-
-    /**
      * generates the modelAnswer by storing the correct choices in a string TB used in the grading process
+     * @return String — the model answer to this exam model
      */
 
-    public void generateModelAnswer() {
-        for (Question question : questions) {
-            this.modelAnswer += question.getCorrectChoice();
+    public String getModelAnswer() {
+        if (!isFilled) {
+            fillData();
         }
+
+        String modelAnswer = "";
+
+        for (Question question : questions) {
+            modelAnswer += question.getCorrectChoice();
+        }
+        return modelAnswer;
     }
 
     /**
@@ -83,23 +72,10 @@ public class Model implements SqlEntity {
             myStatement.setInt(1, examID);
             myStatement.setInt(2, modelNumber);
             ResultSet myResultSet = myStatement.executeQuery();
-            questions = new Vector<Question>();
+            questions = new Vector<>();
             while (myResultSet.next()) {
                 questions.add(new Question(myResultSet.getInt(1)));
             }
-
-            // Retrieving student answers from SOLVE TABLE and building studentAnswer string
-
-            for (Question question : questions) {
-                PreparedStatement retrieveStudentAnswerStatement = myConnection.prepareStatement("select STUDENTCHOICE from SOLVE where QUESTIONID = ?");
-                retrieveStudentAnswerStatement.setInt(1, question.getId());
-                ResultSet studentChoiceSet = retrieveStudentAnswerStatement.executeQuery();
-
-                while (studentChoiceSet.next()) {
-                    studentAnswer += studentChoiceSet.getString(1);
-                }
-            }
-
             myConnection.close();
         } catch (Exception e) {
             System.out.println(e);
