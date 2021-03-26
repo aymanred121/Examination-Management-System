@@ -9,6 +9,7 @@ import Entities.Class;
 import Entities.Exam;
 import Entities.Instructor;
 import Entities.Student;
+import Entities.Question;
 import Entities.User;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -85,9 +86,9 @@ public class ViewExams extends Page {
             getPanel().add(examNameLabel);
             if (userType == User.UserType.INSTRUCTOR) {
                 JButton modelsButton = new JButton();
-                modelsButton.setText("Show Models");
+                modelsButton.setText("Models");
                 modelsButton.setFont(myFont);
-                modelsButton.setBounds(380 + 87, 65 + delta, 150, 30);
+                modelsButton.setBounds(380 + 90, 65 + delta, 130, 30);
                 modelsButton.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
                         new ViewModels((Instructor)user ,exam.getModels().elementAt(0)).setVisible(true);
@@ -95,12 +96,25 @@ public class ViewExams extends Page {
                     }
                 });
                 getPanel().add(modelsButton);
+
+                //Show Qeustion rank
+                JButton showQuestionRank = new JButton();
+                showQuestionRank.setText("Questions Ranked");
+                showQuestionRank.setFont(myFont);
+                showQuestionRank.setBounds(380 - 230, 65 + delta, 196, 30);
+                showQuestionRank.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        new ViewModels((Instructor)user,exam.getModels().elementAt(0),true).setVisible(true);
+                        dispose();
+                    }
+                });
+                getPanel().add(showQuestionRank);
                 if (examStatus == Exam.Status.FINISHED) {
                     modelsButton.setBounds(380, 65 + delta, 150, 30);
                     JButton reportButton = new JButton();
-                    reportButton.setText("Show Report");
+                    reportButton.setText("Report");
                     reportButton.setFont(myFont);
-                    reportButton.setBounds(560, 65 + delta, 150, 30);
+                    reportButton.setBounds(560, 65 + delta, 130, 30);
                     reportButton.addActionListener(new ActionListener() {
                         public void actionPerformed(ActionEvent e) {
                             new ViewReport((Instructor) user, exam).setVisible(true);

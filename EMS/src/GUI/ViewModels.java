@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package GUI;
 import Entities.*;
 import java.awt.Font;
@@ -16,16 +11,19 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import oracle.net.ano.SupervisorService;
+
 /**
  *
  * @author Abdel-Aziz Mostafa
  */
-public class ViewModels extends Page{
+
+public class ViewModels extends Page {
     
-    Instructor instructor;
-    Model model;
-    Exam exam;
-    Font myFont = new java.awt.Font("Tahoma", Font.PLAIN, 11);
+    private Instructor instructor;
+    private Model model;
+    private Exam exam;
+    private boolean isRanked;
+    java.awt.Font myFont = new java.awt.Font("Tahoma", Font.LAYOUT_LEFT_TO_RIGHT, 11);
 
     public ViewModels(Instructor instructor, Model model) {
         this.instructor = instructor;
@@ -36,8 +34,15 @@ public class ViewModels extends Page{
                 new ViewExams((User) instructor,exam.getExamClass()).setVisible(true);
                 dispose();
         }});
+
         showQuestion();
         showTopBarElements();
+    }
+    
+    public  ViewModels(Instructor instructor, Model model,boolean isRanked)
+    {
+        this(instructor,model);
+        this.isRanked = isRanked;
     }
     
     private void showTopBarElements() {
@@ -77,6 +82,12 @@ public class ViewModels extends Page{
 
     private void showQuestion(){
         Vector<Question> questions = model.getQuestions();
+
+        if(isRanked)
+        {
+             exam.getTopQuestions(model.getQuestions().size());
+        }
+
         int delta = 0 , currentIndex = 0; 
         for ( Question question : questions)
         {
@@ -89,7 +100,7 @@ public class ViewModels extends Page{
             questionStatement.setBounds(50, 25+delta, 550, 30);
             questionStatement.setFont(myFont);
             getPanel().add(questionStatement);
-            JButton  showQuestionButton = new JButton("Show Question");
+            JButton  showQuestionButton = new JButton("Question");
             showQuestionButton.setFont(myFont);
             showQuestionButton.setBounds(630, 25+delta , 130, 30);
             showQuestionButton.addActionListener(new ActionListener() {
@@ -136,3 +147,5 @@ public class ViewModels extends Page{
         }
     }
 }
+
+
