@@ -5,16 +5,7 @@
  */
 package GUI;
 
-import Entities.Course;
-import Entities.Class;
-import java.awt.event.ActionEvent;
 import javax.swing.*;
-import java.awt.event.ActionListener;
-import Entities.Instructor;
-import java.awt.Component;
-import java.awt.Rectangle;
-import java.util.Scanner;
-import java.util.Vector;
 
 /**
  *

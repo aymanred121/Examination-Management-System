@@ -10,12 +10,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.time.*;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.Date;
 import java.util.Vector;
-import javax.xml.transform.Result;
-import javax.xml.transform.Source;
 
 /**
  *

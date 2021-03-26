@@ -11,7 +11,6 @@ import Entities.Model;
 import Entities.Question;
 import Entities.User;
 import org.jfree.chart.ChartPanel;
-
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

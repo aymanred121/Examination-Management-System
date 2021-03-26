@@ -2,7 +2,6 @@ package Entities;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 
 /**
  * It represents the Student Solution in a certain question in a certain exam model

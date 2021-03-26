@@ -5,14 +5,10 @@
  */
 package GUI;
 
-import Entities.Class;
 import Entities.Exam;
 import Entities.Instructor;
 import Entities.Student;
-import Entities.Question;
 import Entities.User;
-import Entities.*;
-import org.jfree.chart.ChartPanel;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
