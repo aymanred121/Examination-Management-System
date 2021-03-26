@@ -45,7 +45,7 @@ public class Exam implements SqlEntity {
     final static private int MODEL_NUMBER_LIMIT = 5, YEAR_LIMIT = 2051,
             MONTH_LIMIT = 12, HOUR_LIMIT = 24, MINUTES_LIMIT = 60, EXAM_DURATION_LIMIT = 180;
     
-    private int id , numberOfModels, totalMark;
+    private int id , numberOfModels;
     private Class examClass;
     private String instructorName;
     private String name;
@@ -320,11 +320,23 @@ public class Exam implements SqlEntity {
             fillData();
         }
 
+        if (models.isEmpty()) {
+            System.out.println("Models is empty");
+            return 0;
+        }
+
         // Handling the ceiling process without dealing with floats
         int studentsPerModel = (examClass.getStudentsCount() + models.size() - 1) / models.size();
-        int studentModel = (examClass.getStudentPosition(username) + studentsPerModel - 1) / studentsPerModel;
-        return studentModel - 1;
+
+        if (studentsPerModel == 0) {
+            System.out.println("StudentsPerModel is ZERO");
+        }
+
+        int studentPos = examClass.getStudentPosition(username);
+        int studentModel = studentPos / studentsPerModel;
+        return studentModel;
     }
+
     public int getStudentCount(){
         return examClass.getStudentsCount();
     }

@@ -6,14 +6,11 @@
 package GUI;
 
 import Entities.*;
-import Entities.Class;
-import javafx.util.Pair;
 import org.jfree.chart.ChartPanel;
 
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Vector;
 import javax.swing.JButton;
@@ -33,7 +30,6 @@ public class ViewExams extends Page {
     Entities.Class userClass;
     User.UserType userType;
     java.awt.Font myFont = new java.awt.Font("Tahoma", Font.BOLD, 17);
-    Histogram histogram;
 
     /**
      * It constructs a new ViewExams page for a certain user in a specific class
@@ -144,16 +140,11 @@ public class ViewExams extends Page {
                     JLabel examTotalMarkLabel = new JLabel(" / " + String.valueOf(examTotalMark));
                     examTotalMarkLabel.setBounds(380 + 175, 65 + delta, 150, 30);
                     examTotalMarkLabel.setFont(myFont);
-                    //histogram
-                    histogram=new Histogram(HisogramData(exam));
-                    ChartPanel chartPanel = new ChartPanel( histogram.getHistogramChart());
-                    chartPanel.setBounds(300 + 175, 65 + delta, 350, 200);
-                    //draw into the panel
 
+                    // draw into the panel
                     getPanel().add(markLabel);
                     getPanel().add(studentMarkLabel);
                     getPanel().add(examTotalMarkLabel);
-                    getPanel().add(chartPanel);
                 }
             }
             delta += 50;
@@ -226,21 +217,6 @@ public class ViewExams extends Page {
         }
 
     }
-    /*show bar chart of the student grade*/
-    private double[] HisogramData(Exam exam){
-        int studentIndex = 0;
-        int studentCount = exam.getStudentCount();
-        double[] studentMarksData= new double[studentCount];
-        for (Student student :  userClass.getStudents() )
-        {
-            studentMarksData[studentIndex] = exam.getStudentMark(student.getUsername());
-            studentIndex++;
-
-        }
-
-        return studentMarksData;
-    }
-
 
     /**
      * It displays addNewExam Button 
