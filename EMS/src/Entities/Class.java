@@ -191,4 +191,10 @@ public class Class implements SqlEntity {
         return studentPosition;
     }
 
+    public Vector<Student> getStudents() {
+        if(!isFilled){
+            fillData();
+        }
+        return students;
+    }
 }

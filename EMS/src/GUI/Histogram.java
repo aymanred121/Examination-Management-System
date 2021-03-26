@@ -25,14 +25,14 @@ import org.jfree.ui.RefineryUtilities;
 *   and jfreechart-1.0.1.jar from dependencies\jfreechart-1.0.1\lib to the library
 *   of the project structer in order to use the freechart lib*/
 /*
- *Draw a Histogramt using JfreeChart lib
+ *Draw a HistogramChart using JfreeChart lib
  *
  * @author Ayman Hassan
   */
 public class Histogram extends JFrame {
     private double[] data;
-    private Connection myConnection;
     private ResultSet myResultSet;
+    private JFreeChart HistogramChart;
     public Histogram(double[] data) {
         this.data=data;
         Bar();
@@ -40,7 +40,7 @@ public class Histogram extends JFrame {
 //    private CategoryDataset createDataset(){
 //        /*
 //        * iterate through the Arraylist then pass the pairs values to the dataset
-//        * so we could draw a Histogramt using this data
+//        * so we could draw a HistogramChart using this data
 //        * */
 //        DefaultCategoryDataset dataset=new DefaultCategoryDataset();
 //        for (Pair<Integer,Integer>itr : data)
@@ -51,12 +51,12 @@ public class Histogram extends JFrame {
 //    }
     private void Bar(){
         /*
-        * Create a Histogramt by initializing the title and the AxisLable on both X and Y, then passing the dataset
+        * Create a HistogramChart by initializing the title and the AxisLable on both X and Y, then passing the dataset
         * from createDataset method, and setting the direction of the drawing.
         * */
         HistogramDataset dataset= new HistogramDataset();
         dataset.addSeries("key",data,20);
-        JFreeChart Histogramt = ChartFactory.createHistogram(
+         HistogramChart = ChartFactory.createHistogram(
                 "the occurrence of the expected difficulty",
                 "expected difficulty",
                     "No. of Question",
@@ -64,16 +64,19 @@ public class Histogram extends JFrame {
                 PlotOrientation.VERTICAL,
                 true, true, false);
         /*
-        * Create a panel of the Histogramt to display the content on it.
+        * Create a panel of the HistogramChart to display the content on it.
         * */
 
-        ChartPanel chartPanel = new ChartPanel( Histogramt );
-        chartPanel.setPreferredSize(new java.awt.Dimension( 560 , 367 ) );
-        setContentPane( chartPanel );
+//        ChartPanel chartPanel = new ChartPanel( HistogramChart );
+//        chartPanel.setPreferredSize(new java.awt.Dimension( 560 , 367 ) );
+//        setContentPane( chartPanel );
     }
 
+    public JFreeChart getHistogramChart() {
+        return HistogramChart;
+    }
 
-        //testing area
+    //testing area
     public static void main(String[] args) throws Exception {
         double[] values = { 95, 49, 14, 59, 50, 66, 47, 40, 1, 67,
                 12, 58, 28, 63, 14, 9, 31, 17, 94, 71,
