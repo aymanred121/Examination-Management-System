@@ -24,7 +24,7 @@ import javax.swing.*;
  * by viewing the exam questions one by one through several instances of
  * javax.swing.JTextArea, javax.swing.ButtonGroup and javax.swing.JRadioButton
  *
- * @author Ziad Khobeiz, Yusuf Nasser
+ * @author Ziad Khobeiz, Yusuf Nasser, Youssef Nader
  * @version 1.0
  */
 
@@ -44,29 +44,50 @@ public class TakeExam extends Page {
     ButtonGroup buttonGroup;
     Vector<JRadioButton> buttons;
 
+    /**
+     * Constructs a new page that allows the logged-in student to
+     * take on a certain ongoing exam.
+     *
+     * @param student The logged-in student instance
+     * @param model The model assigned to the student
+     */
+
     public TakeExam(Student student, Model model) {
+        setSize(new java.awt.Dimension(800, 600));
+
         this.student = student;
         this.model = model;
         this.exam = new Exam(model.getExamID());
         listener = new PageActionListener();
-        studentAnswer = new char[exam.getTotalMark()];
+        studentAnswer = new char[exam.getTotalMark()]; // filled with '\u0000'
 
         displayTopBar();
         displayPanel();
     }
 
+    /**
+     * Displays the top bar of the exam page containing the exam name,
+     * time remaining to finish, and finish button for submission.
+     */
+
     private void displayTopBar() {
-        setSize(new java.awt.Dimension(800, 600));
+        // Hiding unneeded buttons from the parent — Page class
         getBackButton().setVisible(false);
         getLogoutButton().setVisible(false);
+
         displayTimeLabel();
         displayExamName();
         displayFinishButton();
     }
 
+    /**
+     * Creates and sets the Finish javax.swing.JButton instance
+     * then adds it to the topBar panel
+     */
+
     private void displayFinishButton() {
         finishButton = new JButton("Finish");
-        finishButton.setBounds(690, 11, 80, 25);
+        finishButton.setBounds(690, 5, 80, 25);
         finishButton.setVerticalAlignment(SwingConstants.CENTER);
         getTopBar().add(finishButton);
         finishButton.addActionListener(listener);
@@ -81,7 +102,7 @@ public class TakeExam extends Page {
         remainingTimeLabel = new JLabel();
         remainingTimeLabel.setFont(smallFont);
         remainingTimeLabel.setVerticalAlignment(SwingConstants.CENTER);
-        remainingTimeLabel.setBounds(355, 15, 200, 20);
+        remainingTimeLabel.setBounds(355, 8, 200, 20);
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
         dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
@@ -111,6 +132,11 @@ public class TakeExam extends Page {
         displayBackButton();
         displayNextButton();
     }
+
+    /**
+     * Creates and sets the Back javax.swing.JButton instance then
+     * adds it to the main panel if it satisfy the visibility condition
+     */
     
     private void displayBackButton() {
         backButton = new JButton("Back");
@@ -119,6 +145,11 @@ public class TakeExam extends Page {
         backButton.setVisible(currentQuestionIndex != 0);
         getPanel().add(backButton);
     }
+
+    /**
+     * Creates and sets the Next javax.swing.JButton instance then
+     * adds it to the main panel if it satisfy the visibility condition
+     */
 
     private void displayNextButton() {
         nextButton = new JButton("Next");
@@ -218,7 +249,7 @@ public class TakeExam extends Page {
      * It asks whether the student wants to submit the answers or edit them.
      * It does that via showConfirmDialog() that only take Yes or No as an answer
      *
-     * @return true if the student is sure about the answer; false otherwise.
+     * @return true if the student is sure about submitting the answers; false otherwise.
      */
 
     boolean userIsSure() {
@@ -257,15 +288,14 @@ public class TakeExam extends Page {
                 refreshPanel();
                 displayPanel();
                 setQuestionSelection();
-            } else if (event.getSource() == finishButton && userIsSure()) {
-                submitAnswers();
-                dispose();
+            } else if (event.getSource() == finishButton) {
+                getStudentChoice();
+                if (userIsSure()) {
+                    submitAnswers();
+                    new UserDashboard(User.UserType.STUDENT, student.getUsername()).setVisible(true);
+                    dispose();
+                }
             }
         }
     }
-
-    public static void main(String[] args) {
-        new TakeExam(new Student("georgesamy"), new Model(1, 1)).setVisible(true);
-    }
-
 }

@@ -110,7 +110,7 @@ public class ViewExams extends Page {
                     getPanel().add(reportButton);
                 }
             } else { // STUDENT CASE
-                if (exam.getStatus() == Exam.Status.RUNNING) {
+                if (exam.getStudentStatus(user.getUsername()) == Exam.Status.RUNNING) {
                     JButton enterButton = new JButton();
                     enterButton.setText("Enter");
                     enterButton.setFont(myFont);
@@ -124,7 +124,7 @@ public class ViewExams extends Page {
                     });
                     getPanel().add(enterButton);
                 }
-                else if (exam.getStatus() == Exam.Status.FINISHED) {
+                else if (exam.getStudentStatus(user.getUsername()) == Exam.Status.FINISHED) {
 
                     // Showing the student his marks in finished Exams
 
@@ -134,7 +134,7 @@ public class ViewExams extends Page {
 
                     // retrieving and rendering the student mark in the exam to a JLabel
                     int studentModelIndex = exam.getStudentModelIndex(user.getUsername());
-                    JLabel studentMarkLabel = new JLabel(String.valueOf(exam.getModels().elementAt(studentModelIndex).getStudentMark()));
+                    JLabel studentMarkLabel = new JLabel(String.valueOf(exam.getStudentMark(user.getUsername())));
                     studentMarkLabel.setBounds(380 + 150, 65 + delta, 150, 30);
                     studentMarkLabel.setFont(myFont);
 
@@ -180,12 +180,20 @@ public class ViewExams extends Page {
     private void showExams() {
         getTitleLabel().setText(userClass.getCourse().getName() + " exams:");
         Vector<Exam> exams = userClass.getExams();
-        Vector<Exam> runningExams = new Vector<Exam>();
-        Vector<Exam> upcomingExams = new Vector<Exam>();
-        Vector<Exam> finishedExams = new Vector<Exam>();
-        Vector<Exam> unpublishedExams = new Vector<Exam>();
+        Vector<Exam> runningExams = new Vector<>();
+        Vector<Exam> upcomingExams = new Vector<>();
+        Vector<Exam> finishedExams = new Vector<>();
+        Vector<Exam> unpublishedExams = new Vector<>();
         for (Entities.Exam exam : exams) {
-            switch (exam.getStatus()) {
+            Exam.Status currentStatus;
+
+            if (userType == User.UserType.INSTRUCTOR) {
+                currentStatus = exam.getStatus();
+            } else {
+                currentStatus = exam.getStudentStatus(user.getUsername());
+            }
+
+            switch (currentStatus) {
                 case UNPUBLISHED:
                     unpublishedExams.add(exam);
                     break;

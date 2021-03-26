@@ -54,6 +54,19 @@ public class Class implements SqlEntity {
         Connection myConnection = SqlConnection.getConnection();
         ResultSet myResultSet;
         PreparedStatement codeStatement;
+
+        try {
+            // Retrieving the students assigned to the class
+            PreparedStatement studentsStatement = myConnection.prepareStatement("SELECT USERNAME FROM STUDENTREGISTER WHERE CLASSID = ?");
+            studentsStatement.setInt(1, id);
+            myResultSet = studentsStatement.executeQuery();
+            while (myResultSet.next()) {
+                students.add(new Student(myResultSet.getString(1)));
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
         if (!isStudentSession) {
             try {
                 // Retrieving the instructors assigned to the class
@@ -63,13 +76,7 @@ public class Class implements SqlEntity {
                 while (myResultSet.next()) {
                     instructors.add(new Instructor(myResultSet.getString(1)));
                 }
-                // Retrieving the students assigned to the class
-                PreparedStatement studentsStatement = myConnection.prepareStatement("SELECT USERNAME FROM STUDENTREGISTER WHERE CLASSID = ?");
-                studentsStatement.setInt(1, id);
-                myResultSet = studentsStatement.executeQuery();
-                while (myResultSet.next()) {
-                    students.add(new Student(myResultSet.getString(1)));
-                }
+
                 // Retrieving the topics of the class
                 PreparedStatement topicsStatement = myConnection.prepareStatement("SELECT NAME FROM TOPIC WHERE CLASSID = ?");
                 topicsStatement.setInt(1, id);

@@ -40,12 +40,13 @@ public class AddExam extends Page {
     final static private int deltaXLabelCombo = 15, deltaYLabelCombo = 3;
 
     /**
-     * It constructs a new page in which the logged-in instructor can
+     * Constructs a new page in which the logged-in instructor can
      * create a new exam for a specific class chosen at viewExams page
      *
      * @param instructor The logged-in instructor instance
      * @param userClass  The chosen class to set an exam for it
      */
+
     public AddExam(Instructor instructor, Entities.Class userClass) {
         this.instructor = instructor;
 
@@ -80,7 +81,7 @@ public class AddExam extends Page {
     }
 
     /**
-     * It constructs a new page in which the logged-in instructor can
+     * Constructs a new page in which the logged-in instructor can
      * edit the exam starting date and time so that they would be valid
      *
      * @param instructor The logged-in instructor instance

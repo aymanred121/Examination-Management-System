@@ -88,8 +88,7 @@ public class Student extends User implements SqlEntity{
      * @return Vector<Class> myClasses - the classes of the current student
      */
     public Vector<Class> getClasses() {
-       if (!isFilled)
-       {
+       if (!isFilled) {
            fillData();
        }
         return myClasses;
