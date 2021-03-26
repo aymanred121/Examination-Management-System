@@ -11,6 +11,8 @@ import Entities.Instructor;
 import Entities.Student;
 import Entities.Question;
 import Entities.User;
+import Entities.*;
+import org.jfree.chart.ChartPanel;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -76,7 +78,6 @@ public class ViewExams extends Page {
         ExamsLabel.setBounds(20, delta, 300, 80);
         ExamsLabel.setFont(titleFont);
         getPanel().add(ExamsLabel);
-
         for (Exam exam : exams) {
 
             JLabel examNameLabel = new JLabel();
@@ -158,6 +159,7 @@ public class ViewExams extends Page {
                     examTotalMarkLabel.setBounds(380 + 175, 65 + delta, 150, 30);
                     examTotalMarkLabel.setFont(myFont);
 
+                    // draw into the panel
                     getPanel().add(markLabel);
                     getPanel().add(studentMarkLabel);
                     getPanel().add(examTotalMarkLabel);

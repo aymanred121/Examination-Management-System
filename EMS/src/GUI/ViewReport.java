@@ -10,6 +10,8 @@ import Entities.Instructor;
 import Entities.Model;
 import Entities.Question;
 import Entities.User;
+import org.jfree.chart.ChartPanel;
+
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -26,24 +28,27 @@ public class ViewReport extends javax.swing.JFrame {
 
     private Instructor instructor;
     private Exam exam;
-    private java.awt.Font myFont = new java.awt.Font("Tahoma", Font.LAYOUT_LEFT_TO_RIGHT, 11);
+    private Font myFont = new java.awt.Font("Tahoma", Font.LAYOUT_LEFT_TO_RIGHT, 11);
     
     /**
      * Creates new form Report
      */
+
     public ViewReport(Instructor instructor, Exam exam) {
         this.instructor = instructor;
         this.exam = exam;
         initComponents();
         showTitle();
         showTopQuestions(5);
+        drawHistogram("The Occurrence of The Expected Difficulty", "Expected Difficulty",
+                "No. of Question");
     }
     
-    public void showTitle() {
+    private void showTitle() {
         title.setText("Exam #" + exam.getId() + ": " + exam.getName());
     }
     
-    public void showTopQuestions(int size) {
+    private void showTopQuestions(int size) {
         Vector<Question> questions = exam.getTopQuestions(size);
         int delta = 100 , currentIndex = 0; 
         
@@ -71,6 +76,13 @@ public class ViewReport extends javax.swing.JFrame {
             currentIndex++;
             delta += 45;
         }  
+    }
+
+    private void drawHistogram(String title, String xAxis, String yAxis) {
+        Histogram histogram = new Histogram(Histogram.HistogramData(exam), title, xAxis, yAxis);
+        ChartPanel chartPanel = new ChartPanel( histogram.getHistogramChart());
+        chartPanel.setBounds(125 ,400, 500, 300);
+        panel.add(chartPanel);
     }
 
     /**
@@ -183,36 +195,7 @@ public class ViewReport extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ViewReport.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ViewReport.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ViewReport.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ViewReport.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new ViewReport(new Instructor("omarhassan"), new Exam(1)).setVisible(true);
-            }
-        });
+        new ViewReport(new Instructor("omarhassan"), new Exam(1)).setVisible(true);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

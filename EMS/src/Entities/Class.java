@@ -47,13 +47,6 @@ public class Class implements SqlEntity {
         this.course = course;
         this.isStudentSession = false;
     }
-    
-    public int getId() {
-        if (!isFilled) {
-            fillData();
-        }
-        return id;
-    }
 
     /**
      * it fills all the data of the current class by executing multiple SQL statements
@@ -217,7 +210,7 @@ public class Class implements SqlEntity {
     /**
      * @author Steven Sameh and Abdel-Aziz Mostafa
      * Checks that the classId exists in the database
-     * @param id The id of the class 
+     * @param classId The id of the class
      * @return Boolean This returns whether the classId exist in the database
      */
     public static boolean isClassIdExisted( int classId){
@@ -255,5 +248,12 @@ public class Class implements SqlEntity {
         } catch(Exception e) {
             System.out.println(e);
         }
+    }
+    
+    public Vector<Student> getStudents() {
+        if(!isFilled){
+            fillData();
+        }
+        return students;
     }
 }
