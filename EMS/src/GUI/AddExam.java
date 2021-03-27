@@ -133,9 +133,13 @@ public class AddExam extends Page {
         /*
          * You can't add exams as of the same moment u opened the create new exam page
          * At least one hour is required to set the exam questions of one model or more
+         *
+         * UPDATE: due to the fast testing needed for the initial release,
+         *         the one hour will be reduced to 3 minutes.
          */
 
-        now.add(Calendar.HOUR_OF_DAY, 1);
+        // now.add(Calendar.HOUR_OF_DAY, 1);
+        now.add(Calendar.MINUTE, 3);
 
         // Setting the member variables to their respective values
         currentYear = now.get(Calendar.YEAR);

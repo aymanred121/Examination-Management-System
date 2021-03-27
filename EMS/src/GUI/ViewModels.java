@@ -24,6 +24,8 @@ public class ViewModels extends Page {
     java.awt.Font myFont = new java.awt.Font("Tahoma", Font.LAYOUT_LEFT_TO_RIGHT, 11);
 
     public ViewModels(Instructor instructor, Model model) {
+        setSize(new java.awt.Dimension(800, 600));
+        setResizable(false);
         this.instructor = instructor;
         this.model = model;
         exam = new Exam(model.getExamID());
@@ -37,7 +39,7 @@ public class ViewModels extends Page {
         showTopBarElements();
     }
     
-    public  ViewModels(Instructor instructor, Model model,boolean isRanked)
+    public  ViewModels(Instructor instructor, Model model, boolean isRanked)
     {
         this(instructor,model);
         this.isRanked = isRanked;

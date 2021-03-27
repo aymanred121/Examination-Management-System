@@ -5,6 +5,7 @@
  */
 package GUI;
 
+import Entities.Class;
 import Entities.Exam;
 import Entities.Instructor;
 import Entities.Student;
@@ -21,7 +22,7 @@ import javax.swing.JLabel;
  * An extended version of GUI.Page that is used to create a view current exams for
  * the logged-in instructor in a specific class of his/her choice.
  *
- * @author Yusuf Nasser, Youssef Nader, Steven Sameh, Ziad Khobeiz
+ * @author Abdel-Aziz Mostafa, Yusuf Nasser, Youssef Nader, Steven Sameh, Ziad Khobeiz, Ayman Hassan
  * @version 1.0
  */
 
@@ -39,6 +40,8 @@ public class ViewExams extends Page {
      */
 
     public ViewExams(User user, Entities.Class userClass) {
+        setSize(new java.awt.Dimension(800, 600));
+        setResizable(false);
         this.user = user;
         this.userClass = userClass;
         userType = user.getUserType(user.getUsername());
@@ -71,21 +74,21 @@ public class ViewExams extends Page {
         examName = examName.substring(0, 1).toUpperCase() + examName.substring(1);
         java.awt.Font titleFont = new java.awt.Font("Tahoma", Font.BOLD, 20);
         JLabel ExamsLabel = new JLabel(examName + " exams:");
-        ExamsLabel.setBounds(20, delta, 300, 80);
+        ExamsLabel.setBounds(20, delta + 10, 300, 80);
         ExamsLabel.setFont(titleFont);
         getPanel().add(ExamsLabel);
         for (Exam exam : exams) {
 
             JLabel examNameLabel = new JLabel();
             examNameLabel.setText(exam.getName());
-            examNameLabel.setBounds(40, 40 + delta, 300, 80);
+            examNameLabel.setBounds(40, 60 + delta, 300, 80);
             examNameLabel.setFont(myFont);
             getPanel().add(examNameLabel);
             if (userType == User.UserType.INSTRUCTOR) {
                 JButton modelsButton = new JButton();
                 modelsButton.setText("Models");
                 modelsButton.setFont(myFont);
-                modelsButton.setBounds(380 + 90, 65 + delta, 130, 30);
+                modelsButton.setBounds(560, 85 + delta, 120, 30);
                 modelsButton.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
                         new ViewModels((Instructor)user ,exam.getModels().elementAt(0)).setVisible(true);
@@ -94,24 +97,26 @@ public class ViewExams extends Page {
                 });
                 getPanel().add(modelsButton);
 
-                //Show Qeustion rank
-                JButton showQuestionRank = new JButton();
-                showQuestionRank.setText("Questions Ranked");
-                showQuestionRank.setFont(myFont);
-                showQuestionRank.setBounds(380 - 230, 65 + delta, 196, 30);
-                showQuestionRank.addActionListener(new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-                        new ViewModels((Instructor)user,exam.getModels().elementAt(0),true).setVisible(true);
-                        dispose();
-                    }
-                });
-                getPanel().add(showQuestionRank);
                 if (examStatus == Exam.Status.FINISHED) {
-                    modelsButton.setBounds(380, 65 + delta, 150, 30);
+                    //Show Qeustion rank
+                    JButton showQuestionRank = new JButton();
+                    showQuestionRank.setText("Questions Ranked");
+                    showQuestionRank.setFont(myFont);
+                    showQuestionRank.setBounds(380 - 190, 85 + delta, 196, 30);
+                    showQuestionRank.addActionListener(new ActionListener() {
+                        public void actionPerformed(ActionEvent e) {
+                            new ViewModels((Instructor)user,exam.getModels().elementAt(0),true).setVisible(true);
+                            dispose();
+                        }
+                    });
+                    getPanel().add(showQuestionRank);
+
+                    modelsButton.setBounds(420, 85 + delta, 120, 30);
+
                     JButton reportButton = new JButton();
                     reportButton.setText("Report");
                     reportButton.setFont(myFont);
-                    reportButton.setBounds(560, 65 + delta, 130, 30);
+                    reportButton.setBounds(570, 85 + delta, 130, 30);
                     reportButton.addActionListener(new ActionListener() {
                         public void actionPerformed(ActionEvent e) {
                             new ViewReport((Instructor) user, exam).setVisible(true);
@@ -125,7 +130,7 @@ public class ViewExams extends Page {
                     JButton enterButton = new JButton();
                     enterButton.setText("Enter");
                     enterButton.setFont(myFont);
-                    enterButton.setBounds(380 + 87, 65 + delta, 150, 30);
+                    enterButton.setBounds(380 + 87, 85 + delta, 150, 30);
                     enterButton.addActionListener(new ActionListener() {
                         public void actionPerformed(ActionEvent e) {
                             int studentModelIndex = exam.getStudentModelIndex(user.getUsername());
@@ -140,19 +145,19 @@ public class ViewExams extends Page {
                     // Showing the student his marks in finished Exams
 
                     JLabel markLabel = new JLabel("Mark: ");
-                    markLabel.setBounds(380 + 87, 65 + delta, 150, 30);
+                    markLabel.setBounds(380 + 87, 85 + delta, 150, 30);
                     markLabel.setFont(myFont);
 
                     // retrieving and rendering the student mark in the exam to a JLabel
                     int studentModelIndex = exam.getStudentModelIndex(user.getUsername());
                     JLabel studentMarkLabel = new JLabel(String.valueOf(exam.getStudentMark(user.getUsername())));
-                    studentMarkLabel.setBounds(380 + 150, 65 + delta, 150, 30);
+                    studentMarkLabel.setBounds(380 + 150, 85 + delta, 150, 30);
                     studentMarkLabel.setFont(myFont);
 
                     // retrieving and rendering the total mark of the exam to a JLabel
                     int examTotalMark = exam.getTotalMark();
                     JLabel examTotalMarkLabel = new JLabel(" / " + String.valueOf(examTotalMark));
-                    examTotalMarkLabel.setBounds(380 + 175, 65 + delta, 150, 30);
+                    examTotalMarkLabel.setBounds(380 + 175, 85 + delta, 150, 30);
                     examTotalMarkLabel.setFont(myFont);
 
                     // draw into the panel
@@ -168,7 +173,7 @@ public class ViewExams extends Page {
         if (exams.size() == 0) {
 
             JLabel noExams = new JLabel("No " + examStatus.name().toLowerCase() + " exams.");
-            noExams.setBounds(40, 40 + delta, 300, 80);
+            noExams.setBounds(40, 60 + delta, 300, 80);
             noExams.setFont(myFont);
             getPanel().add(noExams);
             delta += 50;
@@ -239,7 +244,7 @@ public class ViewExams extends Page {
 
     private void showAddExamButton(int delta){
         JButton addNewExam = new JButton("Add New Exam");
-        addNewExam.setBounds(600, 20, 180, 30);
+        addNewExam.setBounds(560, 20, 180, 30);
         addNewExam.setFont(myFont);
         addNewExam.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {

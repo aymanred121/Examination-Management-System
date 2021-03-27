@@ -77,6 +77,7 @@ public class UserDashboard extends Page{
             courseName.lastElement().setFont(new java.awt.Font("Tahoma", 1, 17));
             courseName.lastElement().setBounds(40, 40 + delta, 300, 80);
             getPanel().add(courseName.lastElement());
+
             examsButtons.add(new JButton());
             examsButtons.lastElement().setBounds(380, 65 + delta, 150, 30);
             examsButtons.lastElement().setText("Show Exams");
@@ -88,6 +89,7 @@ public class UserDashboard extends Page{
                     dispose();
                 }
             });
+
             delta += 50;
         }
 
