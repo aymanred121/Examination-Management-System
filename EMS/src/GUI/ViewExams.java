@@ -91,8 +91,14 @@ public class ViewExams extends Page {
                 DateTime += (exam.getStartTime().toLocalDate().toString() + "  ");
                 DateTime += exam.getStartTime().toLocalTime().toString();
                 examDateTime.setText(DateTime);
-                examDateTime.setBounds(350, 60 + delta, 400, 80);
                 examDateTime.setFont(myFont);
+
+                if (userType == User.UserType.INSTRUCTOR) {
+                    examDateTime.setBounds(180, 60 + delta, 400, 80);
+                } else {
+                    examDateTime.setBounds(350, 60 + delta, 400, 80);
+                }
+
                 getPanel().add(examDateTime);
             }
 
