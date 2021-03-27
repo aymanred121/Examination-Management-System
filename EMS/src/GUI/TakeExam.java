@@ -114,6 +114,8 @@ public class TakeExam extends Page {
             public void actionPerformed(ActionEvent evt) {
                 remainingTime -= 1000;
                 if(remainingTime <= 0) {
+                    getStudentChoice();
+                    submitAnswers();
                     dispose();
                 }
                 remainingTimeLabel.setText(dateFormat.format(remainingTime));

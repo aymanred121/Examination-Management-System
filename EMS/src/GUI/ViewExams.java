@@ -84,6 +84,19 @@ public class ViewExams extends Page {
             examNameLabel.setBounds(40, 60 + delta, 300, 80);
             examNameLabel.setFont(myFont);
             getPanel().add(examNameLabel);
+
+            if (exam.getStatus() == Exam.Status.UPCOMING || exam.getStatus() == Exam.Status.UNPUBLISHED) {
+                JLabel examDateTime = new JLabel();
+                String DateTime = "Date & Time: ";
+                DateTime += (exam.getStartTime().toLocalDate().toString() + "  ");
+                DateTime += exam.getStartTime().toLocalTime().toString();
+                examDateTime.setText(DateTime);
+                examDateTime.setBounds(350, 60 + delta, 400, 80);
+                examDateTime.setFont(myFont);
+                getPanel().add(examDateTime);
+            }
+
+
             if (userType == User.UserType.INSTRUCTOR) {
                 JButton modelsButton = new JButton();
                 modelsButton.setText("Models");
@@ -98,7 +111,7 @@ public class ViewExams extends Page {
                 getPanel().add(modelsButton);
 
                 if (examStatus == Exam.Status.FINISHED) {
-                    //Show Qeustion rank
+                    // Show Question rank
                     JButton showQuestionRank = new JButton();
                     showQuestionRank.setText("Questions Ranked");
                     showQuestionRank.setFont(myFont);
