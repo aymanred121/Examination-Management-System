@@ -7,6 +7,8 @@ package GUI;
 
 import Entities.*;
 
+import javax.swing.*;
+
 /**
  *
  * @author yn653
@@ -61,12 +63,15 @@ public class Login extends javax.swing.JFrame {
         usernameTextfield.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 usernameTextfieldActionPerformed(evt);
+                loginButtonActionPerformed(evt);
             }
+
         });
 
         passwordTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 passwordTextFieldActionPerformed(evt);
+                loginButtonActionPerformed(evt);
             }
         });
 
@@ -123,8 +128,16 @@ public class Login extends javax.swing.JFrame {
     private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
         
         String username = usernameTextfield.getText();
-        
-        if(User.isValidUser(username, passwordTextField.getText())) {
+        if(username.trim().isEmpty()){
+
+            JOptionPane.showMessageDialog(null, "Please enter the username.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }else if(passwordTextField.getText().trim().isEmpty()){
+
+            JOptionPane.showMessageDialog(null, "Please enter the password.", "Error", JOptionPane.ERROR_MESSAGE);
+
+            return;
+        }else if(User.isValidUser(username, passwordTextField.getText())) {
            
            User.UserType userType = User.getUserType(username);
            setVisible(false);
@@ -140,7 +153,11 @@ public class Login extends javax.swing.JFrame {
                    dispose();
            }
 
-       }
+        }else if(!User.isValidUser(username, passwordTextField.getText())){
+
+            JOptionPane.showMessageDialog(null, "The username or password are incorrect.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
         
     }//GEN-LAST:event_loginButtonActionPerformed
 
