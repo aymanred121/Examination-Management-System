@@ -38,7 +38,7 @@ public class Histogram extends JFrame {
 
     private void Bar(){
         HistogramDataset dataset= new HistogramDataset();
-        dataset.addSeries("key",data,20);
+        dataset.addSeries("Grades",data,10);
          HistogramChart = ChartFactory.createHistogram(
                 title,
                 xAxis,

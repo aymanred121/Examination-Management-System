@@ -39,8 +39,8 @@ public class ViewReport extends javax.swing.JFrame {
         initComponents();
         showTitle();
         showTopQuestions(5);
-        drawHistogram("The Occurrence of The Expected Difficulty", "Expected Difficulty",
-                "No. of Question");
+        drawHistogram("The Occurrence of Students Marks", "Students Marks",
+                "No. Students");
     }
     
     private void showTitle() {
