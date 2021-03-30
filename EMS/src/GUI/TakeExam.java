@@ -30,17 +30,17 @@ import javax.swing.*;
 
 public class TakeExam extends Page {
 
-    private Student student;
-    private Model model;
-    private Exam exam;
-    private String studentSelection;
-    char[] studentAnswer;
-    private int remainingTime, currentQuestionIndex = 0;
+    private final Student student;
+    private final Model model;
+    private final Exam exam;
+    private final PageActionListener listener;
     private final Font font = new java.awt.Font("Tahoma", Font.BOLD, 24),
             smallFont = new java.awt.Font("Tahoma", Font.PLAIN, 18);
+    private int remainingTime, currentQuestionIndex = 0;
+    private String studentSelection;
+    char[] studentAnswer;
     private JLabel remainingTimeLabel;
     private JButton nextButton, backButton, finishButton;
-    private PageActionListener listener;
     ButtonGroup buttonGroup;
     Vector<JRadioButton> buttons;
 
@@ -53,14 +53,18 @@ public class TakeExam extends Page {
      */
 
     public TakeExam(Student student, Model model) {
+        // Setting the page size and disable its resizability to maintain the components fixed positions
         setSize(new java.awt.Dimension(800, 600));
+        setResizable(false);
 
+        // Setting the member variables
         this.student = student;
         this.model = model;
         this.exam = new Exam(model.getExamID());
         listener = new PageActionListener();
         studentAnswer = new char[exam.getTotalMark()]; // filled with '\u0000'
 
+        // Displaying the GUI components
         displayTopBar();
         displayPanel();
     }
@@ -75,6 +79,7 @@ public class TakeExam extends Page {
         getBackButton().setVisible(false);
         getLogoutButton().setVisible(false);
 
+        // displaying top bar components one by one
         displayTimeLabel();
         displayExamName();
         displayFinishButton();
@@ -93,39 +98,66 @@ public class TakeExam extends Page {
         finishButton.addActionListener(listener);
     }
 
+    /**
+     * Sets the title label to the current exam name and its font
+     */
+
     private void displayExamName() {
         getTitleLabel().setText(exam.getExamClass().getCourse().getName() + ": " + exam.getName());
         getTitleLabel().setFont(smallFont);
     }
 
+    /**
+     * Initializes the timer, displays the time label and keeps on refreshing the
+     * label text to the remaining time by an action listener.
+     */
+
     private void displayTimeLabel() {
+        // Initializing the time label and setting its properties
         remainingTimeLabel = new JLabel();
         remainingTimeLabel.setFont(smallFont);
         remainingTimeLabel.setVerticalAlignment(SwingConstants.CENTER);
         remainingTimeLabel.setBounds(355, 8, 200, 20);
 
+        // Initializing and setting a date format to view it to the student
         SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
-        dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
 
+        // Setting the time zone to Egypt capital — Cairo time zone
+        dateFormat.setTimeZone(TimeZone.getTimeZone("Egypt/Cairo"));
+
+        // Setting the remaining time to its initial value — the whole exam time
         remainingTime = (int) Duration.between(LocalDateTime.now(), exam.getEndTime()).toMillis();
+
+        // Putting the remaining time (in Millis) to the chosen date format and displaying it
         remainingTimeLabel.setText(dateFormat.format(remainingTime));
 
-        ActionListener updateTimer = new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                remainingTime -= 1000;
-                if(remainingTime <= 0) {
-                    dispose();
-                }
-                remainingTimeLabel.setText(dateFormat.format(remainingTime));
+        // Initializing an action listener to be called by the timer
+        ActionListener updateTimer = evt -> {
+            remainingTime -= 1000;
+            if(remainingTime <= 0) {
+                // getting the student choice at current question and submitting when he or she runs out of time
+                getStudentChoice();
+                submitAnswers();
+                dispose();
             }
+
+            // Setting the remaining time label to its new value after subtracting the delay
+            remainingTimeLabel.setText(dateFormat.format(remainingTime));
         };
 
+        // Creating the timer so it would call the action listener updateTimer every 1000 Millis
         Timer timer = new Timer(1000, updateTimer);
+
+        // Sets it to true so it would call the action listener everytime not just the first time
         timer.setRepeats(true);
         timer.start();
 
         getTopBar().add(remainingTimeLabel);
     }
+
+    /**
+     *
+     */
 
     private void displayPanel() {
         displayQuestion(currentQuestionIndex);
@@ -158,6 +190,11 @@ public class TakeExam extends Page {
         nextButton.setVisible(currentQuestionIndex + 1 < model.getQuestions().size());
         getPanel().add(nextButton);
     }
+
+    /**
+     * Display the question at the passed index in model questions vector
+     * @param questionIndex — the index in which the question to display
+     */
 
     private void displayQuestion(int questionIndex) {
         // Retrieving the question from the database
@@ -205,11 +242,19 @@ public class TakeExam extends Page {
         }
     }
 
+    /**
+     * Refreshes the main panel by removing then validating and finally repainting all the components
+     */
+
     private void refreshPanel() {
         getPanel().removeAll();
         getPanel().revalidate();
         getPanel().repaint();
     }
+
+    /**
+     * Sets the current viewed question answer selection if a stored one exists
+     */
 
     private void setQuestionSelection() {
         studentSelection = "";
@@ -231,6 +276,11 @@ public class TakeExam extends Page {
         }
     }
 
+    /**
+     * Retrieves the student current viewed question answer selection if exists and stores
+     * it to its position in char array studentAnswer before moving on to another question
+     */
+
     private void getStudentChoice() {
         studentSelection = "";
         for (Enumeration<AbstractButton> buttonsEnum = buttonGroup.getElements(); buttonsEnum.hasMoreElements();) {
@@ -246,7 +296,7 @@ public class TakeExam extends Page {
     }
 
     /**
-     * It asks whether the student wants to submit the answers or edit them.
+     * It asks whether the student wants to submit the answers or go back to the exam.
      * It does that via showConfirmDialog() that only take Yes or No as an answer
      *
      * @return true if the student is sure about submitting the answers; false otherwise.
@@ -256,6 +306,12 @@ public class TakeExam extends Page {
         String message = "Are you sure to submit ?";
         return JOptionPane.showConfirmDialog(null, message, "Submit", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION;
     }
+
+    /**
+     * Submits all the student answers that are already stored at char array studentAnswer
+     * by iterating over the exam model questions and inserting every answer to each
+     * question in the database by calling StudentChoice.add()
+     */
 
     private void submitAnswers() {
         Vector<Question> questions = model.getQuestions();
