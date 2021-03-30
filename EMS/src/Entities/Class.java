@@ -149,7 +149,7 @@ public class Class implements SqlEntity {
     /**
      * @author Steven Sameh and Abdel-Aziz Mostafa
      * Checks that the classId exists in the database
-     * @param id The id of the class 
+     * @param classId The id of the class
      * @return Boolean This returns whether the classId exist in the database
      */
     public static boolean isClassIdExisted( int classId){

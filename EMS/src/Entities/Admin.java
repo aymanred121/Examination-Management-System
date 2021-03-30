@@ -6,7 +6,9 @@
 package Entities;
 
 /**
- *
+ *An extended version of User class
+ * Use the constructor retrieve the admin and to login into the system
+ * Admin can add new classes, instructors and assign instructor to classes.
  * @author Steven, Yusuf Nasser
  */
 public class Admin extends User {
