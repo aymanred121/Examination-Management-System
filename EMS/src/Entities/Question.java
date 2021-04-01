@@ -8,14 +8,14 @@ package Entities;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Timestamp;
 import java.util.Vector;
 
 /**
  *
  * @author bizarre
  */
-public class Question implements SqlEntity, Comparable {
+
+public class Question implements SqlEntity, Comparable<Question> {
 
     private final int id;
     private int totalFrequency, correctFrequency, examId, modelNumber, classId;
@@ -49,7 +49,7 @@ public class Question implements SqlEntity, Comparable {
             myStatement.setInt(1, id);
             ResultSet myResultSet = myStatement.executeQuery();
             if (myResultSet.next()) {
-                statement = new String(myResultSet.getString(1));
+                statement = myResultSet.getString(1);
                 modelNumber = myResultSet.getInt(2);
                 examId = myResultSet.getInt(3);
             }
@@ -190,17 +190,8 @@ public class Question implements SqlEntity, Comparable {
     }
 
     @Override
-    public int compareTo(Object t) {
-        
-        Question otherQuestion = (Question) t;
-        if(getSolvingRate() < otherQuestion.getSolvingRate()) {
-            return 1;
-        } else if(getSolvingRate() > otherQuestion.getSolvingRate()) {
-            return -1;
-        } else {
-            return 0;
-        }
-        
+    public int compareTo(Question otherQuestion) {
+        return Double.compare(otherQuestion.getSolvingRate(), getSolvingRate());
     }
 
 }

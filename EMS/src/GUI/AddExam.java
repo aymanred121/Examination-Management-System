@@ -102,22 +102,22 @@ public class AddExam extends Page {
      * Constructs a new page in which the logged-in instructor can
      * edit the exam starting date and time so that they would be valid
      *
-     * @param instructor The logged-in instructor instance
-     * @param exam       The current exam to be edited
+     * @param instructor  The logged-in instructor instance
+     * @param currentExam The current exam to be edited
      */
 
-    public AddExam(Instructor instructor, Exam exam) {
+    public AddExam(Instructor instructor, Exam currentExam) {
         this(instructor);
 
         // Setting the member variables
-        this.editedExam = exam;
+        this.editedExam = currentExam;
 
         // Setting the title label and its properties
-        setTitleLabel(exam.getExamClass());
+        setTitleLabel(currentExam.getExamClass());
 
         // Adding an action listener for the back button in the superclass to go to the ViewExams page
         getBackButton().addActionListener(e -> {
-            new ViewModels(instructor, exam.getModels().firstElement()).setVisible(true);
+            new ViewModels(instructor, currentExam.getModels().firstElement()).setVisible(true);
             dispose();
         });
 
