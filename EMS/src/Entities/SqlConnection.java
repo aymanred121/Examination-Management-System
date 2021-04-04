@@ -7,17 +7,22 @@ package Entities;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
 
 /**
+ * Represents a connection with Oracle HR database through jdbc6 driver
  *
- * @author ZiadK
+ * @author Ziad Khobeiz
  */
 public class SqlConnection {
-    
+
+    /**
+     * Creates and Returns a connection with the project database to facilitate the
+     * SQL processes.
+     *
+     * @return a connection with hr database if no exception occurred; null otherwise.
+     */
+
     public static Connection getConnection() {
-        
         try {
             java.lang.Class.forName("oracle.jdbc.driver.OracleDriver");
             return DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521/orcl", "hr", "hr");
@@ -25,7 +30,6 @@ public class SqlConnection {
             System.out.println(e);
             return null;
         }
-        
     }
-    
+
 }

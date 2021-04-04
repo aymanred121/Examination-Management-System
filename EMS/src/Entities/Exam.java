@@ -20,11 +20,11 @@ import java.util.Vector;
 public class Exam implements SqlEntity {
 
     /* Naming convention of static final in java is in SCREAMING_SNAKE_CASE; reference: shorturl.at/dltGK */
-    
+
     final static private int MODEL_NUMBER_LIMIT = 5, YEAR_LIMIT = 2051, MONTH_LIMIT = 12,
             HOUR_LIMIT = 24, MINUTES_LIMIT = 60, EXAM_DURATION_LIMIT = 180;
-    
-    private int id , numberOfModels;
+
+    private int id, numberOfModels;
     private Class examClass;
     private String name;
     private LocalDateTime startTime, endTime;
@@ -34,7 +34,8 @@ public class Exam implements SqlEntity {
 
     /**
      * Constructs a new exam for the a specific class chosen
-     * @param examClass — the class in which the exam is constructed
+     *
+     * @param examClass the class in which the exam is constructed
      */
 
     public Exam(Entities.Class examClass) {
@@ -44,9 +45,10 @@ public class Exam implements SqlEntity {
     /**
      * Constructs an exam instance to retrieve its data from the data base and
      * store them in its fields.
-     * @param id — the unique id of the exam whose data would be retrieved
+     *
+     * @param id the unique id of the exam whose data would be retrieved
      */
-    
+
     public Exam(int id) {
         this.id = id;
     }
@@ -55,7 +57,7 @@ public class Exam implements SqlEntity {
      * All the possible statuses for the exam
      */
 
-    public enum Status{
+    public enum Status {
         // Exam is published and currently running
         RUNNING,
 
@@ -73,6 +75,7 @@ public class Exam implements SqlEntity {
 
     /**
      * retrieve all the Exam data from the Database
+     *
      * @author Ayman Hassan, Ziad Khobeiz
      */
 
@@ -88,10 +91,10 @@ public class Exam implements SqlEntity {
                 startTime = myResultSet.getTimestamp(1).toLocalDateTime();
                 endTime = myResultSet.getTimestamp(2).toLocalDateTime();
                 name = myResultSet.getString(3);
-                examClass = new Class(myResultSet.getInt(4),false);
+                examClass = new Class(myResultSet.getInt(4), false);
                 isPublished = myResultSet.getString(5).equals("Y");
-                duration = Duration.between(startTime,endTime);
-           }
+                duration = Duration.between(startTime, endTime);
+            }
             PreparedStatement modelsStatement = myConnection.prepareStatement("select distinct MODELNUMBER FROM EXAMMODEL where EXAMID = ?");
             modelsStatement.setInt(1, id);
             ResultSet modelsResultSet = modelsStatement.executeQuery();
@@ -127,7 +130,7 @@ public class Exam implements SqlEntity {
         } catch (Exception e) {
             System.out.println(e);
         }
-        for(int modelNumber = 1; modelNumber <= numberOfModels; ++modelNumber) {
+        for (int modelNumber = 1; modelNumber <= numberOfModels; ++modelNumber) {
             // Adds a new model to the models vector .add() is an associated method with java.util.Vector Class
             models.add(new Model(id, modelNumber));
             // adds the new model to the database .add is an implemented method in Entities.Model Class
@@ -169,7 +172,8 @@ public class Exam implements SqlEntity {
 
     /**
      * Sets the start time of the exam instance to the passed argument value
-     * @param startTime — the new start time for the exam
+     *
+     * @param startTime the new start time for the exam
      */
 
     public void setStartTime(LocalDateTime startTime) {
@@ -178,7 +182,8 @@ public class Exam implements SqlEntity {
 
     /**
      * Sets the end time of the exam instance to the passed argument value
-     * @param endTime — the new end time for the exam
+     *
+     * @param endTime the new end time for the exam
      */
 
     public void setEndTime(LocalDateTime endTime) {
@@ -187,7 +192,8 @@ public class Exam implements SqlEntity {
 
     /**
      * Sets the duration of the exam instance to the passed argument value
-     * @param duration — the new duration for the exam
+     *
+     * @param duration the new duration for the exam
      */
 
     public void setDuration(Duration duration) {
@@ -196,7 +202,8 @@ public class Exam implements SqlEntity {
 
     /**
      * Sets the name of the exam instance to the passed argument value
-     * @param name — the name for the exam
+     *
+     * @param name the name for the exam
      */
 
     public void setName(String name) {
@@ -205,7 +212,8 @@ public class Exam implements SqlEntity {
 
     /**
      * Sets the state of the exam instance to the passed argument value
-     * @param isPublished — the new state for the exam
+     *
+     * @param isPublished the new state for the exam
      */
 
     public void setIsPublished(boolean isPublished) {
@@ -214,7 +222,8 @@ public class Exam implements SqlEntity {
 
     /**
      * Sets the number of models of the exam instance to the passed argument value
-     * @param numberOfModels — the number of models for the exam
+     *
+     * @param numberOfModels the number of models for the exam
      */
 
     public void setNumberOfModels(int numberOfModels) {
@@ -227,17 +236,18 @@ public class Exam implements SqlEntity {
      * Process all the exam questions from its models and sort them descendingly
      * according to their solving rates, returns from index 0 and up to but not
      * equal the desired size index
-     * @param size — how many top questions desired
+     *
+     * @param size how many top questions desired
      * @return vector of highest solving rate questions with the size desired
      */
 
     public Vector<Question> getTopQuestions(int size) {
-        if(!isFilled) {
+        if (!isFilled) {
             fillData();
         }
 
         Vector<Question> topQuestions = new Vector<>();
-        for(Model model : models) {
+        for (Model model : models) {
             topQuestions.addAll(model.getQuestions());
         }
 
@@ -249,6 +259,7 @@ public class Exam implements SqlEntity {
 
     /**
      * Returns the currently set MODEL_NUMBER_LIMIT for the whole class
+     *
      * @return the limit on how many models allowed for one exam
      */
 
@@ -258,6 +269,7 @@ public class Exam implements SqlEntity {
 
     /**
      * Returns the currently set YEAR_LIMIT for the whole class
+     *
      * @return the limit year allowed for a starting date when creating an exam
      */
 
@@ -267,6 +279,7 @@ public class Exam implements SqlEntity {
 
     /**
      * Returns the currently set MONTH_LIMIT for the whole class
+     *
      * @return the limit month allowed for a starting date when creating an exam
      */
 
@@ -280,6 +293,7 @@ public class Exam implements SqlEntity {
 
     /**
      * Returns the currently set HOUR_LIMIT for the whole class
+     *
      * @return the limit hour allowed for a starting time when creating an exam
      */
 
@@ -289,6 +303,7 @@ public class Exam implements SqlEntity {
 
     /**
      * Returns the currently set MINUTES_LIMIT for the whole class
+     *
      * @return the max minutes allowed for a starting time when creating an exam
      */
 
@@ -298,6 +313,7 @@ public class Exam implements SqlEntity {
 
     /**
      * Returns the currently set EXAM_DURATION_LIMIT for the whole class
+     *
      * @return the max duration allowed for an exam when creating one
      */
 
@@ -307,6 +323,7 @@ public class Exam implements SqlEntity {
 
     /**
      * compares the student Answers to the modelAnswer and set the score
+     *
      * @return studentMark student score in the taken exam model
      */
 
@@ -323,8 +340,7 @@ public class Exam implements SqlEntity {
             return 0;
         }
 
-        for (int i = 0; i < modelAnswer.length(); i++)
-        {
+        for (int i = 0; i < modelAnswer.length(); i++) {
             if (modelAnswer.charAt(i) == studentAnswer.charAt(i))
                 studentMark++;
         }
@@ -333,7 +349,8 @@ public class Exam implements SqlEntity {
 
     /**
      * Determines whether a student has taken on and finished an ongoing exam or not
-     * @param studentName — the unique identifier for the student
+     *
+     * @param studentName the unique identifier for the student
      */
 
     private void getIsTaken(String studentName) {
@@ -364,6 +381,7 @@ public class Exam implements SqlEntity {
 
     /**
      * returns the exam id
+     *
      * @return the value of the id property
      */
 
@@ -373,11 +391,12 @@ public class Exam implements SqlEntity {
 
     /**
      * returns the class to which the exam belongs
+     *
      * @return the value of examClass property after retrieving it from the database
      */
 
     public Class getExamClass() {
-        if(!isFilled) {
+        if (!isFilled) {
             fillData();
         }
         return examClass;
@@ -386,6 +405,7 @@ public class Exam implements SqlEntity {
     /**
      * returns the total mark of the exam which is the same as the
      * questions number at one model as MCQ questions all value the same
+     *
      * @return the size of questions vector at the first model; after retrieving its value from the database
      */
 
@@ -398,6 +418,7 @@ public class Exam implements SqlEntity {
 
     /**
      * returns the studentModelIndex by calculating the outcome of a predefined equation
+     *
      * @param username the username of the student
      * @return the calculated studentModelIndex
      */
@@ -418,6 +439,7 @@ public class Exam implements SqlEntity {
     /**
      * Returns the student answers for this exam after retrieving all his or here choices from
      * the database and appends them all to a string
+     *
      * @param studentName the username of the student whose exam answers shall be retrieved
      * @return the value of studentAnswer String after retrieving all answers from the database
      */
@@ -451,11 +473,12 @@ public class Exam implements SqlEntity {
 
     /**
      * Returns the start time of the exam after retrieving its value from the database
+     *
      * @return the value of the startTime property
      */
 
     public LocalDateTime getStartTime() {
-        if(!isFilled) {
+        if (!isFilled) {
             fillData();
         }
         return startTime;
@@ -463,11 +486,12 @@ public class Exam implements SqlEntity {
 
     /**
      * Returns the end time of the exam after retrieving its value from the database
+     *
      * @return the value of the endTime property
      */
 
     public LocalDateTime getEndTime() {
-        if(!isFilled) {
+        if (!isFilled) {
             fillData();
         }
         return endTime;
@@ -475,11 +499,12 @@ public class Exam implements SqlEntity {
 
     /**
      * Returns the exam duration after retrieving its value from the database
+     *
      * @return the value of the duration property
      */
 
     public Duration getDuration() {
-        if(!isFilled) {
+        if (!isFilled) {
             fillData();
         }
         return duration;
@@ -487,35 +512,37 @@ public class Exam implements SqlEntity {
 
     /**
      * Returns the models vector of the exam
+     *
      * @return the value of models property after retrieving it from the database
      */
 
     public Vector<Model> getModels() {
-        if(!isFilled) {
+        if (!isFilled) {
             fillData();
         }
         return models;
     }
-    
+
     /**
      * It determines whether the exam is currently running, upcoming, finished or unpublished
+     *
      * @return Status The current status of the exam
      */
 
     public Status getStatus() {
-        if(!isFilled) {
+        if (!isFilled) {
             fillData();
         }
 
-        if(!isPublished) {
+        if (!isPublished) {
             return Status.UNPUBLISHED;
         }
 
-        if(startTime.compareTo(java.time.LocalDateTime.now()) > 0) {
+        if (startTime.compareTo(java.time.LocalDateTime.now()) > 0) {
             return Status.UPCOMING;
         }
 
-        if(endTime.compareTo(java.time.LocalDateTime.now()) < 0) {
+        if (endTime.compareTo(java.time.LocalDateTime.now()) < 0) {
             return Status.FINISHED;
         }
 
@@ -525,12 +552,13 @@ public class Exam implements SqlEntity {
     /**
      * Returns the exam status for a certain student after checking with the exam
      * and the student data in the database.
-     * @param studentName — the student instance to be checked for their exam status
+     *
+     * @param studentName the student instance to be checked for their exam status
      * @return the exam status for the student in question
      */
 
     public Status getStudentStatus(String studentName) {
-        if(!isFilled) {
+        if (!isFilled) {
             fillData();
         }
 
@@ -540,11 +568,11 @@ public class Exam implements SqlEntity {
             return Status.FINISHED;
         }
 
-        if(startTime.compareTo(java.time.LocalDateTime.now()) > 0) {
+        if (startTime.compareTo(java.time.LocalDateTime.now()) > 0) {
             return Status.UPCOMING;
         }
 
-        if(endTime.compareTo(java.time.LocalDateTime.now()) < 0) {
+        if (endTime.compareTo(java.time.LocalDateTime.now()) < 0) {
             return Status.FINISHED;
         }
 
@@ -553,11 +581,12 @@ public class Exam implements SqlEntity {
 
     /**
      * Returns the exam name after retrieving it from the database
+     *
      * @return the value of the name property
      */
 
     public String getName() {
-        if(!isFilled) {
+        if (!isFilled) {
             fillData();
         }
         return name;
@@ -566,15 +595,16 @@ public class Exam implements SqlEntity {
     /**
      * It checks whether all the models of the exam have the same positive number of question
      * and the exam start time is upcoming (i.e. the exam is ready to be published)
+     *
      * @return true if the exam state is suitable for publicity; false otherwise.
      */
 
     public boolean isReadyToPublish() {
-        if(models.size() == 0) {
+        if (models.size() == 0) {
             return false;
         }
-        for(int i = 1; i < models.size(); ++i) {
-            if(models.elementAt(i).getQuestions().size() == 0 || 
+        for (int i = 1; i < models.size(); ++i) {
+            if (models.elementAt(i).getQuestions().size() == 0 ||
                     models.elementAt(i).getQuestions().size() != models.elementAt(i - 1).getQuestions().size()) {
                 return false;
             }
