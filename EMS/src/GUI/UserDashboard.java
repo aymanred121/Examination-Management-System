@@ -15,7 +15,7 @@ import Entities.*;
 
 /**
  *
- * @author ZiadK
+ * @author Ziad Khobeiz
  */
 public class UserDashboard extends Page{
     

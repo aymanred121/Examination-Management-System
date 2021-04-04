@@ -38,11 +38,11 @@ public class TakeExam extends Page {
             smallFont = new java.awt.Font("Tahoma", Font.PLAIN, 18);
     private int remainingTime, currentQuestionIndex = 0;
     private String studentSelection;
-    char[] studentAnswer;
+    private final char[] studentAnswer;
     private JLabel remainingTimeLabel;
     private JButton nextButton, backButton, finishButton;
-    ButtonGroup buttonGroup;
-    Vector<JRadioButton> buttons;
+    private ButtonGroup buttonGroup;
+    private Vector<JRadioButton> buttons;
 
     /**
      * Constructs a new page that allows the logged-in student to
@@ -156,7 +156,7 @@ public class TakeExam extends Page {
     }
 
     /**
-     *
+     * Displays the main panel components including the question, back and next button.
      */
 
     private void displayPanel() {
@@ -174,7 +174,7 @@ public class TakeExam extends Page {
         backButton = new JButton("Back");
         backButton.setBounds(10, 470, 80, 25);
         backButton.addActionListener(listener);
-        backButton.setVisible(currentQuestionIndex != 0);
+        backButton.setEnabled(currentQuestionIndex != 0);
         getPanel().add(backButton);
     }
 
@@ -187,13 +187,13 @@ public class TakeExam extends Page {
         nextButton = new JButton("Next");
         nextButton.setBounds(670, 470, 80, 25);
         nextButton.addActionListener(listener);
-        nextButton.setVisible(currentQuestionIndex + 1 < model.getQuestions().size());
+        nextButton.setEnabled(currentQuestionIndex + 1 < model.getQuestions().size());
         getPanel().add(nextButton);
     }
 
     /**
      * Display the question at the passed index in model questions vector
-     * @param questionIndex — the index in which the question to display
+     * @param questionIndex the index in which the question to display
      */
 
     private void displayQuestion(int questionIndex) {
@@ -317,8 +317,8 @@ public class TakeExam extends Page {
         Vector<Question> questions = model.getQuestions();
         for (int i = 0; i < exam.getTotalMark(); i++) {
             int questionId = questions.elementAt(i).getId();
-            StudentChoice studentChoice = new StudentChoice(questionId, studentAnswer[i], student.getUsername());
-            studentChoice.add();
+            StudentSolution studentSolution = new StudentSolution(questionId, studentAnswer[i], student.getUsername());
+            studentSolution.add();
         }
     }
 

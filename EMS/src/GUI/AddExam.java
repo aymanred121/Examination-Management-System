@@ -1,6 +1,7 @@
 package GUI;
 
 import Entities.*;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -128,7 +129,7 @@ public class AddExam extends Page {
     /**
      * Sets the properties of the title label to the course name Exams
      *
-     * @param userClass — the current user class
+     * @param userClass the current user class
      */
 
     private void setTitleLabel(Entities.Class userClass) {
@@ -165,9 +166,9 @@ public class AddExam extends Page {
     /**
      * Sets the properties of a certain combobox and assign its list and selected item and finally add it to the panel
      *
-     * @param comboBox     — the combobox to set its properties
-     * @param list         — the list to assign to the combobox
-     * @param selectedItem — the selected item to assign to the combobox
+     * @param comboBox     the combobox to set its properties
+     * @param list         the list to assign to the combobox
+     * @param selectedItem the selected item to assign to the combobox
      */
 
     private void setComboBoxProperties(JComboBox<Integer> comboBox, Vector<Integer> list, int selectedItem) {
