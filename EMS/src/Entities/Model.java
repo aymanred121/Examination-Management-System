@@ -11,31 +11,58 @@ import java.sql.ResultSet;
 import java.util.Vector;
 
 /**
+ * Represents a model for an exam that consists of a certain set of questions
+ * equally numbered with all other models for the same exam.
  *
- * @author bizarre
+ * @author Steven Sameh
  */
 
 public class Model implements SqlEntity {
-    
+
     private final int examID, modelNumber;
     private Vector<Question> questions;
     private boolean isFilled;
+
+    /**
+     * Constructs a new instance of the exam model.
+     *
+     * @param examID      the unique exam ID to which the model belongs
+     * @param modelNumber the unique number of the model between other exam models
+     */
 
     public Model(int examID, int modelNumber) {
         this.examID = examID;
         this.modelNumber = modelNumber;
     }
 
+    /**
+     * Returns the exam model questions
+     *
+     * @return the value of vector questions property
+     */
+
     public Vector<Question> getQuestions() {
-       if (!isFilled) {
-           fillData();
-       }
+        if (!isFilled) {
+            fillData();
+        }
         return questions;
     }
+
+    /**
+     * Returns the unique exam ID
+     *
+     * @return the value of the examID property
+     */
 
     public int getExamID() {
         return examID;
     }
+
+    /**
+     * Returns the unique number of the model between other exam models
+     *
+     * @return the value of the modelNumber property
+     */
 
     public int getModelNumber() {
         return modelNumber;
@@ -43,7 +70,8 @@ public class Model implements SqlEntity {
 
     /**
      * generates the modelAnswer by storing the correct choices in a string TB used in the grading process
-     * @return String — the model answer to this exam model
+     *
+     * @return String the model answer to this exam model
      */
 
     public String getModelAnswer() {
@@ -81,6 +109,10 @@ public class Model implements SqlEntity {
             System.out.println(e);
         }
     }
+
+    /**
+     * Adds a new exam model to the database
+     */
 
     @Override
     public void add() {

@@ -11,8 +11,7 @@ import java.sql.ResultSet;
 import java.util.Vector;
 
 /**
- *
- * @author bizarre
+ * @author Steven Sameh
  */
 
 public class Question implements SqlEntity, Comparable<Question> {
@@ -22,15 +21,30 @@ public class Question implements SqlEntity, Comparable<Question> {
     private char correctChoice;
     private boolean isFilled;
     private String statement;
-    private Vector<QuestionChoice> choices;
+    private final Vector<QuestionChoice> choices; // final ONLY prevents the vector from being reassigned after initialization
+
+    /**
+     * Constructs a question instance to hold its retrieved data
+     *
+     * @param id the id of the question to retrieve its data
+     */
 
     public Question(int id) {
         this.id = id;
         choices = new Vector<>();
     }
 
+    /**
+     * Constructs a new question instance to store the newly created question info.
+     *
+     * @param examId        the id of the exam to which the model containing the question belongs
+     * @param modelNumber   the number of the model containing the question
+     * @param correctChoice the question's correctChoice letter
+     * @param statement     the statement of the question
+     */
+
     public Question(int examId, int modelNumber, char correctChoice, String statement) {
-        id = SqlEntity.generateID("QUESTIONIDSEQ");  
+        id = SqlEntity.generateID("QUESTIONIDSEQ");
         this.examId = examId;
         this.modelNumber = modelNumber;
         this.correctChoice = correctChoice;
@@ -39,7 +53,10 @@ public class Question implements SqlEntity, Comparable<Question> {
         choices = new Vector<>();
     }
 
-    // Both examID and modelNumber should be retrieved from database
+    /**
+     * Retrieves the question data depending on its provided unique id
+     */
+
     @Override
     public void fillData() {
         isFilled = true;
@@ -80,20 +97,17 @@ public class Question implements SqlEntity, Comparable<Question> {
         }
     }
 
-    public String getStatement() {
-        if (!isFilled) {
-            fillData();
-        }
-        return statement;
-    }
+    /**
+     * Inserts a new question to the database
+     */
 
     @Override
-    public void add() { 
+    public void add() {
         Connection myConnection = SqlConnection.getConnection();
         try {
             PreparedStatement myStatement = myConnection.prepareStatement(
                     "insert into  question (questionId, statement , modelNumber, examId , classId) "
-                    + "values (?,?,?,?,?)");
+                            + "values (?,?,?,?,?)");
             myStatement.setInt(1, id);
             myStatement.setString(2, statement);
             myStatement.setInt(3, modelNumber);
@@ -113,12 +127,16 @@ public class Question implements SqlEntity, Comparable<Question> {
         }
     }
 
+    /**
+     * Updates an existent question's data in the database
+     */
+
     @Override
     public void update() {
         Connection myConnection = SqlConnection.getConnection();
         try {
             PreparedStatement myStatement = myConnection.prepareStatement(
-                "update question set statement = ? where questionID = ?");
+                    "update question set statement = ? where questionID = ?");
             myStatement.setString(1, statement);
             myStatement.setInt(2, id);
             myStatement.executeQuery();
@@ -140,54 +158,128 @@ public class Question implements SqlEntity, Comparable<Question> {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    public Vector<QuestionChoice> getChoices() {
-        return choices;
-    }
-
-    public int getExamId() {
-        if(!isFilled) {
-            fillData();
-        }
-        return examId;
-    }
-
-    public char getCorrectChoice() {
-        if(!isFilled) {
-            fillData();
-        }
-        return correctChoice;
-    }
+    /**
+     * Sets the correct choice letter to the passed argument value.
+     *
+     * @param correctChoice the new value for the correct choice letter
+     */
 
     public void setCorrectChoice(char correctChoice) {
         this.correctChoice = correctChoice;
     }
 
+    /**
+     * Sets the question statement to the passed argument value.
+     *
+     * @param statement the new question's statement
+     */
+
     public void setStatement(String statement) {
         this.statement = statement;
     }
-    
+
+    /**
+     * Returns the question's choices containing vector
+     *
+     * @return the value of choices vector
+     */
+
+    public Vector<QuestionChoice> getChoices() {
+        if (!isFilled) {
+            fillData();
+        }
+        return choices;
+    }
+
+    /**
+     * Returns the id of the exam to which the model containing the question belongs
+     *
+     * @return value of the examId field
+     */
+
+    public int getExamId() {
+        if (!isFilled) {
+            fillData();
+        }
+        return examId;
+    }
+
+    /**
+     * Returns the correctChoice letter
+     *
+     * @return value of correctChoice field
+     */
+
+    public char getCorrectChoice() {
+        if (!isFilled) {
+            fillData();
+        }
+        return correctChoice;
+    }
+
+    /**
+     * Returns the number of the model to which the question belongs
+     *
+     * @return value of the modelNumber property
+     */
+
     public int getModelNumber() {
-        if(!isFilled) {
+        if (!isFilled) {
             fillData();
         }
         return modelNumber;
     }
 
+    /**
+     * Returns the unique ID for the question.
+     *
+     * @return the value of the id property
+     */
+
     public int getId() {
         return id;
     }
-    
-    public double getSolvingRate() {
-        if(!isFilled) {
+
+    /**
+     * Returns the statement of the question
+     *
+     * @return value of the statement field
+     */
+
+    public String getStatement() {
+        if (!isFilled) {
             fillData();
         }
-        if(totalFrequency == 0) {
+        return statement;
+    }
+
+    /**
+     * Returns the question's solving rate by dividing how many times students
+     * got it correct over how many times students experienced that question.
+     *
+     * @return the double value of (correctFrequency / totalFrequency);
+     */
+
+    public double getSolvingRate() {
+        if (!isFilled) {
+            fillData();
+        }
+        if (totalFrequency == 0) {
             return 0;
         } else {
             return (double) correctFrequency / totalFrequency;
         }
-        
+
     }
+
+    /**
+     * Compares this question to another question.
+     * The Comparison is mainly used to sort a vector of questions descendingly.
+     *
+     * @param otherQuestion the second party for the comparison
+     * @return the returned value of the double comparison between otherQuestion
+     * and this question, positive if less and negative is greater
+     */
 
     @Override
     public int compareTo(Question otherQuestion) {
