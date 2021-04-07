@@ -5,7 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 /**
- * It represents the Student Solution in a certain question in a certain exam model
+ * Represents the Student Solution in a certain question in a certain exam model
  * It implements SqlEntity to override add() in order to use it in
  * executing SQL statements and data insertions
  *

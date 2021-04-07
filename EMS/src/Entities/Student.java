@@ -6,7 +6,7 @@ import java.sql.ResultSet;
 import java.util.Vector;
 
 /**
- * An extended version of Entities.User.java that represent the student — basically the
+ * An extended version of Entities.User.java that represents the student — basically the
  * main entity in which the system is based. The class implements SqlEntity to override
  * fillData() in order to use in executing SQL statements and data retrieval.
  *

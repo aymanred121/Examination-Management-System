@@ -55,7 +55,7 @@ public class QuestionChoice implements SqlEntity {
             myStatement.setString(2, Character.toString(choiceNumber));
             ResultSet myResultSet = myStatement.executeQuery();
             if (myResultSet.next()) {
-                statement = new String(myResultSet.getString(1));
+                statement = myResultSet.getString(1);
             }
         } catch (Exception e) {
             System.out.println(e);

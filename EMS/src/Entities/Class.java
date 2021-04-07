@@ -6,7 +6,7 @@ import java.sql.ResultSet;
 import java.util.*;
 
 /**
- * It represents the College Class — A certain number of students registered in a certain course
+ * Represents the College Class — A certain number of students registered in a certain course
  * It implements SqlEntity to override fillData() in order to use in executing SQL statements and
  * data retrieval and insertions if existed
  *

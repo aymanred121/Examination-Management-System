@@ -11,7 +11,16 @@ import java.sql.ResultSet;
 import java.util.Vector;
 
 /**
- * @author Steven Sameh
+ * Represents an exam model question — the statement, vector of choices and which choice
+ * is set to be the correct one; represent its main fields.
+ * <p>
+ * Implements SqlEntity to override fillData(), add(), update() — the main SQL processes
+ * methods to handle the interactions intended with the project database.
+ * <p>
+ * Implements Comparable&lt;Question&gt; to override compareTo() so it would facilitate the sorting
+ * process to a vector of questions.
+ *
+ * @author Steven Sameh, Yusuf Nasser
  */
 
 public class Question implements SqlEntity, Comparable<Question> {

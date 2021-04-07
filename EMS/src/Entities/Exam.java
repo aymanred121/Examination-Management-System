@@ -9,7 +9,7 @@ import java.util.Collections;
 import java.util.Vector;
 
 /**
- * It represents the exam entity that holds the exam basic data, i.e. name, start and end time
+ * Represents the exam entity that holds the exam basic data, i.e. name, start and end time
  * along with the models that holds the questions.
  * It implements SqlEntity to override fillData(), add() and update() in order to use in executing
  * SQL statements for data retrieval, updates and insertions if needed.
