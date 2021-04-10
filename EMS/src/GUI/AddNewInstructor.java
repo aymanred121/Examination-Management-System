@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package GUI;
 
 import Entities.*;
@@ -38,6 +33,7 @@ public class AddNewInstructor extends javax.swing.JFrame {
     /**
      * Creates new form AddNewInstructor
      */
+
     public AddNewInstructor(Admin admin) {
         this.admin = admin;
         initComponents();
@@ -306,12 +302,10 @@ public class AddNewInstructor extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_addButtonActionPerformed
 
-
     /**
      * Validate the entered name.
-     * return true if the pattern is found.
      *
-     * @return boolean
+     * @return true if the pattern is found; false otherwise.
      */
     private boolean nameValidation() {
         pattern = Pattern.compile("^[a-zA-Z]{3,99}$");
@@ -321,9 +315,8 @@ public class AddNewInstructor extends javax.swing.JFrame {
 
     /**
      * Validate the entered password.
-     * return true if the pattern is found.
      *
-     * @return boolean
+     * @return true if the pattern is found; false otherwise.
      */
     private boolean passwordValidation() {
         pattern = Pattern.compile("^(?=.*\\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[^\\w\\d\\s:])([^\\s]){8,123}$");
@@ -333,9 +326,8 @@ public class AddNewInstructor extends javax.swing.JFrame {
 
     /**
      * Validate the entered email.
-     * return true if the pattern is found.
      *
-     * @return boolean
+     * @return true if the pattern is found; false otherwise.
      */
     private boolean emailValidation() {
         pattern = Pattern.compile("^((?!\\.)[\\w_.]*[^.])(@\\w+)(\\.\\w+(\\.\\w+)?[^.\\W])$");
@@ -347,7 +339,7 @@ public class AddNewInstructor extends javax.swing.JFrame {
      * Validate the entered Mobile Number.
      * return true if it can be parsed into long.
      *
-     * @return boolean
+     * @return true if the mobileNumberTextField text consists of ONLY numbers; false otherwise.
      */
     private boolean mobileNumberValidation() {
         try {
@@ -364,7 +356,7 @@ public class AddNewInstructor extends javax.swing.JFrame {
      * else it returns false
      *
      * @param data string variable that carry the data (password, email, etc..) to check if it is empty or not.
-     * @return boolean.
+     * @return True if the string's length equals the whitespaces count; false otherwise.
      */
     private boolean isAllWhiteSpaces(String data) {
         int whiteSpaceFreq = 0;
@@ -374,7 +366,6 @@ public class AddNewInstructor extends javax.swing.JFrame {
         }
         return whiteSpaceFreq == data.length();
     }
-
 
     /**
      * Rendering date portion
@@ -478,8 +469,9 @@ public class AddNewInstructor extends javax.swing.JFrame {
      * return true if the year is divisible by 4 and not divisible by 100.
      *
      * @param year int variable carry the year
-     * @return boolean
+     * @return true if the year is a leap year; false otherwise.
      */
+
     boolean leapYear(int year) {
         if (year % 4 == 0) {
             if (year % 100 == 0) {
@@ -519,13 +511,11 @@ public class AddNewInstructor extends javax.swing.JFrame {
         return 31;
     }
 
-
     /**
-     * Allow or disable resizing of the window.
-     * will be resizable if true
-     * else will be not resizable
+     * Allow or deny the resizability of AddNewInstructor window,
+     * It will be resizable if true; otherwise resizability will be denied.
      *
-     * @param resizable boolean variable
+     * @param resizable boolean the value to which the Resizability of the window is set.
      */
     @Override
     public void setResizable(boolean resizable) {
@@ -568,31 +558,6 @@ public class AddNewInstructor extends javax.swing.JFrame {
                 refreshDayList();
             }
         }
-    }
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultState="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException | UnsupportedLookAndFeelException | InstantiationException | IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(AddNewClass.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new AddNewInstructor(new Admin("admin")).setVisible(true));
     }
 
     private javax.swing.JTextField UsernameTextField;
