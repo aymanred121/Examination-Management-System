@@ -184,7 +184,7 @@ public class AddNewClass extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "You should fill out all text fields", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        if (Course.isCourseCodeExisted(courseCodeTextField.getText())) {
+        if (Course.doesCourseCodeExist(courseCodeTextField.getText())) {
             // This message appear if the user try to enter an existing course name.
             JOptionPane.showMessageDialog(null, "This is an invalid course code", "Error", JOptionPane.ERROR_MESSAGE);
             return;
@@ -221,7 +221,7 @@ public class AddNewClass extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "You should fill out the text field", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        if (!Course.isCourseCodeExisted(courseCodeTextField2.getText())) {
+        if (!Course.doesCourseCodeExist(courseCodeTextField2.getText())) {
             // This message appear if the user try to enter an invalid course code.
             JOptionPane.showMessageDialog(null, "This is an invalid course code", "Error", JOptionPane.ERROR_MESSAGE);
             return;
