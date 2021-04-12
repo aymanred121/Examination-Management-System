@@ -219,14 +219,15 @@ public abstract class User {
     }
 
     /**
+     * Checks whether the username already exists in the database
+     *
      * @param username The username of the user trying to add in database
-     * @return Boolean This returns whether the username exist in the database
+     * @return true if the username already exists in the database; false otherwise.
      * @author Steven Sameh and Abdel-Aziz Mostafa
-     * Checks that the username exists in the database
      */
 
-    public static boolean isUsernameExisted(String username) {
-        boolean isExisted = false;
+    public static boolean doesUsernameExist(String username) {
+        boolean doesExist = false;
         Connection myConnection = SqlConnection.getConnection();
         try {
             PreparedStatement SQLStatement;
@@ -234,12 +235,12 @@ public abstract class User {
             SQLStatement.setString(1, username);
             ResultSet myResultSet = SQLStatement.executeQuery();
             if (myResultSet.next() && myResultSet.getInt(1) > 0) {
-                isExisted = true;
+                doesExist = true;
             }
             myConnection.close();
         } catch (Exception e) {
             System.out.println(e);
         }
-        return isExisted;
+        return doesExist;
     }
 }

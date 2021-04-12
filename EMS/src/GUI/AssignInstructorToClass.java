@@ -162,7 +162,7 @@ public class AssignInstructorToClass extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "You should fill out all text fields", "Error", JOptionPane.ERROR_MESSAGE);
             return ;
         }
-        if (!User.isUsernameExisted(usernameTextField.getText()) ||
+        if (!User.doesUsernameExist(usernameTextField.getText()) ||
                 User.getUserType(usernameTextField.getText()) != User.UserType.INSTRUCTOR)
         {
             // This message appear if the user try to enter an existing username.

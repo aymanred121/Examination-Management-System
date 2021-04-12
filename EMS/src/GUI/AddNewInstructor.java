@@ -259,7 +259,7 @@ public class AddNewInstructor extends javax.swing.JFrame {
             //This message appear if the user try to press add button without filling all data.
             JOptionPane.showMessageDialog(null, "You should fill out all text fields", "Error", JOptionPane.ERROR_MESSAGE);
             return;
-        } else if (User.isUsernameExisted(UsernameTextField.getText())) {// This message appear if the user try to enter an existing username.
+        } else if (User.doesUsernameExist(UsernameTextField.getText())) {// This message appear if the user try to enter an existing username.
             JOptionPane.showMessageDialog(null, "This username is already in use", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         } else if (!mobileNumberValidation()) { //This message appear if the user try to enter a mobile number that does not contain numbers only [0-9].
