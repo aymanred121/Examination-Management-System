@@ -3,7 +3,6 @@ package Entities;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Timestamp;
 import java.util.*;
 
 /**
@@ -41,10 +40,7 @@ public class Class implements SqlEntity {
         }
         return id;
     }
-
-    /**
-     * Implementing all the functions of the interface
-     */
+    
     /**
      * it fills all the data of the current class
      */
@@ -52,10 +48,10 @@ public class Class implements SqlEntity {
     public void fillData() {
         isFilled = true;
          
-        students = new Vector<Student>();
-        instructors = new Vector<Instructor>();
-        topics = new Vector<Topic>();
-        exams = new Vector<Exam>();
+        students = new Vector<>();
+        instructors = new Vector<>();
+        topics = new Vector<>();
+        exams = new Vector<>();
         Connection myConnection = SqlConnection.getConnection();
         ResultSet myResultSet;
         PreparedStatement codeStatement;
@@ -146,29 +142,33 @@ public class Class implements SqlEntity {
         }
         return course;
     }
+
     /**
+     * Checks whether a class already exists with the same ID in the database
+     *
+     * @param classId The ID of the new class trying to add in database
+     * @return true if the class ID is already added to the database; false otherwise.
      * @author Steven Sameh and Abdel-Aziz Mostafa
-     * Checks that the classId exists in the database
-     * @param classId The id of the class
-     * @return Boolean This returns whether the classId exist in the database
      */
-    public static boolean isClassIdExisted( int classId){
-        boolean isExisted = false;
+
+    public static boolean doesClassIdExist(int classId){
+        boolean doesExist = false;
         Connection myConnection = SqlConnection.getConnection();
         try{
-            PreparedStatement SQLstatement;
-            SQLstatement = myConnection.prepareStatement("select count(*) from class where id = ?");
-            SQLstatement.setInt(1, classId);
-            ResultSet myResultSet = SQLstatement.executeQuery();
+            PreparedStatement SQLStatement;
+            SQLStatement = myConnection.prepareStatement("select count(*) from class where id = ?");
+            SQLStatement.setInt(1, classId);
+            ResultSet myResultSet = SQLStatement.executeQuery();
             if(myResultSet.next() && myResultSet.getInt(1) >  0) {
-                isExisted = true;
+                doesExist = true;
             }
             myConnection.close();
         } catch(Exception e) {
             System.out.println(e);
         }
-        return isExisted;
+        return doesExist;
     }
+
     /**
      * Assigns an instructor to class 
      * @param username the username of the instructor trying to assign to class
@@ -178,11 +178,11 @@ public class Class implements SqlEntity {
     {
         Connection myConnection = SqlConnection.getConnection();
         try{
-            PreparedStatement SQLstatement;
-            SQLstatement = myConnection.prepareStatement("insert into instructorof values(?,?)");
-            SQLstatement.setString(2, username);
-            SQLstatement.setInt(1, classId);
-            SQLstatement.executeQuery();
+            PreparedStatement SQLStatement;
+            SQLStatement = myConnection.prepareStatement("insert into instructorof values(?,?)");
+            SQLStatement.setString(2, username);
+            SQLStatement.setInt(1, classId);
+            SQLStatement.executeQuery();
             myConnection.close();
         } catch(Exception e) {
             System.out.println(e);

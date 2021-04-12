@@ -169,7 +169,7 @@ public class AssignInstructorToClass extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "This is an invalid username", "Error", JOptionPane.ERROR_MESSAGE);
             return ;
         }
-        if (!Entities.Class.isClassIdExisted(Integer.parseInt(classIdTextField.getText())))
+        if (!Entities.Class.doesClassIdExist(Integer.parseInt(classIdTextField.getText())))
         {
             // This message appear if the user try to enter an existing class id.
             JOptionPane.showMessageDialog(null, "This is an invalid class ID", "Error", JOptionPane.ERROR_MESSAGE);
