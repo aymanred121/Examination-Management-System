@@ -6,10 +6,11 @@
 package Entities;
 
 /**
+ * Represents a topic is in a certain class syllabus.
  *
- * @author bizarre
+ * @author Steven Sameh
  */
-public class Topic implements SqlEntity {
+public class Topic {
     
     private final int classID;
     private final String name;
@@ -18,26 +19,5 @@ public class Topic implements SqlEntity {
         this.classID = classID;
         this.name = name;
     }
-    
 
-    @Override
-    public void fillData() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void add() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void update() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void delete() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-    
 }

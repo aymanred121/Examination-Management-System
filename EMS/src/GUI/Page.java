@@ -63,10 +63,17 @@ public abstract class Page extends javax.swing.JFrame {
     }
 
     /**
+     * A getter function for the logout button in the top bar to be used by the subclasses
+     * @return JButton The logout button in the top bar
+     */
+    public JButton getLogoutButton() {
+        return LogoutButton;
+    }
+
+    /**
      * A getter function for the JScrollPane to be used by the subclasses
      * @return jScrollPane1 The Scroll Pane
      */
-
     public JScrollPane getJScrollPane1() { return jScrollPane1; }
 
     /**

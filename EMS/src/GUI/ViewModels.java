@@ -25,7 +25,8 @@ public class ViewModels extends Page{
     Instructor instructor;
     Model model;
     Exam exam;
-    java.awt.Font myFont = new java.awt.Font("Tahoma", Font.LAYOUT_LEFT_TO_RIGHT, 11);
+    Font myFont = new java.awt.Font("Tahoma", Font.PLAIN, 11);
+
     public ViewModels(Instructor instructor, Model model) {
         this.instructor = instructor;
         this.model = model;
@@ -40,10 +41,14 @@ public class ViewModels extends Page{
     }
     
     private void showTopBarElements() {
+        int baseXPosition = 160, baseYPosition = 42;
+
         getTitleLabel().setText("Model " + model.getModelNumber() + '/' + exam.getModels().size());
+
         JButton previousModelButton = new JButton("Previous");
-        previousModelButton.setBounds(160 , 70, 90, 30);
+        previousModelButton.setBounds(baseXPosition , baseYPosition, 90, 30);
         getTopBar().add(previousModelButton);
+
         if(model.getModelNumber() == 1) {
             previousModelButton.setEnabled(false);
         } else {
@@ -53,9 +58,11 @@ public class ViewModels extends Page{
                 dispose();
             }});
         }
+
         JButton nextModelButton = new JButton("Next");
-        nextModelButton.setBounds(260 , 70, 90, 30);
+        nextModelButton.setBounds(baseXPosition + 100 , baseYPosition, 90, 30);
         getTopBar().add(nextModelButton);
+
         if(model.getModelNumber() == exam.getModels().size()) {
             nextModelButton.setEnabled(false);
         } else {
@@ -66,7 +73,8 @@ public class ViewModels extends Page{
             }});
         }
 
-    }    
+    }
+
     private void showQuestion(){
         Vector<Question> questions = model.getQuestions();
         int delta = 0 , currentIndex = 0; 

@@ -39,84 +39,103 @@ public class AddExam extends Page {
     // difference between X & Y positions for label and ComboBox
     final static private int deltaXLabelCombo = 15, deltaYLabelCombo = 3;
 
+    /*
+     * NOTE:
+     * All Unboxing of ComboBox.getSelectedItem() warnings for as it might produce 'NullPointerException'
+     * warnings are implicitly handled as the combobox selected item is always set to a certain value.
+     */
+
     /**
-     * It constructs a new page in which the logged-in instructor can
+     * Constructs a new page that is the base for creating a new exam
+     * or editing an existent one.
+     *
+     * @param instructor The logged-in instructor instance
+     */
+
+    public AddExam(Instructor instructor) {
+        this.instructor = instructor;
+
+        getBackButton().setVisible(true);
+
+        // For testing purposes
+        // setDefaultCloseOperation(EXIT_ON_CLOSE);
+
+        // Setting the size for the AddExam Page
+        setSize(new java.awt.Dimension(800, 600));
+        setResizable(false);
+
+        /*
+          Remove scrollbar from the side of the panel
+          Disabling the Horizontal and Vertical scroll bar
+         */
+
+        getJScrollPane1().setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+        getJScrollPane1().setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+    }
+
+    /**
+     * Constructs a new page in which the logged-in instructor can
      * create a new exam for a specific class chosen at viewExams page
      *
      * @param instructor The logged-in instructor instance
      * @param userClass  The chosen class to set an exam for it
      */
-    public AddExam(Instructor instructor, Entities.Class userClass) {
-        this.instructor = instructor;
 
+    public AddExam(Instructor instructor, Entities.Class userClass) {
+        this(instructor);
         // Creating nex exam to store the new exam data
         newExam = new Exam(userClass);
 
         // Setting the title label and its properties
-        String titleLabel = userClass.getCourse().getName() + " Exam";
-        getTitleLabel().setText(titleLabel);
-        getTitleLabel().setBounds(500, 500, 100, 100);
+        setTitleLabel(userClass);
 
         // Adding an action listener for the back button in the superclass to go to the ViewExams page
         getBackButton().addActionListener(e -> {
             new ViewExams(instructor, userClass).setVisible(true);
             dispose();
         });
+
+        // Showing the data input portions
         showExamDataInput();
-        getBackButton().setVisible(true);
-
-        // For testing purposes
-        // setDefaultCloseOperation(EXIT_ON_CLOSE);
-
-        // Setting the size for the AddExam Page
-        setSize(new java.awt.Dimension(800, 600));
-
-        /*
-          Remove scrollbar from the side of the panel
-          Disabling the Horizontal and Vertical scroll bar
-         */
-        getJScrollPane1().setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
-        getJScrollPane1().setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
     }
 
     /**
-     * It constructs a new page in which the logged-in instructor can
+     * Constructs a new page in which the logged-in instructor can
      * edit the exam starting date and time so that they would be valid
      *
-     * @param instructor The logged-in instructor instance
-     * @param exam       The current exam to be edited
+     * @param instructor  The logged-in instructor instance
+     * @param currentExam The current exam to be edited
      */
 
-    public AddExam(Instructor instructor, Exam exam) {
+    public AddExam(Instructor instructor, Exam currentExam) {
+        this(instructor);
+
         // Setting the member variables
-        this.instructor = instructor;
-        this.editedExam = exam;
+        this.editedExam = currentExam;
 
         // Setting the title label and its properties
-        String titleLabel = exam.getExamClass().getCourse().getName() + " Exam";
-        getTitleLabel().setText(titleLabel);
-        getTitleLabel().setBounds(500, 500, 100, 100);
+        setTitleLabel(currentExam.getExamClass());
 
         // Adding an action listener for the back button in the superclass to go to the ViewExams page
         getBackButton().addActionListener(e -> {
-            new ViewModels(instructor, exam.getModels().firstElement()).setVisible(true);
+            new ViewModels(instructor, currentExam.getModels().firstElement()).setVisible(true);
             dispose();
         });
+
+        // Showing the exam time portion to edit so it'd be valid.
         showExamTimeInput();
-        getBackButton().setVisible(true);
+    }
 
-        // For testing purposes
-        // setDefaultCloseOperation(EXIT_ON_CLOSE);
+    /**
+     * Sets the properties of the title label to the course name Exams
+     *
+     * @param userClass the current user class
+     */
 
-        // Setting the size for the AddExam Page
-        setSize(new java.awt.Dimension(800, 600));
-
-        /*
-          Remove scrollbar from the side of the panel
-          Disabling the Horizontal and Vertical scroll bar
-         */
-        getJScrollPane1().setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
-        getJScrollPane1().setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+    private void setTitleLabel(Entities.Class userClass) {
+        String titleLabel = userClass.getCourse().getName() + " Exam";
+        getTitleLabel().setText(titleLabel);
+        getTitleLabel().setBounds(500, 500, 100, 100);
     }
 
     /**
@@ -142,6 +161,31 @@ public class AddExam extends Page {
         currentDay = now.get(Calendar.DAY_OF_MONTH);
         currentHour = now.get(Calendar.HOUR_OF_DAY);
         currentMinute = now.get(Calendar.MINUTE);
+    }
+
+    /**
+     * Sets the properties of a certain combobox and assign its list and selected item and finally add it to the panel
+     *
+     * @param comboBox     the combobox to set its properties
+     * @param list         the list to assign to the combobox
+     * @param selectedItem the selected item to assign to the combobox
+     */
+
+    private void setComboBoxProperties(JComboBox<Integer> comboBox, Vector<Integer> list, int selectedItem) {
+        // Adding list vector to the combobox list of items.
+        comboBox.setModel(new DefaultComboBoxModel<>(list));
+
+        // Centering the items in the combobox
+        comboBox.setRenderer(listRenderer);
+
+        // Setting the font to the combobox
+        comboBox.setFont(new java.awt.Font("Tahoma", Font.BOLD, 13));
+
+        // Setting the selected Item to the passed item
+        comboBox.setSelectedItem(selectedItem);
+
+        // Adding the comboBox to the panel
+        getPanel().add(comboBox);
     }
 
     /**
@@ -172,20 +216,7 @@ public class AddExam extends Page {
             years.add(yearIterator++);
         }
 
-        // Adding years vector to the ComboBox list of items.
-        yearComboBox.setModel(new DefaultComboBoxModel<>(years));
-
-        // Centering the items in the ComboBox
-        yearComboBox.setRenderer(listRenderer);
-
-        // Setting the font to the ComboBox
-        yearComboBox.setFont(new java.awt.Font("Tahoma", Font.BOLD, 13));
-
-        // Setting the selected Item to the current Year
-        yearComboBox.setSelectedItem(currentYear);
-
-        // Adding the yearComboBox to the panel
-        getPanel().add(yearComboBox);
+        setComboBoxProperties(yearComboBox, years, currentYear);
 
         // Initializing months vector to store the months in the valid range.
         monthComboBox = new JComboBox<>();
@@ -197,20 +228,7 @@ public class AddExam extends Page {
             months.add(monthIterator++);
         }
 
-        // Adding months vector to the ComboBox list of items.
-        monthComboBox.setModel(new DefaultComboBoxModel<>(months));
-
-        // Centering the items in the ComboBox
-        monthComboBox.setRenderer(listRenderer);
-
-        // Setting the font to the ComboBox
-        monthComboBox.setFont(new java.awt.Font("Tahoma", Font.BOLD, 13));
-
-        // Setting the selected item to the current month
-        monthComboBox.setSelectedItem(currentMonth);
-
-        // Adding the monthComboBox to the panel
-        getPanel().add(monthComboBox);
+        setComboBoxProperties(monthComboBox, months, currentMonth);
 
         // Creating ComboBox to hold month in range 1 : 12 and setting its properties
         dayComboBox = new JComboBox<>();
@@ -224,20 +242,7 @@ public class AddExam extends Page {
             days.add(dayIterator++);
         }
 
-        // Adding days vector to the ComboBox list of items.
-        dayComboBox.setModel(new DefaultComboBoxModel<>(days));
-
-        // Centering the items in the ComboBox
-        dayComboBox.setRenderer(listRenderer);
-
-        // Setting the font to the ComboBox
-        dayComboBox.setFont(new java.awt.Font("Tahoma", Font.BOLD, 13));
-
-        // Setting the selected item to the current day
-        dayComboBox.setSelectedItem(currentDay);
-
-        // adding the dayComboBox to the panel
-        getPanel().add(dayComboBox);
+        setComboBoxProperties(dayComboBox, days, currentDay);
     }
 
     /**
@@ -414,14 +419,14 @@ public class AddExam extends Page {
 
         /*
          * PlaceHolder LOGIC:
-          * Since we're using JAVA .. The most beautiful language .. There is no support for a placeholder
-          * So what would we do? we go around it ..
+          * Since we're using JAVA .. There is no support for a placeholder
+          * So we have to go around it somehow .. here is how
 
             1 - Set the placeHolding text to the textField
 
             2 - Give it a gray color
 
-            .. Hold your breath .. here is the real deal ..
+            ....
 
             3 - Implement MouseListener in a newly created class PageMouseListener to override mousePressed
 
@@ -435,29 +440,21 @@ public class AddExam extends Page {
 
                 b - Give it a black color
 
-             TA DAA .. Nice story, right? U can go to sleep now!
+             ....
 
              ******************
 
-             As you know .. A lot of great stories have sequels
-
-             So After we finished the first part .. we found out that after the user exit the textField without
-               changing anything, the placeholder is gone which is a tragedy .. because no place should have no holder
-               my dear friends
-
-             So What do we do again?
+             we found out that after the user exit the textField without
+             changing anything, the placeholder is gone.
 
               1 - Add another condition to mousePressed() so that whenever the user press anywhere outside
                     the textField without changing any thing, we would return our placeholder to its rightful place.
 
-              We hoped that THAT would be the end of it, but If it ain't for JAVA ..
+              We saw that the cursor stays in the textField which is a bug ..
 
-              We saw that the cursor stays in the textField which is a bug .. but don't worry .. We fixed it!
+              2 - We Added - enterExamNameField.transferFocus();
 
-              2 - We Added - enterExamNameField.transferFocus(); - I know it's not a sexy ending but it took us a lot
-                   to find it ..
-
-              Hope you liked our movie .. Yusuf Nasser and Youssef Nader
+              .. Yusuf Nasser and Youssef Nader
          */
 
         // Initializing the textField and giving it an initial place holding text in GRAY
