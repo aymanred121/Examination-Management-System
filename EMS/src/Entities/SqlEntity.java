@@ -15,9 +15,9 @@ import java.sql.ResultSet;
  *
  * @author Ziad Khobeiz
  */
-
-interface SqlEntity {
-
+ 
+public interface SqlEntity {
+    
     /**
      * Fills all the attributes of the class implementing the interface by querying from the database.
      */

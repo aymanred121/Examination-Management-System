@@ -1,63 +1,66 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Entities;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
-import java.sql.Statement;
 import java.util.Vector;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import java.time.LocalDate;
 
 /**
+ * An extended version of Entities.User.java that represents the Instructor — the
+ * entity that represents the tutor of a class. The class implements SqlEntity to
+ * override fillData() in order to use in executing SQL statements and data retrieval
+ * and add() in Inserting a new user into the database.
  *
- * @author bizarre
+ * @author Steven Sameh, AbdelAziz Mostafa, Ziad Khobeiz, Yusuf Nasser
  */
-public class Instructor extends User implements SqlEntity{
+
+public class Instructor extends User implements SqlEntity {
 
     Vector<Class> classes;
 
-    public Instructor(String username, String mobileNumber, String email, String firstName, String middleName,
-            String lastName, String birthdate) {
-        super(username, mobileNumber, email, firstName, middleName, lastName, birthdate);
-    }
-
     /**
-     * It initializes the instructor with the final data.
+     * It initializes a new instructor with the final unique username.
      *
      * @param username The username of the instructor
      */
+
     public Instructor(String username) {
         super(username);
     }
 
     /**
+     * Constructs a new instructor to be added in the database via calling the
+     * parent class corresponding constructor.
+     *
+     * @param username     the user's unique username
+     * @param mobileNumber the user's registered mobile number
+     * @param email        the user's contact email
+     * @param firstName    the user's first name
+     * @param middleName   the user's middle name
+     * @param lastName     the user's last name
+     * @param birthdate    the user's birthdate value
+     */
+
+    public Instructor(String username, String mobileNumber, String email, String firstName, String middleName, String lastName, LocalDate birthdate, String password) {
+        super(username, mobileNumber, email, firstName, middleName, lastName, birthdate, password);
+    }
+
+    /**
      * It retrieves the classes of the instructor from the database
      */
+
     @Override
     public void fillData() {
         isFilled = true;
-        classes = new Vector<Class>();
+        classes = new Vector<>();
         Connection myConnection = SqlConnection.getConnection();
         try {
             PreparedStatement myStatement = myConnection.prepareStatement("SELECT CLASSID FROM INSTRUCTOROF WHERE USERNAME = ?");
             myStatement.setString(1, super.getUsername());
             ResultSet myResultSet = myStatement.executeQuery();
             while (myResultSet.next()) {
-                classes.add(new Class(myResultSet.getInt(1),false));
+                classes.add(new Class(myResultSet.getInt(1), false));
             }
             myConnection.close();
         } catch (Exception e) {
@@ -65,9 +68,22 @@ public class Instructor extends User implements SqlEntity{
         }
     }
 
+    /**
+     * Adds a new user into the database proper table via executing a prepared sql statement.
+     */
+
     @Override
     public void add() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        super.addUser();
+        Connection myConnection = SqlConnection.getConnection();
+        try {
+            PreparedStatement myStatement = myConnection.prepareStatement("insert into instructor values(?)");
+            myStatement.setString(1, super.getUsername());
+            myStatement.executeQuery();
+            myConnection.close();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
     }
 
     @Override
@@ -81,50 +97,13 @@ public class Instructor extends User implements SqlEntity{
     }
 
     /**
-     * this method query the database to retrieve courses' info for an instructor
-     * @author Youssef Nader , Ayman Hassan writing and Yusuf Nasser meeting via Zoom
-     * at 9:53 AM 11-1-2021 
-     * @param instructorName: is a string that holds the instructor's Name
-     * @return coursesResultSet: is a ResultSet which holds the courses info
-     * retrieved from table 
+     * Returns the classes that the instructor teaches.
+     *
+     * @return the value of the classes vector
      */
-    public ResultSet queryCourses(String instructorName) {
-        String SQLstatement = "SELECT course.*\n"
-                + "from instructorof,class, course\n"
-                + "where course.coursecode=class.coursecode\n"
-                + "and class.id=instructorof.classid\n"
-                + "and instructorof.username='" + instructorName + "'";
-        ResultSet coursesResultSet = null;
-        try {
-            java.lang.Class.forName("oracle.jdbc.driver.OracleDriver");
-            Connection myConnection = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521/orcl", "hr", "hr");
-            Statement myStatement = myConnection.createStatement();
-            coursesResultSet = myStatement.executeQuery(SQLstatement);
-            myConnection.close();
-        } catch (Exception e) {
-            System.out.println(e);
-        }
-        return coursesResultSet;
-    }
 
     public Vector<Class> getClasses() {
-        if(!isFilled) fillData();
+        if (!isFilled) fillData();
         return classes;
     }
-
-    public static void main(String[] args) {
-        Instructor i = new Instructor("ibrahamhassan", "null", "a", "a", "a", "a", "a");
-        ResultSet re = i.queryCourses("ibrahamhassan");
-        try {
-            while (re.next()) {
-                System.out.println(re.getRowId(1));
-                System.out.println(re.getRowId(2));
-            }
-            
-        } catch (Exception e) {
-            System.out.println(e);
-        }
-
-    }
-
 }

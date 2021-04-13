@@ -15,8 +15,8 @@ import java.time.*;
 /**
  * An extended version of GUI.Page that is used to create a new exam for
  * the logged-in instructor in a specific class of his/her choice. It does that
- * by taking the exam basic data through several combobox-es and other GUI components
- * - some of the data is validated in the process of showing the combobox-es lists and others
+ * by taking the exam basic data through several ComboBox-es and other GUI components
+ * - some of the data is validated in the process of showing the ComboBox-es lists and others
  * validated after being inserted - and calls Entities.Exam.add()
  *
  * @author Yusuf Nasser, Youssef Nader, Ayman Hassan, Steven Sameh, Ziad Khobeiz
@@ -36,7 +36,7 @@ public class AddExam extends Page {
     private JTextField enterExamNameField;
     private String examName;
     private LocalDateTime examStartDate, examEndDate;
-    // difference between X & Y positions for label and combobox
+    // difference between X & Y positions for label and ComboBox
     final static private int deltaXLabelCombo = 15, deltaYLabelCombo = 3;
 
     /*
@@ -222,7 +222,7 @@ public class AddExam extends Page {
         monthComboBox = new JComboBox<>();
         monthComboBox.setBounds(baseXPosition + 130 + deltaXLabelCombo, baseYPosition, 70, 30);
 
-        // Initializing a vector to store the months in the combobox.
+        // Initializing a vector to store the months in the ComboBox.
         months = new Vector<>();
         for (int monthIterator = currentMonth; monthIterator <= Exam.getMonthLimit(); ) {
             months.add(monthIterator++);
@@ -273,13 +273,13 @@ public class AddExam extends Page {
             hours.add(hourIterator++);
         }
 
-        // Adding hours vector to the combobox list of items.
+        // Adding hours vector to the ComboBox list of items.
         hourComboBox.setModel(new DefaultComboBoxModel<>(hours));
 
-        // Centering the items in the combobox
+        // Centering the items in the ComboBox
         hourComboBox.setRenderer(listRenderer);
 
-        // Setting the font to the combobox
+        // Setting the font to the ComboBox
         hourComboBox.setFont(new java.awt.Font("Tahoma", Font.BOLD, 13));
 
         // Setting the selected Item to the current hour
@@ -298,13 +298,13 @@ public class AddExam extends Page {
             minutes.add(minuteIterator++);
         }
 
-        // Adding minutes vector to the combobox list of items.
+        // Adding minutes vector to the ComboBox list of items.
         minuteComboBox.setModel(new DefaultComboBoxModel<>(minutes));
 
-        // Centering the items in the combobox
+        // Centering the items in the ComboBox
         minuteComboBox.setRenderer(listRenderer);
 
-        // Setting the font to the combobox
+        // Setting the font to the ComboBox
         minuteComboBox.setFont(new java.awt.Font("Tahoma", Font.BOLD, 13));
 
         // Setting the selected Item to the current minute
@@ -341,13 +341,13 @@ public class AddExam extends Page {
             durations.add(minuteIterator);
         }
 
-        // Adding durations vector to the combobox list of items.
+        // Adding durations vector to the ComboBox list of items.
         durationComboBox.setModel(new DefaultComboBoxModel<>(durations));
 
-        // Centering the items in the combobox
+        // Centering the items in the ComboBox
         durationComboBox.setRenderer(listRenderer);
 
-        // Setting the font to the combobox
+        // Setting the font to the ComboBox
         durationComboBox.setFont(new java.awt.Font("Tahoma", Font.BOLD, 13));
 
         // Adding the durationComboBox to the panel
@@ -389,13 +389,13 @@ public class AddExam extends Page {
             models.add(modelIterator++);
         }
 
-        // Adding models vector to the combobox list
+        // Adding models vector to the ComboBox list
         modelComboBox.setModel(new DefaultComboBoxModel<>(models));
 
-        // Setting the font to the combobox
+        // Setting the font to the ComboBox
         modelComboBox.setFont(new java.awt.Font("Tahoma", Font.BOLD, 13));
 
-        // Centering the items in the combobox
+        // Centering the items in the ComboBox
         modelComboBox.setRenderer(listRenderer);
         getPanel().add(modelComboBox);
 
@@ -495,7 +495,7 @@ public class AddExam extends Page {
     }
 
     /**
-     * This method retrieves the exam basic data from the GUI combobox-es
+     * This method retrieves the exam basic data from the GUI ComboBox-es
      * and store them in the member variables and generate the exam start
      * and end date preparing to insert the data in the database.
      */
@@ -515,7 +515,7 @@ public class AddExam extends Page {
     }
 
     /**
-     * This method retrieves the exam edited time and date from their GUI combobox-es
+     * This method retrieves the exam edited time and date from their GUI ComboBox-es
      * and store them in the member variables, set the other member variables to the unedited data
      * generate the exam start and end date preparing to insert the data in the database.
      */
@@ -575,7 +575,7 @@ public class AddExam extends Page {
     /**
      * This method calls the GUI portions methods and draw them on the JFrame.
      * It sets the current date, Initialize the listRenderer member variable to
-     * be used in multiple combobox-es, Creates and Initialize the PageActionListener and PageMouseListener
+     * be used in multiple ComboBox-es, Creates and Initialize the PageActionListener and PageMouseListener
      * instances and add all GUI components to both listeners.
      */
 
@@ -598,7 +598,7 @@ public class AddExam extends Page {
         // Creating an action listener instance to track whatever changes might occur while running
         PageActionListener listener = new PageActionListener();
 
-        // Adding the Action Listener to the combobox-es
+        // Adding the Action Listener to the ComboBox-es
         yearComboBox.addActionListener(listener);
         monthComboBox.addActionListener(listener);
         dayComboBox.addActionListener(listener);
@@ -625,7 +625,7 @@ public class AddExam extends Page {
     /**
      * This method calls the GUI portions methods and draw them on the JFrame.
      * It sets the current date, Initialize the listRenderer member variable to
-     * be used in multiple combobox-es, Creates and Initialize the PageActionListener and PageMouseListener
+     * be used in multiple ComboBox-es, Creates and Initialize the PageActionListener and PageMouseListener
      * instances and add all GUI components to both listeners.
      */
 
@@ -645,7 +645,7 @@ public class AddExam extends Page {
         // Creating an action listener instance to track whatever changes might occur while running
         PageActionListener listener = new PageActionListener();
 
-        // Adding the Action Listener to the combobox-es
+        // Adding the Action Listener to the ComboBox-es
         yearComboBox.addActionListener(listener);
         monthComboBox.addActionListener(listener);
         dayComboBox.addActionListener(listener);
@@ -688,7 +688,7 @@ public class AddExam extends Page {
             months.add(monthIterator++);
         }
 
-        // Adding months vector to the combobox list of items.
+        // Adding months vector to the ComboBox list of items.
         monthComboBox.setModel(new DefaultComboBoxModel<>(months));
 
         // Setting the current month to avoid erasing the user's selection if not necessary
@@ -732,7 +732,7 @@ public class AddExam extends Page {
             days.add(dayIterator++);
         }
 
-        // Adding days vector to the combobox list of items.
+        // Adding days vector to the ComboBox list of items.
         dayComboBox.setModel(new DefaultComboBoxModel<>(days));
 
         // Getting the current month to avoid erasing the user's selection if not necessary
@@ -779,7 +779,7 @@ public class AddExam extends Page {
             hours.add(hourIterator++);
         }
 
-        // Adding hours vector to the combobox list of items.
+        // Adding hours vector to the ComboBox list of items.
         hourComboBox.setModel(new DefaultComboBoxModel<>(hours));
 
         // Setting the current hour to avoid erasing the user's selection if not necessary
@@ -828,7 +828,7 @@ public class AddExam extends Page {
             minutes.add(minuteIterator++);
         }
 
-        // Adding hours vector to the combobox list of items.
+        // Adding hours vector to the ComboBox list of items.
         minuteComboBox.setModel(new DefaultComboBoxModel<>(minutes));
 
         // Setting the selected minute to avoid erasing the user's selection if not necessary
@@ -936,7 +936,7 @@ public class AddExam extends Page {
                 // Refreshing the current time
                 // #order_of_the_refreshing_matters cliché, haa?
                 /*
-                 * As refreshing goes, comboBox-es lists gets cleared
+                 * As refreshing goes, ComboBox-es lists gets cleared
                  * So they should be refreshed (cleared) backwards.
                  */
                 setCurrentDate();

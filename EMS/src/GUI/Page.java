@@ -101,6 +101,7 @@ public abstract class Page extends javax.swing.JFrame {
         backButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setPreferredSize(new java.awt.Dimension(700, 853));
         setSize(new java.awt.Dimension(1200, 1100));
 
         panel.setBackground(new java.awt.Color(134, 171, 161));
