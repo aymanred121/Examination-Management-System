@@ -320,25 +320,12 @@ public class Exam implements SqlEntity {
             fillData();
         }
 
-        if (models.isEmpty()) {
-            System.out.println("Models is empty");
-            return 0;
-        }
-
         // Handling the ceiling process without dealing with floats
         int studentsPerModel = (examClass.getStudentsCount() + models.size() - 1) / models.size();
-
-        if (studentsPerModel == 0) {
-            System.out.println("StudentsPerModel is ZERO");
-        }
-
         int studentPos = examClass.getStudentPosition(username);
         int studentModel = studentPos / studentsPerModel;
-        return studentModel;
-    }
 
-    public int getStudentCount(){
-        return examClass.getStudentsCount();
+        return studentModel;
     }
 
     public String getStudentAnswer(String studentName) {

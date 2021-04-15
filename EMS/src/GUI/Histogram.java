@@ -78,7 +78,7 @@ public class Histogram extends JFrame {
      */
 
     public static double[] HistogramData(Exam exam) {
-        int studentIndex = 0, studentCount = exam.getStudentCount();
+        int studentIndex = 0, studentCount = exam.getExamClass().getStudentsCount();
         double[] studentMarksData = new double[studentCount];
 
         for (Student student : exam.getExamClass().getStudents()) {
