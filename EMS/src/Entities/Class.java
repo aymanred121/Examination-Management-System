@@ -223,6 +223,15 @@ public class Class implements SqlEntity {
     }
 
     /**
+     * Returns a vector containing the students registered in the class
+     * @return the value of students vector property
+     */
+
+    public Vector<Student> getStudents() {
+        if(!isFilled){
+            fillData();
+        }
+        return students;
      * Checks whether a class already exists with the same ID in the database
      *
      * @param classId The ID of the new class trying to add in database
