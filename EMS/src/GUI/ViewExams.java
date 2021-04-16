@@ -6,7 +6,6 @@
 package GUI;
 
 import Entities.*;
-import org.jfree.chart.ChartPanel;
 
 import java.awt.Font;
 import java.awt.event.ActionEvent;
