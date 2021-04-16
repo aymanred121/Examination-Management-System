@@ -228,10 +228,13 @@ public class Class implements SqlEntity {
      */
 
     public Vector<Student> getStudents() {
-        if(!isFilled){
+        if (!isFilled) {
             fillData();
         }
         return students;
+    }
+
+    /**
      * Checks whether a class already exists with the same ID in the database
      *
      * @param classId The ID of the new class trying to add in database
