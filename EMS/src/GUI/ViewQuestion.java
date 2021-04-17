@@ -415,7 +415,16 @@ public class ViewQuestion extends javax.swing.JFrame {
                 buttonGroup.setSelected(choice4Rad.getModel(), true);
                 break;
         }
-                
+
+        /*
+         * Added while loop to iterate over the buttonGroup elements and disable them
+         */
+
+        Enumeration<AbstractButton> enumeration = buttonGroup.getElements();
+        while (enumeration.hasMoreElements()) {
+            enumeration.nextElement().setEnabled(isEditable);
+        }
+
     }
     
     /**

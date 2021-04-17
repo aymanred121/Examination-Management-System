@@ -1,8 +1,6 @@
 <component name="libraryTable">
   <library name="EMS">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/dist/EMS.jar!/" />
-    </CLASSES>
+    <CLASSES />
     <JAVADOC />
     <SOURCES />
   </library>

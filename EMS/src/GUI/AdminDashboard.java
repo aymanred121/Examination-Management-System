@@ -5,20 +5,31 @@
  */
 package GUI;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import javax.swing.*;
+import java.awt.*;
 
 /**
+ * AdminDashboard is a GUI class that assist the administrator to perform some functionality.
+ * AdminDashboard greet the admin once he logged in.
+ * Admin can add new instructor, assign instructor to class and add new class.
+ * Each functionality can be accessed through a button
+ * AdminDashboard has logout button that redirect the user to UserDashboard.
  *
- * @author yn653
+ * @author AbdelAziz Mostafa
  */
 public class AdminDashboard extends javax.swing.JFrame {
+    Entities.Admin admin;
+    private final java.awt.Font myFont = new java.awt.Font("Tahoma", Font.BOLD, 13);
 
     /**
      * Creates new form AdminDashboard
      */
-    public AdminDashboard() {
+    public AdminDashboard(String username) {
+        admin = new Entities.Admin(username);
         initComponents();
+
+        // Greeting the user.
+        title.setText("Hello " + admin.getFirstName() );
     }
 
     /**
@@ -30,43 +41,70 @@ public class AdminDashboard extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
-        logoutButton = new javax.swing.JButton();
-        greetingAdmin = new javax.swing.JLabel();
+        javax.swing.JPanel jPanel1 = new javax.swing.JPanel();
+        // Variables declaration - do not modify//GEN-BEGIN:variables
+        javax.swing.JButton logoutButton = new javax.swing.JButton();
+        title = new javax.swing.JLabel();
+        javax.swing.JButton addNewInstructor = new javax.swing.JButton();
+        javax.swing.JButton assignInstructorToClass = new javax.swing.JButton();
+        javax.swing.JButton addNewClass = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(134, 171, 161));
 
+        logoutButton.setFont(myFont); // NOI18N
         logoutButton.setText("Logout");
-        logoutButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                logoutButtonActionPerformed(evt);
-            }
-        });
+        logoutButton.addActionListener(evt -> LogoutButtonActionPerformed());
 
-        greetingAdmin.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-        greetingAdmin.setText("Hello");
+        title.setFont(new java.awt.Font("Tahoma", Font.BOLD, 24)); // NOI18N
+        title.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        title.setText("Title");
+        title.setFocusTraversalPolicyProvider(true);
+
+        addNewInstructor.setText("Add new instructor");
+        addNewInstructor.addActionListener(evt -> addNewInstructorActionPerformed());
+
+        assignInstructorToClass.setText("Assign instructor to class ");
+        assignInstructorToClass.addActionListener(evt -> assignInstructorToClassActionPerformed());
+
+        addNewClass.setText("Add new Class ");
+        addNewClass.addActionListener(evt -> addNewClassActionPerformed());
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(26, 26, 26)
-                .addComponent(greetingAdmin)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 616, Short.MAX_VALUE)
-                .addComponent(logoutButton)
-                .addGap(26, 26, 26))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(title)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(logoutButton))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(143, 143, 143)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(addNewInstructor, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(assignInstructorToClass, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(addNewClass, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 165, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(27, 27, 27)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(logoutButton)
-                    .addComponent(greetingAdmin))
-                .addContainerGap(621, Short.MAX_VALUE))
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(title)
+                    .addComponent(logoutButton))
+                .addGap(64, 64, 64)
+                .addComponent(addNewInstructor)
+                .addGap(46, 46, 46)
+                .addComponent(assignInstructorToClass)
+                .addGap(51, 51, 51)
+                .addComponent(addNewClass)
+                .addContainerGap(114, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -83,16 +121,36 @@ public class AdminDashboard extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void logoutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutButtonActionPerformed
-        // TODO add your handling code here:
-        new Login();
+    //Used to logout from the current admin user to UserDashboard.
+    private void LogoutButtonActionPerformed() {//GEN-FIRST:event_LogoutButtonActionPerformed
+        new Login().setVisible(true);
         dispose();
-    }//GEN-LAST:event_logoutButtonActionPerformed
+    }//GEN-LAST:event_LogoutButtonActionPerformed
+
+    // Redirect the admin to addNewInstructor page that he can add a new instructor
+    private void addNewInstructorActionPerformed() {//GEN-FIRST:event_addNewInstructorActionPerformed
+        new AddNewInstructor(admin).setVisible(true);
+        dispose();
+    }//GEN-LAST:event_addNewInstructorActionPerformed
+
+
+    // Redirect the admin to addNewClass page so that he can add new class and assign it to course(s).
+    private void addNewClassActionPerformed() {//GEN-FIRST:event_addNewClassActionPerformed
+        new AddNewClass(admin).setVisible(true);
+        dispose();
+    }//GEN-LAST:event_addNewClassActionPerformed
+
+
+    // Redirect the admin to assignInstructorToClass page so that he can assign instructor to course(s).
+    private void assignInstructorToClassActionPerformed() {//GEN-FIRST:event_assignInstructorToClassActionPerformed
+        new AssignInstructorToClass(admin).setVisible(true);
+        dispose();
+    }//GEN-LAST:event_assignInstructorToClassActionPerformed
 
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
+    public static void main(String[] args) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -105,28 +163,15 @@ public class AdminDashboard extends javax.swing.JFrame {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(AdminDashboard.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(AdminDashboard.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(AdminDashboard.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | UnsupportedLookAndFeelException | IllegalAccessException | InstantiationException ex) {
             java.util.logging.Logger.getLogger(AdminDashboard.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new AdminDashboard().setVisible(true);
-            }
-        });
+        java.awt.EventQueue.invokeLater(() -> new AdminDashboard("admin").setVisible(true));
     }
 
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel greetingAdmin;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JButton logoutButton;
+    private javax.swing.JLabel title;
     // End of variables declaration//GEN-END:variables
 }

@@ -15,7 +15,7 @@ import Entities.*;
 
 /**
  *
- * @author ZiadK
+ * @author Ziad Khobeiz
  */
 public class UserDashboard extends Page{
     
@@ -88,27 +88,11 @@ public class UserDashboard extends Page{
                     dispose();
                 }
             });
-            // It displays the "Show Topics" button for instructors only
-            if(userType == User.UserType.INSTRUCTOR) {
-                topicsButtons.add(new JButton());
-                topicsButtons.lastElement().setBounds(560, 65 + delta, 150, 30);
-                topicsButtons.lastElement().setText("Show Topics");
-                topicsButtons.lastElement().setFont(new java.awt.Font("Tahoma", 1, 12));
-                topicsButtons.lastElement().addActionListener(new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-                        new Login();
-                        dispose();
-                    }
-                });
-                getPanel().add(topicsButtons.lastElement());
-            }
             delta += 50;
         }
 
     }
     
-    public static void main(String[] args) {
-         new UserDashboard(User.UserType.INSTRUCTOR, "omarhassan").setVisible(true);
-    }
+   
     
 }
