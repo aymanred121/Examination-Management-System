@@ -1,8 +1,3 @@
 # Examination-Management-System
-## Team Members
-#### Abdel-Aziz Mostafa
-#### Steven Sameh
-#### Ziad Khobeiz
-#### Yusuf Nasser
-#### Ayman Hassan
-#### Yusuf Nader
+
+A Java powered system to manage examination process built with Swing, the system can be used by students, teachers and administrators.
